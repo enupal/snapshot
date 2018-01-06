@@ -22,6 +22,6 @@ class App extends Component
 	public function init()
 	{
 		$this->toPdf = new ToPdf();
-		$this->toPdf = new ToImage();
+		$this->toImage = new ToImage();
 	}
 }

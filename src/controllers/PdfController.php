@@ -41,9 +41,15 @@ class PdfController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$result = Pdf::$app->toPdf->generate('http://enupal.com', Craft::$app->getPath()->getTempPath().DIRECTORY_SEPARATOR.'test.pdf');
-		Craft::dd($result);
-		return $result;
+		header('Content-Type: application/pdf');
+		header('Content-Disposition: attachment; filename="file.pdf"');
+		$result = Pdf::$app->toPdf->getOutput('https://github.com');
+
+		if ($result)
+		{
+			echo $result;
+		}
+
 	}
 
 	/**

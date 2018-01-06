@@ -23,36 +23,36 @@ use craft\web\Controller;
 class SettingsController extends Controller
 {
 
-    // Protected Properties
-    // =========================================================================
+	// Protected Properties
+	// =========================================================================
 
-    /**
-     * @var    bool|array Allows anonymous access to this controller's actions.
-     *         The actions must be in 'kebab-case'
-     * @access protected
-     */
-    protected $allowAnonymous = ['index', 'do-something'];
+	/**
+	 * @var    bool|array Allows anonymous access to this controller's actions.
+	 *         The actions must be in 'kebab-case'
+	 * @access protected
+	 */
+	protected $allowAnonymous = ['index', 'do-something'];
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $result = 'Welcome to the SettingsController actionIndex() method';
+	/**
+	 * @return mixed
+	 */
+	public function actionIndex()
+	{
+		$result = 'Welcome to the SettingsController actionIndex() method';
 
-        return $result;
-    }
+		return $result;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function actionDoSomething()
-    {
-        $result = 'Welcome to the SettingsController actionDoSomething() method';
+	/**
+	 * @return mixed
+	 */
+	public function actionDoSomething()
+	{
+		$result = 'Welcome to the SettingsController actionDoSomething() method';
 
-        return $result;
-    }
+		return $result;
+	}
 }

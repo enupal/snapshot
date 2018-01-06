@@ -53,14 +53,13 @@ class Pdf extends Plugin
 	{
 		parent::init();
 		self::$app = $this->get('app');
-		Craft::dd(self::$app);
 
 		Event::on(
 			UrlManager::class,
 			UrlManager::EVENT_REGISTER_SITE_URL_RULES,
 			function (RegisterUrlRulesEvent $event) {
-				$event->rules['siteActionTrigger1'] = 'pdf/settings';
-				$event->rules['siteActionTrigger2'] = 'pdf/pdf';
+				$event->rules['siteActionTrigger1'] = 'enupal-pdf/settings';
+				$event->rules['siteActionTrigger2'] = 'enupal-pdf/pdf';
 			}
 		);
 
@@ -68,8 +67,8 @@ class Pdf extends Plugin
 			UrlManager::class,
 			UrlManager::EVENT_REGISTER_CP_URL_RULES,
 			function (RegisterUrlRulesEvent $event) {
-				$event->rules['cpActionTrigger1'] = 'pdf/settings/do-something';
-				$event->rules['cpActionTrigger2'] = 'pdf/pdf/do-something';
+				$event->rules['cpActionTrigger1'] = 'enupal-pdf/settings/do-something';
+				$event->rules['cpActionTrigger2'] = 'enupal-pdf/pdf/do-something';
 			}
 		);
 
@@ -79,7 +78,7 @@ class Pdf extends Plugin
 			function (Event $event) {
 				/** @var CraftVariable $variable */
 				$variable = $event->sender;
-				$variable->set('pdf', PdfVariable::class);
+				$variable->set('enupal-pdf', PdfVariable::class);
 			}
 		);
 
@@ -94,14 +93,12 @@ class Pdf extends Plugin
 
 		Craft::info(
 			Craft::t(
-				'pdf',
+				'enupal-pdf',
 				'{name} plugin loaded',
 				['name' => $this->name]
 			),
 			__METHOD__
 		);
-
-		self::$app->toPdf->generate('http://google.com', Craft::$app->getPath()->getTempPath());
 	}
 
 	// Protected Methods
@@ -121,7 +118,7 @@ class Pdf extends Plugin
 	protected function settingsHtml(): string
 	{
 		return Craft::$app->view->renderTemplate(
-			'pdf/settings',
+			'enupal-pdf/settings',
 			[
 				'settings' => $this->getSettings()
 			]

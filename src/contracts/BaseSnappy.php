@@ -4,6 +4,7 @@ namespace enupal\pdf\contracts;
 
 use craft\base\Component;
 use Knp\Snappy\GeneratorInterface;
+use Craft;
 
 /**
  * Base class for generator components.

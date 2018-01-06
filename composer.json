@@ -1,0 +1,45 @@
+{
+		"name": "enupal/pdf",
+		"description": "Snapshot or PDF generation from a url or a html page.",
+		"type": "craft-plugin",
+		"version": "1.0.0",
+		"keywords": [
+				"craft",
+				"cms",
+				"craftcms",
+				"craft-plugin",
+				"pdf"
+		],
+		"support": {
+				"docs": "https://github.com/enupal/pdf/blob/master/README.md",
+				"issues": "https://github.com/enupal/pdf/issues"
+		},
+		"license": "MIT",
+		"authors": [
+				{
+						"name": "Enupal",
+						"homepage": "https://enupal.com"
+				}
+		],
+		"require": {
+				"craftcms/cms": "^3.0.0-RC1",
+				"knplabs/knp-snappy": "^1.0"
+		},
+		"autoload": {
+				"psr-4": {
+					"enupal\\pdf\\": "src/"
+				}
+		},
+		"extra": {
+				"name": "Pdf",
+				"handle": "pdf",
+				"schemaVersion": "1.0.0",
+				"hasCpSettings": true,
+				"hasCpSection": false,
+				"changelogUrl": "https://raw.githubusercontent.com/enupal/pdf/master/CHANGELOG.md",
+				"components": {
+					"app": "enupal\\pdf\\services\\App"
+				},
+				"class": "enupal\\pdf\\Pdf"
+		}
+}

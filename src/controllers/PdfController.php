@@ -43,7 +43,7 @@ class PdfController extends Controller
 	{
 		header('Content-Type: application/pdf');
 		header('Content-Disposition: attachment; filename="file.pdf"');
-		$result = Pdf::$app->toPdf->getOutput('https://github.com');
+		$result = Pdf::$app->toPdf->getOutput('https://enupal.com/craft-plugins/');
 
 		if ($result)
 		{

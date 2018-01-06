@@ -21,28 +21,28 @@ use craft\web\assets\cp\CpAsset;
  */
 class PdfAsset extends AssetBundle
 {
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        $this->sourcePath = "@enupal/pdf/assetbundles/pdf/dist";
+	/**
+	 * @inheritdoc
+	 */
+	public function init()
+	{
+		$this->sourcePath = "@enupal/pdf/assetbundles/pdf/dist";
 
-        $this->depends = [
-            CpAsset::class,
-        ];
+		$this->depends = [
+			CpAsset::class,
+		];
 
-        $this->js = [
-            'js/Pdf.js',
-        ];
+		$this->js = [
+			'js/Pdf.js',
+		];
 
-        $this->css = [
-            'css/Pdf.css',
-        ];
+		$this->css = [
+			'css/Pdf.css',
+		];
 
-        parent::init();
-    }
+		parent::init();
+	}
 }

@@ -11,14 +11,14 @@ use Craft;
  */
 class Image extends BaseSnappy
 {
-	public function init()
+	protected function getBinary()
 	{
-		parent::init();
-
 		$plugin   = Craft::$app->getPlugins()->getPlugin('enupal-pdf');
 		$settings = $plugin->getSettings();
 
 		$this->binary = $settings->imageBinPath;
+
+		return $this->binary ?? null;
 	}
 
 	/**

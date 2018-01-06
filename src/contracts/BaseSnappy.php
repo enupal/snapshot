@@ -39,6 +39,13 @@ abstract class BaseSnappy extends Component
 	abstract protected function getGenerator(): GeneratorInterface;
 
 	/**
+	 * Set binary path
+	 *
+	 * @return String
+	 */
+	abstract protected function getBinary();
+
+	/**
 	 * @inheritDoc
 	 */
 	public function __call($name, $parameters)
@@ -47,7 +54,8 @@ abstract class BaseSnappy extends Component
 			return parent::__call($name, $parameters);
 		}
 
-		$generator = $this->getGenerator();
+		$this->binary = $this->getBinary();
+		$generator    = $this->getGenerator();
 		$generator->setTemporaryFolder($this->resolveTempdir());
 
 		return call_user_func_array(array($generator, $name), $parameters);

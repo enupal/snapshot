@@ -23,36 +23,36 @@ use craft\web\Controller;
 class PdfController extends Controller
 {
 
-    // Protected Properties
-    // =========================================================================
+	// Protected Properties
+	// =========================================================================
 
-    /**
-     * @var    bool|array Allows anonymous access to this controller's actions.
-     *         The actions must be in 'kebab-case'
-     * @access protected
-     */
-    protected $allowAnonymous = ['index', 'do-something'];
+	/**
+	 * @var    bool|array Allows anonymous access to this controller's actions.
+	 *         The actions must be in 'kebab-case'
+	 * @access protected
+	 */
+	protected $allowAnonymous = ['index', 'do-something'];
 
-    // Public Methods
-    // =========================================================================
+	// Public Methods
+	// =========================================================================
 
-    /**
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $result = 'Welcome to the PdfController actionIndex() method';
+	/**
+	 * @return mixed
+	 */
+	public function actionIndex()
+	{
+		$result = Pdf::$app->toPdf->generate('http://enupal.com', Craft::$app->getPath()->getTempPath().DIRECTORY_SEPARATOR.'test.pdf');
+		Craft::dd($result);
+		return $result;
+	}
 
-        return $result;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function actionDoSomething()
+	{
+		$result = 'Welcome to the PdfController actionDoSomething() method';
 
-    /**
-     * @return mixed
-     */
-    public function actionDoSomething()
-    {
-        $result = 'Welcome to the PdfController actionDoSomething() method';
-
-        return $result;
-    }
+		return $result;
+	}
 }

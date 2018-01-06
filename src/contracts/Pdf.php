@@ -11,14 +11,14 @@ use Craft;
  */
 class Pdf extends BaseSnappy
 {
-	public function init()
+	protected function getBinary()
 	{
-		parent::init();
-
-		$plugin   = Craft::$app->getPlugins()->getPlugin('enupal-backup');
+		$plugin   = Craft::$app->getPlugins()->getPlugin('enupal-pdf');
 		$settings = $plugin->getSettings();
 
 		$this->binary = $settings->pdfBinPath;
+
+		return $this->binary ?? null;
 	}
 
 	/**

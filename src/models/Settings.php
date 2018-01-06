@@ -28,12 +28,12 @@ class Settings extends Model
 	/**
 	 * @var string
 	 */
-	public $pdfBin = '';
+	public $pdfBinPath = '';
 
 	/**
 	 * @var string
 	 */
-	public $imageBin = '';
+	public $imageBinPath = '';
 
 
 	// Public Methods
@@ -45,7 +45,7 @@ class Settings extends Model
 	public function rules()
 	{
 		return [
-			[['pdfBin', 'imageBin'], 'required']
+			[['pdfBinPath', 'imageBinPath'], 'required']
 		];
 	}
 }

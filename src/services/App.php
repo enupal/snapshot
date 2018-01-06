@@ -21,7 +21,7 @@ class App extends Component
 
 	public function init()
 	{
-		$this->toPdf = new Backups();
-		$this->toPdf = new Settings();
+		$this->toPdf = new ToPdf();
+		$this->toPdf = new ToImage();
 	}
 }

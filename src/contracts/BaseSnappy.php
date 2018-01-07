@@ -156,12 +156,28 @@ abstract class BaseSnappy extends Component
 			$settings['filename'] = $defaultSettings['filename'].$extension;
 		}
 
+		// @todo - support volumes
+		$path = Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.'enupalsnapshot'.DIRECTORY_SEPARATOR.$settings['filename'];
+
+		// let's delete any duplicate filename
+		if (file_exists($path))
+		{
+			unlink($path);
+		}
+
+		$settings['path'] = $path;
+
 		if (!isset($settings['inline']))
 		{
 			$settings['inline'] = $defaultSettings['inline'];
 		}
 
 		return $settings;
+	}
+
+	public function displayInline($path, $settings)
+	{
+		Craft::$app->response->sendFile($path, $settings['filename'], ['inline'=>true]);
 	}
 
 	public function validateFileName($fileName, $isPdf)

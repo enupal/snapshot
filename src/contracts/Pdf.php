@@ -37,6 +37,15 @@ class Pdf extends BaseSnappy
 	{
 		$settings = $this->getSettings($settings);
 
+		Snapshot::$app->pdf->generateFromHtml($html, $settings['path']);
+
+		if ($settings['inline'])
+		{
+			return $this->displayInline($path, $settings);
+		}
+
+		// download link
+		return
 	}
 
 	/**

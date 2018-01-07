@@ -28,13 +28,12 @@ class Settings extends Model
 	/**
 	 * @var string
 	 */
-	public $snapshotBinPath = '';
+	public $pdfBinPath = '';
 
 	/**
 	 * @var string
 	 */
 	public $imageBinPath = '';
-
 
 	// Public Methods
 	// =========================================================================
@@ -45,7 +44,7 @@ class Settings extends Model
 	public function rules()
 	{
 		return [
-			[['snapshotBinPath', 'imageBinPath'], 'required']
+			[['pdfBinPath', 'imageBinPath'], 'required']
 		];
 	}
 }

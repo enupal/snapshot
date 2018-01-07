@@ -41,15 +41,17 @@ class SnapshotController extends Controller
 	 */
 	public function actionIndex()
 	{
-		header('Content-Type: application/snapshot');
-		header('Content-Disposition: attachment; filename="file.snapshot"');
-		$result = Snapshot::$app->pdf->getOutput('https://enupal.com/craft-plugins/');
+		$file = Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.'snapshot'.DIRECTORY_SEPARATOR.'assassa.pdf';
 
-		if ($result)
+		if (file_exists($file))
 		{
-			echo $result;
+			unlink($file);
 		}
 
+		Snapshot::$app->pdf->generate('http://example.com', $file);
+
+
+		return Craft::$app->response->sendFile($file, 'oli.pdf', ['inline'=>true]);
 	}
 
 	/**

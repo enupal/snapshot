@@ -47,21 +47,21 @@ abstract class BaseSnappy extends Component
 
 	/**
 	 * @param string $html
-	 * @param array $options display inline | url
+	 * @param array $settings display inline | url
 	**/
-	abstract public function displayHtml($html, $options = null);
+	abstract public function displayHtml($html, $settings = null);
 
 	/**
 	 * @param string $template
-	 * @param array $options display inline | url
+	 * @param array $settings display inline | url
 	**/
-	abstract public function displayTemplate($template, $options = null);
+	abstract public function displayTemplate($template, $settings = null);
 
 	/**
 	 * @param string $url
-	 * @param array $options display inline | url
+	 * @param array $settings display inline | url
 	**/
-	abstract public function displayUrl($url, $option = null);
+	abstract public function displayUrl($url, $settings = null);
 
 	/**
 	 * @inheritDoc
@@ -111,5 +111,86 @@ abstract class BaseSnappy extends Component
 				$str .= $keyspace[random_int(0, $max)];
 		}
 		return $str;
+	}
+
+	/**
+	 * By default let's display the output in the browser
+	 *
+	 * @return []
+	*/
+	public function getDefaultSettings()
+	{
+		return [
+			'cliOptions' => [],
+			// default filename without extension
+			'filename' => $this->getRandomStr(),
+			// true => display on browser else return download url
+			'inline' => true
+		];
+	}
+
+	/**
+	 * By default will generate a filename with a proper extension
+	 *
+	 * @param array $settings
+	 * @param bool $isPdf
+	*/
+	public function getSettings($settings, $isPdf = true)
+	{
+		$defaultSettings = $this->getDefaultSettings();
+		$extension = $isPdf ? '.pdf' : '.png';
+		$isValidFileName = false;
+
+		if (isset($settings['cliOptions']))
+		{
+			$this->options = $settings['cliOptions'];
+		}
+
+		if(isset($settings['filename']))
+		{
+			$isValidFileName = $this->validateFileName($settings['filename'], $isPdf);
+		}
+
+		if(!$isValidFileName)
+		{
+			$settings['filename'] = $defaultSettings['filename'].$extension;
+		}
+
+		if (!isset($settings['inline']))
+		{
+			$settings['inline'] = $defaultSettings['inline'];
+		}
+
+		return $settings;
+	}
+
+	public function validateFileName($fileName, $isPdf)
+	{
+		$supportedImages = [
+			'gif',
+			'jpg',
+			'jpeg',
+			'png'
+		];
+
+		$ext = pathinfo($fileName, PATHINFO_EXTENSION);
+
+		if(!$isPdf)
+		{
+			if(in_array($ext, $supportedImages))
+			{
+				return true;
+			}
+		}
+		// we have a pdf
+		else
+		{
+			if($ext == 'pdf')
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

@@ -31,27 +31,28 @@ class Pdf extends BaseSnappy
 
 	/**
 	 * @param string $html
-	 * @param array $options display inline | url
+	 * @param array $settings display inline | url
 	**/
-	public function displayHtml($html, $options = null)
+	public function displayHtml($html, $settings = null)
 	{
+		$settings = $this->getSettings($settings);
 
 	}
 
 	/**
 	 * @param string $template
-	 * @param array $options display inline | url
+	 * @param array $settings display inline | url
 	**/
-	public function displayTemplate($template, $options = null)
+	public function displayTemplate($template, $settings = null)
 	{
 
 	}
 
 	/**
 	 * @param string $url
-	 * @param array $options display inline | url
+	 * @param array $settings display inline | url
 	**/
-	public function displayUrl($url, $option = null)
+	public function displayUrl($url, $settings = null)
 	{
 
 	}

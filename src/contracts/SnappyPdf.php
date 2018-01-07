@@ -35,6 +35,7 @@ class SnappyPdf extends BaseSnappy
 	**/
 	public function displayHtml($html, $settings = null)
 	{
+		$settings = ['inline' => false];
 		$settings = $this->getSettings($settings);
 
 		$this->generateFromHtml($html, $settings['path']);
@@ -45,7 +46,7 @@ class SnappyPdf extends BaseSnappy
 		}
 
 		// download link
-		return "LINK";
+		return $settings['path'];
 	}
 
 	/**

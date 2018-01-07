@@ -2,9 +2,10 @@
 
 namespace enupal\snapshot\contracts;
 
-use craft\base\Component;
-use Knp\Snappy\GeneratorInterface;
 use Craft;
+use Knp\Snappy\GeneratorInterface;
+use craft\base\Component;
+use craft\helpers\FileHelper;
 
 /**
  * Base class for generator components.
@@ -172,7 +173,27 @@ abstract class BaseSnappy extends Component
 			$settings['inline'] = $defaultSettings['inline'];
 		}
 
+		// Public download link
+		if (!$settings['inline'])
+		{
+			// @todo -> handle delete files?
+			FileHelper::copyDirectory($this->getSnapshotPath(), $settings['path']);
+			$settings['path'] = $this->getSnapshotPath().$settings['filename'];
+		}
+
 		return $settings;
+	}
+
+	public function getSnapshotPath()
+	{
+		// Get the public path of Craft CMS
+		$debugTrace = debug_backtrace();
+		$initialCalledFile = count($debugTrace) ? $debugTrace[count($debugTrace) - 1]['file'] : __FILE__;
+		$publicFolderPath = dirname($initialCalledFile);
+		$publicFolderPath = $publicFolderPath.DIRECTORY_SEPARATOR."enupalsnapshot";
+		$publicFolderPath = FileHelper::normalizePath($publicFolderPath);
+
+		return $publicFolderPath;
 	}
 
 	public function displayInline($path, $settings)

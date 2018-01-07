@@ -16,12 +16,12 @@ use enupal\backup\Backup;
 
 class App extends Component
 {
-	public $toSnapshot;
-	public $toImage;
+	public $pdf;
+	public $image;
 
 	public function init()
 	{
-		$this->toSnapshot = new ToSnapshot();
-		$this->toImage = new ToImage();
+		$this->pdf = new Pdf();
+		$this->image = new Image();
 	}
 }

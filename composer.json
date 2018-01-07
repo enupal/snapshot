@@ -31,7 +31,7 @@
 				}
 		},
 		"extra": {
-				"name": "Snapshot",
+				"name": "Enupal Snapshot",
 				"handle": "enupal-snapshot",
 				"schemaVersion": "1.0.0",
 				"hasCpSettings": true,

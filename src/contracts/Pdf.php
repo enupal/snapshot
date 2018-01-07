@@ -3,13 +3,13 @@
 namespace enupal\snapshot\contracts;
 
 use Knp\Snappy\GeneratorInterface;
-use Knp\Snappy\Snapshot as SnappySnapshot;
+use Knp\Snappy\Pdf as SnappyPdf;
 use Craft;
 
 /**
  * PDF generator component.
  */
-class Snapshot extends BaseSnappy
+class Pdf extends BaseSnappy
 {
 	protected function getBinary()
 	{
@@ -26,6 +26,6 @@ class Snapshot extends BaseSnappy
 	 */
 	protected function getGenerator(): GeneratorInterface
 	{
-		return new SnappySnapshot($this->binary, $this->options);
+		return new SnappyPdf($this->binary, $this->options);
 	}
 }

@@ -14,7 +14,7 @@ use enupal\snapshot\Snapshot;
 
 use Craft;
 use craft\base\Component;
-use enupal\snapshot\contracts\Pdf as SnappyPdf;
+use enupal\snapshot\contracts\SnappyPdf;
 
 /**
  * @author    Enupal

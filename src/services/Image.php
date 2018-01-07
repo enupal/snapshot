@@ -14,7 +14,7 @@ use enupal\snapshot\Snapshot;
 
 use Craft;
 use craft\base\Component;
-use enupal\snapshot\contracts\Image as SnappyImage;
+use enupal\snapshot\contracts\SnappyImage;
 
 /**
  * @author    Enupal

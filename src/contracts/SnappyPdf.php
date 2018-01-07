@@ -3,30 +3,30 @@
 namespace enupal\snapshot\contracts;
 
 use Knp\Snappy\GeneratorInterface;
-use Knp\Snappy\Image as SnayppyImage;
+use Knp\Snappy\Pdf as SnappyPdf;
 use Craft;
 
 /**
  * PDF generator component.
  */
-class Image extends BaseSnappy
+class SnappyPdf extends BaseSnappy
 {
 	protected function getBinary()
 	{
 		$plugin   = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');
 		$settings = $plugin->getSettings();
 
-		$this->binary = $settings->imageBinPath;
+		$this->binary = $settings->pdfBinPath;
 
 		return $this->binary ?? null;
 	}
 
 	/**
-	 * @return SnayppyImage
+	 * @return SnappySnapshot
 	 */
 	protected function getGenerator(): GeneratorInterface
 	{
-		return new SnayppyImage($this->binary, $this->options);
+		return new SnappyPdf($this->binary, $this->options);
 	}
 
 	/**
@@ -37,6 +37,15 @@ class Image extends BaseSnappy
 	{
 		$settings = $this->getSettings($settings);
 
+		$this->generateFromHtml($html, $settings['path']);
+
+		if ($settings['inline'])
+		{
+			return $this->displayInline($settings['path'], $settings);
+		}
+
+		// download link
+		return "LINK";
 	}
 
 	/**

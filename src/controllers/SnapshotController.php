@@ -41,7 +41,7 @@ class SnapshotController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$file = Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.'snapshot'.DIRECTORY_SEPARATOR.'assassa.pdf';
+		/*$file = Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.'snapshot'.DIRECTORY_SEPARATOR.'assassa.pdf';
 
 		if (file_exists($file))
 		{
@@ -51,6 +51,9 @@ class SnapshotController extends Controller
 		Snapshot::$app->pdf->generate('http://example.com', $file);
 
 		return Craft::$app->response->sendFile($file, 'oli.pdf', ['inline'=>true]);
+		*/
+
+		Snapshot::$app->pdf->displayHtml("<html><h1>Hello world</h1></html>");
 	}
 
 	/**

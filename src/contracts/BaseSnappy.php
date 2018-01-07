@@ -1,6 +1,6 @@
 <?php
 
-namespace enupal\pdf\contracts;
+namespace enupal\snapshot\contracts;
 
 use craft\base\Component;
 use Knp\Snappy\GeneratorInterface;
@@ -68,6 +68,6 @@ abstract class BaseSnappy extends Component
 	 */
 	protected function resolveTempdir()
 	{
-		return $this->tempdir ?? Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.'enupalpdftemp';
+		return $this->tempdir ?? Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.'enupalsnapshottemp';
 	}
 }

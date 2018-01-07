@@ -1,6 +1,6 @@
 <?php
 
-namespace enupal\pdf\contracts;
+namespace enupal\snapshot\contracts;
 
 use Knp\Snappy\GeneratorInterface;
 use Knp\Snappy\Image as SnayppyImage;
@@ -13,7 +13,7 @@ class Image extends BaseSnappy
 {
 	protected function getBinary()
 	{
-		$plugin   = Craft::$app->getPlugins()->getPlugin('enupal-pdf');
+		$plugin   = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');
 		$settings = $plugin->getSettings();
 
 		$this->binary = $settings->imageBinPath;

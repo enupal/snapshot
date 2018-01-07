@@ -1,6 +1,6 @@
 <?php
 /**
- * Pdf plugin for Craft CMS 3.x
+ * Snapshot plugin for Craft CMS 3.x
  *
  * Snapshot or PDF generation from a url or a html page.
  *
@@ -9,12 +9,12 @@
  */
 
 /**
- * Pdf config.php
+ * Snapshot config.php
  *
- * This file exists only as a template for the Pdf settings.
+ * This file exists only as a template for the Snapshot settings.
  * It does nothing on its own.
  *
- * Don't edit this file, instead copy it to 'craft/config' as 'pdf.php'
+ * Don't edit this file, instead copy it to 'craft/config' as 'snapshot.php'
  * and make your changes there to override default settings.
  *
  * Once copied to 'craft/config', this file will be multi-environment aware as

@@ -1,6 +1,6 @@
 <?php
 /**
- * Pdf plugin for Craft CMS 3.x
+ * Snapshot plugin for Craft CMS 3.x
  *
  * Snapshot or PDF generation from a url or a html page.
  *
@@ -8,16 +8,16 @@
  * @copyright Copyright (c) 2018 Enupal
  */
 
-namespace enupal\pdf\controllers;
+namespace enupal\snapshot\controllers;
 
-use enupal\pdf\Pdf;
+use enupal\snapshot\Snapshot;
 
 use Craft;
 use craft\web\Controller;
 
 /**
  * @author    Enupal
- * @package   Pdf
+ * @package   Snapshot
  * @since     1.0.0
  */
 class SettingsController extends Controller

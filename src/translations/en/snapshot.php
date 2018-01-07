@@ -1,6 +1,6 @@
 <?php
 /**
- * Pdf plugin for Craft CMS 3.x
+ * Snapshot plugin for Craft CMS 3.x
  *
  * Snapshot or PDF generation from a url or a html page.
  *
@@ -10,9 +10,9 @@
 
 /**
  * @author    Enupal
- * @package   Pdf
+ * @package   Snapshot
  * @since     1.0.0
  */
 return [
-    'Pdf plugin loaded' => 'Pdf plugin loaded',
+    'Snapshot plugin loaded' => 'Snapshot plugin loaded',
 ];

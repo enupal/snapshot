@@ -1,6 +1,6 @@
 <?php
 /**
- * Pdf plugin for Craft CMS 3.x
+ * Snapshot plugin for Craft CMS 3.x
  *
  * Snapshot or PDF generation from a url or a html page.
  *
@@ -8,11 +8,11 @@
  * @copyright Copyright (c) 2018 Enupal
  */
 
-namespace enupal\pdf;
+namespace enupal\snapshot;
 
-use enupal\pdf\services\Pdf as PdfService;
-use enupal\pdf\variables\PdfVariable;
-use enupal\pdf\models\Settings;
+use enupal\snapshot\services\Snapshot as SnapshotService;
+use enupal\snapshot\variables\SnapshotVariable;
+use enupal\snapshot\models\Settings;
 
 use Craft;
 use craft\base\Plugin;
@@ -25,21 +25,21 @@ use craft\events\RegisterUrlRulesEvent;
 use yii\base\Event;
 
 /**
- * Class Pdf
+ * Class Snapshot
  *
  * @author    Enupal
- * @package   Pdf
+ * @package   Snapshot
  * @since     1.0.0
  *
- * @property  PdfService $pdf
+ * @property  SnapshotService $snapshot
  */
-class Pdf extends Plugin
+class Snapshot extends Plugin
 {
 	// Static Properties
 	// =========================================================================
 
 	/**
-	 * @var Pdf
+	 * @var Snapshot
 	 */
 	public static $app;
 
@@ -58,8 +58,8 @@ class Pdf extends Plugin
 			UrlManager::class,
 			UrlManager::EVENT_REGISTER_SITE_URL_RULES,
 			function (RegisterUrlRulesEvent $event) {
-				$event->rules['siteActionTrigger1'] = 'enupal-pdf/settings';
-				$event->rules['siteActionTrigger2'] = 'enupal-pdf/pdf';
+				$event->rules['siteActionTrigger1'] = 'enupal-snapshot/settings';
+				$event->rules['siteActionTrigger2'] = 'enupal-snapshot/snapshot';
 			}
 		);
 
@@ -67,8 +67,8 @@ class Pdf extends Plugin
 			UrlManager::class,
 			UrlManager::EVENT_REGISTER_CP_URL_RULES,
 			function (RegisterUrlRulesEvent $event) {
-				$event->rules['cpActionTrigger1'] = 'enupal-pdf/settings/do-something';
-				$event->rules['cpActionTrigger2'] = 'enupal-pdf/pdf/do-something';
+				$event->rules['cpActionTrigger1'] = 'enupal-snapshot/settings/do-something';
+				$event->rules['cpActionTrigger2'] = 'enupal-snapshot/snapshot/do-something';
 			}
 		);
 
@@ -78,7 +78,7 @@ class Pdf extends Plugin
 			function (Event $event) {
 				/** @var CraftVariable $variable */
 				$variable = $event->sender;
-				$variable->set('enupal-pdf', PdfVariable::class);
+				$variable->set('enupal-snapshot', SnapshotVariable::class);
 			}
 		);
 
@@ -93,7 +93,7 @@ class Pdf extends Plugin
 
 		Craft::info(
 			Craft::t(
-				'enupal-pdf',
+				'enupal-snapshot',
 				'{name} plugin loaded',
 				['name' => $this->name]
 			),
@@ -118,7 +118,7 @@ class Pdf extends Plugin
 	protected function settingsHtml(): string
 	{
 		return Craft::$app->view->renderTemplate(
-			'enupal-pdf/settings',
+			'enupal-snapshot/settings',
 			[
 				'settings' => $this->getSettings()
 			]

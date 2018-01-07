@@ -1,6 +1,6 @@
 <?php
 /**
- * Pdf plugin for Craft CMS 3.x
+ * Snapshot plugin for Craft CMS 3.x
  *
  * Snapshot or PDF generation from a url or a html page.
  *
@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2018 Enupal
  */
 
-namespace enupal\pdf\assetbundles\Pdf;
+namespace enupal\snapshot\assetbundles\Snapshot;
 
 use Craft;
 use craft\web\AssetBundle;
@@ -16,10 +16,10 @@ use craft\web\assets\cp\CpAsset;
 
 /**
  * @author    Enupal
- * @package   Pdf
+ * @package   Snapshot
  * @since     1.0.0
  */
-class PdfAsset extends AssetBundle
+class SnapshotAsset extends AssetBundle
 {
 	// Public Methods
 	// =========================================================================
@@ -29,18 +29,18 @@ class PdfAsset extends AssetBundle
 	 */
 	public function init()
 	{
-		$this->sourcePath = "@enupal/pdf/assetbundles/pdf/dist";
+		$this->sourcePath = "@enupal/snapshot/assetbundles/snapshot/dist";
 
 		$this->depends = [
 			CpAsset::class,
 		];
 
 		$this->js = [
-			'js/Pdf.js',
+			'js/Snapshot.js',
 		];
 
 		$this->css = [
-			'css/Pdf.css',
+			'css/Snapshot.css',
 		];
 
 		parent::init();

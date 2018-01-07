@@ -1,4 +1,4 @@
-# Pdf plugin for Craft CMS 3.x
+# Snapshot plugin for Craft CMS 3.x
 
 Snapshot or PDF generation from a url or a html page.
 
@@ -18,23 +18,23 @@ To install the plugin, follow these instructions.
 
 2. Then tell Composer to load the plugin:
 
-        composer require enupal/pdf
+        composer require enupal/snapshot
 
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Pdf.
+3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Snapshot.
 
-## Pdf Overview
-
--Insert text here-
-
-## Configuring Pdf
+## Snapshot Overview
 
 -Insert text here-
 
-## Using Pdf
+## Configuring Snapshot
 
 -Insert text here-
 
-## Pdf Roadmap
+## Using Snapshot
+
+-Insert text here-
+
+## Snapshot Roadmap
 
 Some things to do, and ideas for potential features:
 

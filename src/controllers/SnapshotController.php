@@ -1,6 +1,6 @@
 <?php
 /**
- * Pdf plugin for Craft CMS 3.x
+ * Snapshot plugin for Craft CMS 3.x
  *
  * Snapshot or PDF generation from a url or a html page.
  *
@@ -8,19 +8,19 @@
  * @copyright Copyright (c) 2018 Enupal
  */
 
-namespace enupal\pdf\controllers;
+namespace enupal\snapshot\controllers;
 
-use enupal\pdf\Pdf;
+use enupal\snapshot\Snapshot;
 
 use Craft;
 use craft\web\Controller;
 
 /**
  * @author    Enupal
- * @package   Pdf
+ * @package   Snapshot
  * @since     1.0.0
  */
-class PdfController extends Controller
+class SnapshotController extends Controller
 {
 
 	// Protected Properties
@@ -41,9 +41,9 @@ class PdfController extends Controller
 	 */
 	public function actionIndex()
 	{
-		header('Content-Type: application/pdf');
-		header('Content-Disposition: attachment; filename="file.pdf"');
-		$result = Pdf::$app->toPdf->getOutput('https://enupal.com/craft-plugins/');
+		header('Content-Type: application/snapshot');
+		header('Content-Disposition: attachment; filename="file.snapshot"');
+		$result = Snapshot::$app->pdf->getOutput('https://enupal.com/craft-plugins/');
 
 		if ($result)
 		{
@@ -57,7 +57,7 @@ class PdfController extends Controller
 	 */
 	public function actionDoSomething()
 	{
-		$result = 'Welcome to the PdfController actionDoSomething() method';
+		$result = 'Welcome to the SnapshotController actionDoSomething() method';
 
 		return $result;
 	}

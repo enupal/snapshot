@@ -49,19 +49,19 @@ abstract class BaseSnappy extends Component
 	 * @param string $html
 	 * @param array $options display inline | url
 	**/
-	abstract public function displayHtml($html, $options);
+	abstract public function displayHtml($html, $options = null);
 
 	/**
 	 * @param string $template
 	 * @param array $options display inline | url
 	**/
-	abstract public function displayTemplate($template, $options);
+	abstract public function displayTemplate($template, $options = null);
 
 	/**
 	 * @param string $url
 	 * @param array $options display inline | url
 	**/
-	abstract public function displayUrl($url, $option);
+	abstract public function displayUrl($url, $option = null);
 
 	/**
 	 * @inheritDoc

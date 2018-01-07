@@ -33,7 +33,7 @@ class Pdf extends BaseSnappy
 	 * @param string $html
 	 * @param array $options display inline | url
 	**/
-	public function displayHtml($html, $options)
+	public function displayHtml($html, $options = null)
 	{
 
 	}
@@ -42,7 +42,7 @@ class Pdf extends BaseSnappy
 	 * @param string $template
 	 * @param array $options display inline | url
 	**/
-	public function displayTemplate($template, $options)
+	public function displayTemplate($template, $options = null)
 	{
 
 	}
@@ -51,7 +51,7 @@ class Pdf extends BaseSnappy
 	 * @param string $url
 	 * @param array $options display inline | url
 	**/
-	public function displayUrl($url, $option)
+	public function displayUrl($url, $option = null)
 	{
 
 	}

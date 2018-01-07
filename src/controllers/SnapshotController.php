@@ -50,7 +50,6 @@ class SnapshotController extends Controller
 
 		Snapshot::$app->pdf->generate('http://example.com', $file);
 
-
 		return Craft::$app->response->sendFile($file, 'oli.pdf', ['inline'=>true]);
 	}
 

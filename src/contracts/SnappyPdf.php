@@ -2,9 +2,10 @@
 
 namespace enupal\snapshot\contracts;
 
+use Craft;
 use Knp\Snappy\GeneratorInterface;
 use Knp\Snappy\Pdf as SnappyPdf;
-use Craft;
+use craft\helpers\FileHelper;
 
 /**
  * PDF generator component.
@@ -35,18 +36,28 @@ class SnappyPdf extends BaseSnappy
 	**/
 	public function displayHtml($html, $settings = null)
 	{
-		$settings = ['inline' => false];
+		$settings = new SnappySettings($settings);
+
+		$settings->inline = false;
 		$settings = $this->getSettings($settings);
 
-		$this->generateFromHtml($html, $settings['path']);
+		$this->generateFromHtml($html, $settings->path);
 
 		if ($settings['inline'])
 		{
-			return $this->displayInline($settings['path'], $settings);
+			return $this->displayInline($settings);
 		}
 
+
+		// @todo -> handle delete files?
+		// We need create a local volume to display the pdf with a url for download
+		#Craft::dd(FileHelper::normalizePath($settings->path));
+		#FileHelper::copyDirectory($settings->path, $this->getSnapshotPath());
+		#$settings->path = $this->getSnapshotPath().$settings->filename;
+
+
 		// download link
-		return $settings['path'];
+		return $settings->path;
 	}
 
 	/**

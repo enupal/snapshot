@@ -133,32 +133,31 @@ abstract class BaseSnappy extends Component
 	/**
 	 * By default will generate a filename with a proper extension
 	 *
-	 * @param array $settings
+	 * @param SnappySettings $settings
 	 * @param bool $isPdf
 	*/
-	public function getSettings($settings, $isPdf = true)
+	public function getSettings(SnappySettings $settings, $isPdf = true): SnappySettings
 	{
-		$defaultSettings = $this->getDefaultSettings();
 		$extension = $isPdf ? '.pdf' : '.png';
 		$isValidFileName = false;
 
-		if (isset($settings['cliOptions']))
+		if ($settings->cliOptions)
 		{
-			$this->options = $settings['cliOptions'];
+			$this->options = $settings->cliOptions;
 		}
 
-		if(isset($settings['filename']))
+		if($settings->filename)
 		{
-			$isValidFileName = $this->validateFileName($settings['filename'], $isPdf);
+			$isValidFileName = $this->validateFileName($settings->filename, $isPdf);
 		}
 
 		if(!$isValidFileName)
 		{
-			$settings['filename'] = $defaultSettings['filename'].$extension;
+			$settings->filename = $this->getRandomStr().$extension;
 		}
 
 		// @todo - support volumes
-		$path = Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.'enupalsnapshot'.DIRECTORY_SEPARATOR.$settings['filename'];
+		$path = Craft::$app->path->getStoragePath().DIRECTORY_SEPARATOR.'enupalsnapshot'.DIRECTORY_SEPARATOR.$settings->filename;
 
 		// let's delete any duplicate filename
 		if (file_exists($path))
@@ -166,20 +165,7 @@ abstract class BaseSnappy extends Component
 			unlink($path);
 		}
 
-		$settings['path'] = $path;
-
-		if (!isset($settings['inline']))
-		{
-			$settings['inline'] = $defaultSettings['inline'];
-		}
-
-		// Public download link
-		if (!$settings['inline'])
-		{
-			// @todo -> handle delete files?
-			FileHelper::copyDirectory($this->getSnapshotPath(), $settings['path']);
-			$settings['path'] = $this->getSnapshotPath().$settings['filename'];
-		}
+		$settings->path = $path;
 
 		return $settings;
 	}
@@ -196,7 +182,7 @@ abstract class BaseSnappy extends Component
 		return $publicFolderPath;
 	}
 
-	public function displayInline($path, $settings)
+	public function displayInline(SnappySettings $settings)
 	{
 		Craft::$app->response->sendFile($path, $settings['filename'], ['inline'=>true]);
 	}

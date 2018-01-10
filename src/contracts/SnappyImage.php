@@ -36,7 +36,6 @@ class SnappyImage extends BaseSnappy
 	public function displayHtml($html, $settings = null)
 	{
 		$settings = $this->getSettings($settings);
-
 	}
 
 	/**

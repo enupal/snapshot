@@ -115,22 +115,6 @@ abstract class BaseSnappy extends Component
 	}
 
 	/**
-	 * By default let's display the output in the browser
-	 *
-	 * @return []
-	*/
-	public function getDefaultSettings()
-	{
-		return [
-			'cliOptions' => [],
-			// default filename without extension
-			'filename' => $this->getRandomStr(),
-			// true => display on browser else return download url
-			'inline' => true
-		];
-	}
-
-	/**
 	 * By default will generate a filename with a proper extension
 	 *
 	 * @param SnappySettings $settings

@@ -3,6 +3,7 @@
 namespace enupal\snapshot\contracts;
 
 use Craft;
+use craft\helpers\UrlHelper;
 use Knp\Snappy\GeneratorInterface;
 use craft\base\Component;
 use craft\helpers\FileHelper;
@@ -141,7 +142,7 @@ abstract class BaseSnappy extends Component
 		}
 
 		// @todo - support volumes
-		$path = Craft::$app->path->getStoragePath().DIRECTORY_SEPARATOR.'enupalsnapshot'.DIRECTORY_SEPARATOR.$settings->filename;
+		$path = $this->getSnapshotPath().DIRECTORY_SEPARATOR.$settings->filename;
 
 		// let's delete any duplicate filename
 		if (file_exists($path))
@@ -166,9 +167,17 @@ abstract class BaseSnappy extends Component
 		return $publicFolderPath;
 	}
 
+	public function getPublicUrl($filename)
+	{
+		// Get the public path url for download
+		$file = "enupalsnapshot/".$filename;
+
+		return UrlHelper::url($file);
+	}
+
 	public function displayInline(SnappySettings $settings)
 	{
-		Craft::$app->response->sendFile($path, $settings['filename'], ['inline'=>true]);
+		Craft::$app->response->sendFile($settings-$path, $settings->filename, ['inline'=>true]);
 	}
 
 	public function validateFileName($fileName, $isPdf)

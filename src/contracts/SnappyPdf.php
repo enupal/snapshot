@@ -4,7 +4,7 @@ namespace enupal\snapshot\contracts;
 
 use Craft;
 use Knp\Snappy\GeneratorInterface;
-use Knp\Snappy\Pdf as SnappyPdf;
+use Knp\Snappy\Pdf;
 use craft\helpers\FileHelper;
 
 /**
@@ -27,7 +27,7 @@ class SnappyPdf extends BaseSnappy
 	 */
 	protected function getGenerator(): GeneratorInterface
 	{
-		return new SnappyPdf($this->binary, $this->options);
+		return new Pdf($this->binary, $this->options);
 	}
 
 	/**
@@ -55,9 +55,8 @@ class SnappyPdf extends BaseSnappy
 		#FileHelper::copyDirectory($settings->path, $this->getSnapshotPath());
 		#$settings->path = $this->getSnapshotPath().$settings->filename;
 
-
 		// download link
-		return $settings->path;
+		return $this->getPublicUrl($settings->filename);
 	}
 
 	/**

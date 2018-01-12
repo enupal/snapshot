@@ -78,7 +78,7 @@ class Snapshot extends Plugin
 			function (Event $event) {
 				/** @var CraftVariable $variable */
 				$variable = $event->sender;
-				$variable->set('enupal-snapshot', SnapshotVariable::class);
+				$variable->set('enupalsnapshot', SnapshotVariable::class);
 			}
 		);
 
@@ -89,15 +89,6 @@ class Snapshot extends Plugin
 				if ($event->plugin === $this) {
 				}
 			}
-		);
-
-		Craft::info(
-			Craft::t(
-				'enupal-snapshot',
-				'{name} plugin loaded',
-				['name' => $this->name]
-			),
-			__METHOD__
 		);
 	}
 
@@ -123,5 +114,31 @@ class Snapshot extends Plugin
 				'settings' => $this->getSettings()
 			]
 		);
+	}
+
+	/**
+	 * @param string $message
+	 * @param array  $params
+	 *
+	 * @return string
+	 */
+	public static function t($message, array $params = [])
+	{
+		return Craft::t('enupal-snapshot', $message, $params);
+	}
+
+	public static function log($message, $type = 'info')
+	{
+		Craft::$type(self::t($message), __METHOD__);
+	}
+
+	public static function info($message)
+	{
+		Craft::info(self::t($message), __METHOD__);
+	}
+
+	public static function error($message)
+	{
+		Craft::error(self::t($message), __METHOD__);
 	}
 }

@@ -13,6 +13,7 @@ namespace enupal\snapshot\variables;
 use enupal\snapshot\Snapshot;
 
 use Craft;
+use yii\web\Response;
 
 /**
  * @author    Enupal
@@ -25,15 +26,18 @@ class SnapshotVariable
 	// =========================================================================
 
 	/**
-	 * @param null $optional
-	 * @return string
+	 * @param string $html
+	 * @param array $settings
+	 *
+	 * @return string|Response
 	 */
-	public function exampleVariable($optional = null)
+	public function displayHtml($html, $settings = null)
 	{
-		$result = "And away we go to the Twig template...";
-		if ($optional) {
-			$result = "I'm feeling optional today...";
+		if (isset($settings['asImage']) && $settings['asImage'])
+		{
+			return Snapshot::$app->image->displayHtml($html, $settings);
 		}
-		return $result;
+
+		return Snapshot::$app->pdf->displayHtml($html, $settings);
 	}
 }

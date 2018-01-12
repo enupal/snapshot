@@ -7,6 +7,7 @@ use craft\helpers\UrlHelper;
 use Knp\Snappy\GeneratorInterface;
 use craft\base\Component;
 use craft\helpers\FileHelper;
+use yii\web\Response;
 
 /**
  * Base class for generator components.
@@ -98,10 +99,13 @@ abstract class BaseSnappy extends Component
 	 * For PHP 7, random_int is a PHP core function
 	 * For PHP 5.x, depends on https://github.com/paragonie/random_compat
 	 *
-	 * @param int $length      How many characters do we want?
+	 * @param int    $length   How many characters do we want?
 	 * @param string $keyspace A string of all possible characters
 	 *                         to select from
+	 *
 	 * @return string
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	public function getRandomStr($length = 10, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
 	{
@@ -175,9 +179,10 @@ abstract class BaseSnappy extends Component
 		return UrlHelper::url($file);
 	}
 
-	public function displayInline(SnappySettings $settings)
+	public function displayInline(SnappySettings $settings): Response
 	{
-		Craft::$app->response->sendFile($settings-$path, $settings->filename, ['inline'=>true]);
+		Craft::$app->response->sendFile($settings->path, $settings->filename, ['inline'=>true]);
+		exit();
 	}
 
 	public function validateFileName($fileName, $isPdf)

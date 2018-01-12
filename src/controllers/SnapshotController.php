@@ -53,9 +53,9 @@ class SnapshotController extends Controller
 		return Craft::$app->response->sendFile($file, 'oli.pdf', ['inline'=>true]);
 		*/
 
-		$url = Snapshot::$app->pdf->displayHtml("<html><h1>Hello world</h1></html>");
+		return Snapshot::$app->pdf->displayHtml("<html><h1>Hello world</h1></html>");
 
-		echo '<a href="'.$url.'" download>Download</a>';
+		#echo '<a href="'.$url.'" download>Download</a>';
 	}
 
 	/**

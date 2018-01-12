@@ -3,9 +3,9 @@
 namespace enupal\snapshot\contracts;
 
 use Craft;
+use enupal\snapshot\Snapshot;
 use Knp\Snappy\GeneratorInterface;
 use Knp\Snappy\Pdf;
-use craft\helpers\FileHelper;
 
 /**
  * PDF generator component.
@@ -32,31 +32,35 @@ class SnappyPdf extends BaseSnappy
 
 	/**
 	 * @param string $html
-	 * @param array $settings display inline | url
-	**/
+	 * @param array  $settings display inline | url
+	 *
+	 * @return string
+	 */
 	public function displayHtml($html, $settings = null)
 	{
-		$settings = new SnappySettings($settings);
-
-		$settings->inline = false;
-		$settings = $this->getSettings($settings);
-
-		$this->generateFromHtml($html, $settings->path);
+		$settingsModel = new SnappySettings();
+		$settingsModel->setAttributes($settings, false);
+		$settingsModel = $this->getSettings($settingsModel);
 
 		if ($settings['inline'])
 		{
-			return $this->displayInline($settings);
+			$this->generateFromHtml($html, $settingsModel->path);
+
+			header('Content-Type: application/pdf');
+			header('Content-Disposition: inline; filename="'.$settingsModel->filename.'"');
+
+			if (file_exists($settingsModel->path))
+			{
+				echo file_get_contents($settingsModel->path);
+				exit();
+			}
+
+			return Snapshot::t("Unable to display PDF file on browser");
 		}
 
-
-		// @todo -> handle delete files?
-		// We need create a local volume to display the pdf with a url for download
-		#Craft::dd(FileHelper::normalizePath($settings->path));
-		#FileHelper::copyDirectory($settings->path, $this->getSnapshotPath());
-		#$settings->path = $this->getSnapshotPath().$settings->filename;
-
+		$this->generateFromHtml($html, $settingsModel->path);
 		// download link
-		return $this->getPublicUrl($settings->filename);
+		return $this->getPublicUrl($settingsModel->filename);
 	}
 
 	/**

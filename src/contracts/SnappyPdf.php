@@ -3,6 +3,7 @@
 namespace enupal\snapshot\contracts;
 
 use Craft;
+use craft\helpers\UrlHelper;
 use craft\web\Response;
 use enupal\snapshot\Snapshot;
 use Knp\Snappy\GeneratorInterface;
@@ -28,7 +29,10 @@ class SnappyPdf extends BaseSnappy
 	 */
 	protected function getGenerator(): GeneratorInterface
 	{
-		return new Pdf($this->binary, $this->options);
+		$pdf = new Pdf($this->binary, $this->options);
+		//  @todo pass lib settings
+		$pdf->setOption('load-error-handling', 'ignore');
+		return $pdf;
 	}
 
 	/**
@@ -40,11 +44,9 @@ class SnappyPdf extends BaseSnappy
 	 */
 	public function displayHtml($html, $settings = null)
 	{
-		$settingsModel = new SnappySettings();
-		$settingsModel->setAttributes($settings, false);
-		$settingsModel = $this->getSettings($settingsModel);
+		$settingsModel = $this->populateSettings($settings);
 
-		$response = $this->_generateFromHtml($html, $settingsModel);
+		$response = $this->_generatePdf($html, $settingsModel);
 		// download link
 		return $response;
 	}
@@ -69,24 +71,58 @@ class SnappyPdf extends BaseSnappy
 	}
 
 	/**
-	 * @param string $url
-	 * @param array $settings display inline | url
+	 * Display a pdf given a url
+	 * @param string|array $url
+	 * @param array $settings display inline | url | etc
 	**/
 	public function displayUrl($url, $settings = null)
 	{
+		$urls = [];
 
+		if (is_array($url))
+		{
+			foreach ($url as $item)
+			{
+				if (is_string($item))
+				{
+					$urls[] = UrlHelper::url($item);
+				}
+			}
+		}
+		else
+		{
+			if (is_string($url))
+			{
+				$urls[] = UrlHelper::url($url);
+			}
+		}
+
+		$settingsModel = $this->populateSettings($settings);
+
+		$response = $this->_generatePdf($urls, $settingsModel, false);
+
+		return $response;
 	}
+
 	/**
 	 * Generate pdf from html
-	 * @param string $html
+	 * @param string $source Html or Urls
 	 * @param SnappySettings $settingsModel
 	 * @return string|Response
 	*/
-	private function _generateFromHtml($html, SnappySettings $settingsModel)
+	private function _generatePdf($source, SnappySettings $settingsModel, $sourceIsHtml = true)
 	{
 		try
 		{
-			$this->generateFromHtml($html, $settingsModel->path);
+			if ($sourceIsHtml)
+			{
+				$this->generateFromHtml($source, $settingsModel->path);
+			}
+			else
+			{
+				// From URL
+				$this->generate($source, $settingsModel->path);
+			}
 
 			if (!file_exists($settingsModel->path))
 			{
@@ -96,18 +132,27 @@ class SnappyPdf extends BaseSnappy
 			// Display inline
 			if ($settingsModel->inline)
 			{
-				header('Content-Type: application/pdf');
-				header('Content-Disposition: inline; filename="'.$settingsModel->filename.'"');
-
-				echo file_get_contents($settingsModel->path);
-				exit();
+				$this->_displayInline($settingsModel);
 			}
-		} catch (Exception $e)
+		} catch (\RuntimeException $e)
 		{
-			Snapshot::error(Snapshot::t("Something went wrong when creating PDF: ".$e->getMessage()));
-			return Snapshot::t("Something went wrong when creating PDF, please check your logs");
+			Snapshot::error(Snapshot::t("Something went wrong when creating the PDF file: ".$e->getMessage()));
+			return Snapshot::t("Something went wrong when creating the PDF file, please check your logs");
 		}
 		// return download link
 		return $this->getPublicUrl($settingsModel->filename);
+	}
+
+	/**
+	 * @param SnappySettings $settingsModel
+	 * @return void
+	*/
+	private function _displayInline($settingsModel)
+	{
+		header('Content-Type: application/pdf');
+		header('Content-Disposition: inline; filename="'.$settingsModel->filename.'"');
+
+		echo file_get_contents($settingsModel->path);
+		exit();
 	}
 }

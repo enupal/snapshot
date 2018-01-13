@@ -56,4 +56,20 @@ class SnapshotVariable
 
 		return Snapshot::$app->pdf->displayTemplate($template, $settings);
 	}
+
+	/**
+	 * @param string $url
+	 * @param array $settings
+	 *
+	 * @return string|Response
+	 */
+	public function displayUrl($url, $settings = null)
+	{
+		if (isset($settings['asImage']) && $settings['asImage'])
+		{
+			return Snapshot::$app->image->displayUrl($url, $settings);
+		}
+
+		return Snapshot::$app->pdf->displayUrl($url, $settings);
+	}
 }

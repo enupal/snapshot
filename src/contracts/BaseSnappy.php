@@ -211,4 +211,18 @@ abstract class BaseSnappy extends Component
 
 		return false;
 	}
+
+	/**
+	 * Returns SnappySettings model
+	 * @param array $settings
+	 * @return SnappySettings
+	 */
+	public function populateSettings($settings): SnappySettings
+	{
+		$settingsModel = new SnappySettings();
+		$settingsModel->setAttributes($settings, false);
+		$settingsModel = $this->getSettings($settingsModel);
+
+		return $settingsModel;
+	}
 }

@@ -40,4 +40,20 @@ class SnapshotVariable
 
 		return Snapshot::$app->pdf->displayHtml($html, $settings);
 	}
+
+	/**
+	 * @param string $template
+	 * @param array $settings
+	 *
+	 * @return string|Response
+	 */
+	public function displayTemplate($template, $settings = null)
+	{
+		if (isset($settings['asImage']) && $settings['asImage'])
+		{
+			return Snapshot::$app->image->displayHtml($template, $settings);
+		}
+
+		return Snapshot::$app->pdf->displayTemplate($template, $settings);
+	}
 }

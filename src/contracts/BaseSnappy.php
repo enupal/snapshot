@@ -204,12 +204,9 @@ abstract class BaseSnappy extends Component
 			}
 		}
 		// we have a pdf
-		else
+		if($ext == 'pdf')
 		{
-			if($ext == 'pdf')
-			{
-				return true;
-			}
+			return true;
 		}
 
 		return false;

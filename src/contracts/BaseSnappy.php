@@ -1,4 +1,12 @@
 <?php
+/**
+ * Snapshot plugin for Craft CMS 3.x
+ *
+ * Snapshot or PDF generation from a url or a html page.
+ *
+ * @link      https://enupal.com
+ * @copyright Copyright (c) 2018 Enupal
+ */
 
 namespace enupal\snapshot\contracts;
 
@@ -8,6 +16,7 @@ use Knp\Snappy\GeneratorInterface;
 use craft\base\Component;
 use craft\helpers\FileHelper;
 use yii\web\Response;
+use enupal\snapshot\enums\SnapshotDefault;
 
 /**
  * Base class for generator components.
@@ -79,7 +88,7 @@ abstract class BaseSnappy extends Component
 		$generator    = $this->getGenerator();
 		$generator->setTemporaryFolder($this->resolveTempdir());
 
-		return call_user_func_array(array($generator, $name), $parameters);
+		return call_user_func_array([$generator, $name], $parameters);
 	}
 
 	/**
@@ -89,7 +98,7 @@ abstract class BaseSnappy extends Component
 	 */
 	protected function resolveTempdir()
 	{
-		return $this->tempdir ?? Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.'enupalsnapshottemp';
+		return $this->tempdir ?? Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.SnapshotDefault::TEMP_DIR;
 	}
 
 	/**
@@ -165,7 +174,7 @@ abstract class BaseSnappy extends Component
 		$debugTrace = debug_backtrace();
 		$initialCalledFile = count($debugTrace) ? $debugTrace[count($debugTrace) - 1]['file'] : __FILE__;
 		$publicFolderPath = dirname($initialCalledFile);
-		$publicFolderPath = $publicFolderPath.DIRECTORY_SEPARATOR."enupalsnapshot";
+		$publicFolderPath = $publicFolderPath.DIRECTORY_SEPARATOR.SnapshotDefault::PUBLIC_DIR;
 		$publicFolderPath = FileHelper::normalizePath($publicFolderPath);
 
 		return $publicFolderPath;
@@ -174,15 +183,9 @@ abstract class BaseSnappy extends Component
 	public function getPublicUrl($filename)
 	{
 		// Get the public path url for download
-		$file = "enupalsnapshot/".$filename;
+		$file = SnapshotDefault::PUBLIC_DIR.'/'.$filename;
 
 		return UrlHelper::url($file);
-	}
-
-	public function displayInline(SnappySettings $settings): Response
-	{
-		Craft::$app->response->sendFile($settings->path, $settings->filename, ['inline'=>true]);
-		exit();
 	}
 
 	public function validateFileName($fileName, $isPdf)
@@ -196,17 +199,18 @@ abstract class BaseSnappy extends Component
 
 		$ext = pathinfo($fileName, PATHINFO_EXTENSION);
 
+		// we have a pdf
+		if($isPdf && $ext == 'pdf')
+		{
+			return true;
+		}
+
 		if(!$isPdf)
 		{
 			if(in_array($ext, $supportedImages))
 			{
 				return true;
 			}
-		}
-		// we have a pdf
-		if($ext == 'pdf')
-		{
-			return true;
 		}
 
 		return false;
@@ -217,11 +221,11 @@ abstract class BaseSnappy extends Component
 	 * @param array $settings
 	 * @return SnappySettings
 	 */
-	public function populateSettings($settings): SnappySettings
+	public function populateSettings($settings, $isPdf = true): SnappySettings
 	{
 		$settingsModel = new SnappySettings();
 		$settingsModel->setAttributes($settings, false);
-		$settingsModel = $this->getSettings($settingsModel);
+		$settingsModel = $this->getSettings($settingsModel, $isPdf);
 
 		return $settingsModel;
 	}

@@ -51,7 +51,7 @@ class SnapshotVariable
 	{
 		if (isset($settings['asImage']) && $settings['asImage'])
 		{
-			return Snapshot::$app->image->displayHtml($template, $settings);
+			return Snapshot::$app->image->displayTemplate($template, $settings);
 		}
 
 		return Snapshot::$app->pdf->displayTemplate($template, $settings);

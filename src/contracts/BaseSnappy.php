@@ -151,7 +151,17 @@ abstract class BaseSnappy extends Component
 
 		if(!$isValidFileName)
 		{
-			$settings->filename = $this->getRandomStr().$extension;
+			$info      = Craft::$app->getInfo();
+			$systemName = FileHelper::sanitizeFilename(
+				$info->name,
+				[
+					'asciiOnly' => true,
+					'separator' => '_'
+				]
+			);
+			$siteName  = $systemName ?? 'backup';
+
+			$settings->filename = $siteName.'_'.$this->getRandomStr().$extension;
 		}
 
 		// @todo - support volumes
@@ -186,6 +196,36 @@ abstract class BaseSnappy extends Component
 		$file = SnapshotDefault::PUBLIC_DIR.'/'.$filename;
 
 		return UrlHelper::url($file);
+	}
+
+	/**
+	 * @param $url
+	 *
+	 * @return array
+	 */
+	public function sanitizeUrl($url)
+	{
+		$urls = [];
+
+		if (is_array($url))
+		{
+			foreach ($url as $item)
+			{
+				if (is_string($item))
+				{
+					$urls[] = UrlHelper::url($item);
+				}
+			}
+		}
+		else
+		{
+			if (is_string($url))
+			{
+				$urls[] = UrlHelper::url($url);
+			}
+		}
+
+		return $urls;
 	}
 
 	public function validateFileName($fileName, $isPdf)

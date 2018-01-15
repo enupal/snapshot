@@ -11,7 +11,6 @@
 namespace enupal\snapshot\contracts;
 
 use Craft;
-use craft\helpers\UrlHelper;
 use craft\web\Response;
 use enupal\snapshot\Snapshot;
 use Knp\Snappy\GeneratorInterface;
@@ -85,25 +84,7 @@ class SnappyPdf extends BaseSnappy
 	**/
 	public function displayUrl($url, $settings = null)
 	{
-		$urls = [];
-
-		if (is_array($url))
-		{
-			foreach ($url as $item)
-			{
-				if (is_string($item))
-				{
-					$urls[] = UrlHelper::url($item);
-				}
-			}
-		}
-		else
-		{
-			if (is_string($url))
-			{
-				$urls[] = UrlHelper::url($url);
-			}
-		}
+		$urls = $this->sanitizeUrl($url);
 
 		$settingsModel = $this->populateSettings($settings);
 

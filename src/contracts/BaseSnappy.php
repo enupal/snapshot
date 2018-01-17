@@ -15,7 +15,6 @@ use craft\helpers\UrlHelper;
 use Knp\Snappy\GeneratorInterface;
 use craft\base\Component;
 use craft\helpers\FileHelper;
-use yii\web\Response;
 use enupal\snapshot\enums\SnapshotDefault;
 
 /**
@@ -86,6 +85,7 @@ abstract class BaseSnappy extends Component
 
 		$this->binary = $this->getBinary();
 		$generator    = $this->getGenerator();
+		// default command options
 		$generator->setTemporaryFolder($this->resolveTempdir());
 
 		return call_user_func_array([$generator, $name], $parameters);
@@ -139,10 +139,7 @@ abstract class BaseSnappy extends Component
 		$extension = $isPdf ? '.pdf' : '.png';
 		$isValidFileName = false;
 
-		if ($settings->cliOptions)
-		{
-			$this->options = $settings->cliOptions;
-		}
+		$this->options = $this->getDefaultOptions($settings->cliOptions);
 
 		if($settings->filename)
 		{
@@ -268,5 +265,38 @@ abstract class BaseSnappy extends Component
 		$settingsModel = $this->getSettings($settingsModel, $isPdf);
 
 		return $settingsModel;
+	}
+
+	public function getDefaultOptions($options = [])
+	{
+		$templatesPath = Craft::$app->getView()->getTemplatesPath();
+		Craft::$app->getView()->setTemplatesPath($templatesPath);
+
+		$defaultOptions = [
+			'dpi' =>  '96',
+			'load-error-handling' => 'ignore',
+		  'zoom' => '1.33',
+			'disable-smart-shrinking' => null
+		];
+
+		if (isset($options['header-html']))
+		{
+			$variables = $settings['variables'] ?? [];
+
+			$html = Craft::$app->getView()->renderTemplate($options['header-html'], $variables);
+
+			$options['header-html'] = $html;
+		}
+
+		if (isset($options['footer-html']))
+		{
+			$variables = $settings['variables'] ?? [];
+
+			$html = Craft::$app->getView()->renderTemplate($options['footer-html'], $variables);
+
+			$options['footer-html'] = $html;
+		}
+
+		return array_merge($defaultOptions, $options);
 	}
 }

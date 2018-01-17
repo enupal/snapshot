@@ -37,8 +37,6 @@ class SnappyPdf extends BaseSnappy
 	protected function getGenerator(): GeneratorInterface
 	{
 		$pdf = new Pdf($this->binary, $this->options);
-		//  @todo pass lib settings
-		$pdf->setOption('load-error-handling', 'ignore');
 		return $pdf;
 	}
 

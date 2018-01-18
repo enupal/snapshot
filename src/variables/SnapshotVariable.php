@@ -12,7 +12,6 @@ namespace enupal\snapshot\variables;
 
 use enupal\snapshot\Snapshot;
 
-use Craft;
 use yii\web\Response;
 
 /**

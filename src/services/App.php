@@ -12,7 +12,6 @@ namespace enupal\snapshot\services;
 
 use Craft;
 use craft\base\Component;
-use enupal\backup\Backup;
 
 class App extends Component
 {

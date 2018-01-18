@@ -10,7 +10,6 @@
 
 namespace enupal\snapshot;
 
-use enupal\snapshot\services\Snapshot as SnapshotService;
 use enupal\snapshot\variables\SnapshotVariable;
 use enupal\snapshot\models\Settings;
 
@@ -18,9 +17,7 @@ use Craft;
 use craft\base\Plugin;
 use craft\services\Plugins;
 use craft\events\PluginEvent;
-use craft\web\UrlManager;
 use craft\web\twig\variables\CraftVariable;
-use craft\events\RegisterUrlRulesEvent;
 
 use yii\base\Event;
 
@@ -31,7 +28,7 @@ use yii\base\Event;
  * @package   Snapshot
  * @since     1.0.0
  *
- * @property  SnapshotService $snapshot
+ * @property  Snapshot $snapshot
  */
 class Snapshot extends Plugin
 {
@@ -53,24 +50,6 @@ class Snapshot extends Plugin
 	{
 		parent::init();
 		self::$app = $this->get('app');
-
-		Event::on(
-			UrlManager::class,
-			UrlManager::EVENT_REGISTER_SITE_URL_RULES,
-			function (RegisterUrlRulesEvent $event) {
-				$event->rules['siteActionTrigger1'] = 'enupal-snapshot/settings';
-				$event->rules['siteActionTrigger2'] = 'enupal-snapshot/snapshot';
-			}
-		);
-
-		Event::on(
-			UrlManager::class,
-			UrlManager::EVENT_REGISTER_CP_URL_RULES,
-			function (RegisterUrlRulesEvent $event) {
-				$event->rules['cpActionTrigger1'] = 'enupal-snapshot/settings/do-something';
-				$event->rules['cpActionTrigger2'] = 'enupal-snapshot/snapshot/do-something';
-			}
-		);
 
 		Event::on(
 			CraftVariable::class,

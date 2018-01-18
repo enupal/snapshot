@@ -12,7 +12,6 @@ namespace enupal\snapshot\controllers;
 
 use enupal\snapshot\Snapshot;
 
-use Craft;
 use craft\web\Controller;
 
 /**

@@ -85,6 +85,15 @@ class SnappyImage extends BaseSnappy
 		return $response;
 	}
 
+	public function getDefaultOptions($options = [])
+	{
+		$defaultOptions = [
+			'zoom' => '1.33'
+		];
+
+		return array_merge($defaultOptions, $options);
+	}
+
 	/**
 	 * Generate image from html or urls
 	 * @param string $source Html or Urls

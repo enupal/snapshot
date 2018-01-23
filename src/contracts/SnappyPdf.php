@@ -91,6 +91,39 @@ class SnappyPdf extends BaseSnappy
 		return $response;
 	}
 
+	public function getDefaultOptions($options = [])
+	{
+		$templatesPath = Craft::$app->getView()->getTemplatesPath();
+		Craft::$app->getView()->setTemplatesPath($templatesPath);
+
+		$defaultOptions = [
+			'dpi' =>  '96',
+			'load-error-handling' => 'ignore',
+			'zoom' => '1.33',
+			'disable-smart-shrinking' => null
+		];
+
+		if (isset($options['header-html']))
+		{
+			$variables = $settings['variables'] ?? [];
+
+			$html = Craft::$app->getView()->renderTemplate($options['header-html'], $variables);
+
+			$options['header-html'] = $html;
+		}
+
+		if (isset($options['footer-html']))
+		{
+			$variables = $settings['variables'] ?? [];
+
+			$html = Craft::$app->getView()->renderTemplate($options['footer-html'], $variables);
+
+			$options['footer-html'] = $html;
+		}
+
+		return array_merge($defaultOptions, $options);
+	}
+
 	/**
 	 * Generate pdf from html
 	 * @param string $source Html or Urls

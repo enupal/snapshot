@@ -68,6 +68,9 @@ abstract class BaseSnappy extends Component
 	**/
 	abstract public function displayTemplate($template, $settings = null);
 
+	/**
+	 * @param array $options
+	 **/
 	abstract public function getDefaultOptions($options = []);
 
 	/**

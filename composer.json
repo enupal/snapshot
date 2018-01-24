@@ -8,7 +8,9 @@
 				"cms",
 				"craftcms",
 				"craft-plugin",
-				"snapshot"
+				"snapshot",
+				"pdf",
+				"image"
 		],
 		"support": {
 				"docs": "https://github.com/enupal/snapshot/blob/master/README.md",

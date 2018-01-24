@@ -60,15 +60,6 @@ class Snapshot extends Plugin
 				$variable->set('enupalsnapshot', SnapshotVariable::class);
 			}
 		);
-
-		Event::on(
-			Plugins::class,
-			Plugins::EVENT_AFTER_INSTALL_PLUGIN,
-			function (PluginEvent $event) {
-				if ($event->plugin === $this) {
-				}
-			}
-		);
 	}
 
 	// Protected Methods

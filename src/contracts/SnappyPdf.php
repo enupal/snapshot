@@ -26,7 +26,7 @@ class SnappyPdf extends BaseSnappy
 		$plugin   = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');
 		$settings = $plugin->getSettings();
 
-		$this->binary = $settings->pdfBinPath;
+		$this->binary = '"'.$settings->pdfBinPath.'"';
 
 		return $this->binary ?? null;
 	}

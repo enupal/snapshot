@@ -16,12 +16,16 @@
 {% import "_includes/forms" as forms %}
 
 {% do view.registerAssetBundle("enupal\\snapshot\\assetbundles\\snapshot\\SnapshotAsset") %}
-<p>{{"You will have to download `wkhtmltosnapshot` 0.12.x in order to use Enupal PDF."|t('enupal-snapshot')}}</p>
+<p>{{"Please download and install"}} <a href="https://wkhtmltopdf.org/">wkhtmltopdf</a> {{ "0.12.x in order to use Enupal Snapshot."|t('enupal-snapshot')}}
+	<a href="https://wkhtmltopdf.org/downloads.html"> download here</a>
+</p>
 {{ forms.textField({
 	label: 'Absolute Binary Path of wkhtmltopdf lib',
 	instructions: '/usr/local/bin/wkhtmltopdf',
 	id: 'pdfBinPath',
 	name: 'pdfBinPath',
+	required: true,
+	errors: settings.getErrors('pdfBinPath'),
 	value: settings['pdfBinPath']})
 }}
 
@@ -30,5 +34,7 @@
 	instructions: '/usr/local/bin/wkhtmltoimage',
 	id: 'imageBinPath',
 	name: 'imageBinPath',
+    errors: settings.getErrors('imageBinPath'),
+    required: true,
 	value: settings['imageBinPath']})
 }}

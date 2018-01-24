@@ -19,5 +19,11 @@ use enupal\snapshot\contracts\SnappyImage;
  */
 class Image extends SnappyImage
 {
-
+	/**
+	 * @return string
+	 */
+	public function test()
+	{
+		return $this->displayHtml("<h1>Hello world</h1>");
+	}
 }

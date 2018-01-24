@@ -10,10 +10,9 @@
 
 namespace enupal\snapshot\models;
 
-use enupal\snapshot\Snapshot;
-
-use Craft;
 use craft\base\Model;
+use enupal\snapshot\validators\ImageLibValidator;
+use enupal\snapshot\validators\PdfLibValidator;
 
 /**
  * @author    Enupal
@@ -44,7 +43,9 @@ class Settings extends Model
 	public function rules()
 	{
 		return [
-			[['pdfBinPath', 'imageBinPath'], 'required']
+			[['pdfBinPath', 'imageBinPath'], 'required'],
+			[['pdfBinPath'], PdfLibValidator::class],
+			[['imageBinPath'], ImageLibValidator::class]
 		];
 	}
 }

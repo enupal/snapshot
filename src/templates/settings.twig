@@ -1,34 +1,40 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
- * Pdf plugin for Craft CMS 3.x
+ * Snapshot plugin for Craft CMS 3.x
  *
- * Pdf Settings.twig
+ * Snapshot Settings.twig
  *
  * @author    Enupal
  * @copyright Copyright (c) 2018 Enupal
  * @link      https://enupal.com
- * @package   Pdf
+ * @package   Snapshot
  * @since     1.0.0
  */
 #}
 
 {% import "_includes/forms" as forms %}
 
-{% do view.registerAssetBundle("enupal\\pdf\\assetbundles\\pdf\\PdfAsset") %}
-<p>{{"You will have to download `wkhtmltopdf` 0.12.x in order to use Enupal PDF."|t('enupal-pdf')}}</p>
+{% do view.registerAssetBundle("enupal\\snapshot\\assetbundles\\snapshot\\SnapshotAsset") %}
+<p>{{"Please download and install"}} <a href="https://wkhtmltopdf.org/">wkhtmltopdf</a> {{ "0.12.x in order to use Enupal Snapshot."|t('enupal-snapshot')}}
+	<a href="https://wkhtmltopdf.org/downloads.html"> download here</a>
+</p>
 {{ forms.textField({
 	label: 'Absolute Binary Path of wkhtmltopdf lib',
 	instructions: '/usr/local/bin/wkhtmltopdf',
 	id: 'pdfBinPath',
 	name: 'pdfBinPath',
+	required: true,
+	errors: settings.getErrors('pdfBinPath'),
 	value: settings['pdfBinPath']})
 }}
 
 {{ forms.textField({
 	label: 'Absolute Binary Path of wkhtmltoimage lib',
 	instructions: '/usr/local/bin/wkhtmltoimage',
-	id: 'pdfBinPath',
-	name: 'pdfBinPath',
-	value: settings['pdfBinPath']})
+	id: 'imageBinPath',
+	name: 'imageBinPath',
+    errors: settings.getErrors('imageBinPath'),
+    required: true,
+	value: settings['imageBinPath']})
 }}

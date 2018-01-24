@@ -1,11 +1,11 @@
 /**
- * Pdf plugin for Craft CMS
+ * Snapshot plugin for Craft CMS
  *
- * Pdf CSS
+ * Snapshot JS
  *
  * @author    Enupal
  * @copyright Copyright (c) 2018 Enupal
  * @link      https://enupal.com
- * @package   Pdf
+ * @package   Snapshot
  * @since     1.0.0
  */

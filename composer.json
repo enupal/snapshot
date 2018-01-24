@@ -1,6 +1,6 @@
 {
-		"name": "enupal/pdf",
-		"description": "Snapshot or PDF generation from a url or a html page.",
+		"name": "enupal/snapshot",
+		"description": "Snapshot from a url or a html page to generate a PDF or Image easily.",
 		"type": "craft-plugin",
 		"version": "1.0.0",
 		"keywords": [
@@ -8,11 +8,11 @@
 				"cms",
 				"craftcms",
 				"craft-plugin",
-				"pdf"
+				"snapshot"
 		],
 		"support": {
-				"docs": "https://github.com/enupal/pdf/blob/master/README.md",
-				"issues": "https://github.com/enupal/pdf/issues"
+				"docs": "https://github.com/enupal/snapshot/blob/master/README.md",
+				"issues": "https://github.com/enupal/snapshot/issues"
 		},
 		"license": "MIT",
 		"authors": [
@@ -27,19 +27,19 @@
 		},
 		"autoload": {
 				"psr-4": {
-					"enupal\\pdf\\": "src/"
+					"enupal\\snapshot\\": "src/"
 				}
 		},
 		"extra": {
-				"name": "Pdf",
-				"handle": "pdf",
+				"name": "Enupal Snapshot",
+				"handle": "enupal-snapshot",
 				"schemaVersion": "1.0.0",
 				"hasCpSettings": true,
 				"hasCpSection": false,
-				"changelogUrl": "https://raw.githubusercontent.com/enupal/pdf/master/CHANGELOG.md",
+				"changelogUrl": "https://raw.githubusercontent.com/enupal/snapshot/master/CHANGELOG.md",
 				"components": {
-					"app": "enupal\\pdf\\services\\App"
+					"app": "enupal\\snapshot\\services\\App"
 				},
-				"class": "enupal\\pdf\\Pdf"
+				"class": "enupal\\snapshot\\Snapshot"
 		}
 }

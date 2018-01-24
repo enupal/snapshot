@@ -1,6 +1,6 @@
 <?php
 /**
- * Pdf plugin for Craft CMS 3.x
+ * Snapshot plugin for Craft CMS 3.x
  *
  * Snapshot or PDF generation from a url or a html page.
  *
@@ -8,16 +8,15 @@
  * @copyright Copyright (c) 2018 Enupal
  */
 
-namespace enupal\pdf\models;
+namespace enupal\snapshot\models;
 
-use enupal\pdf\Pdf;
-
-use Craft;
 use craft\base\Model;
+use enupal\snapshot\validators\ImageLibValidator;
+use enupal\snapshot\validators\PdfLibValidator;
 
 /**
  * @author    Enupal
- * @package   Pdf
+ * @package   Snapshot
  * @since     1.0.0
  */
 class Settings extends Model
@@ -35,7 +34,6 @@ class Settings extends Model
 	 */
 	public $imageBinPath = '';
 
-
 	// Public Methods
 	// =========================================================================
 
@@ -45,7 +43,9 @@ class Settings extends Model
 	public function rules()
 	{
 		return [
-			[['pdfBinPath', 'imageBinPath'], 'required']
+			[['pdfBinPath', 'imageBinPath'], 'required'],
+			[['pdfBinPath'], PdfLibValidator::class],
+			[['imageBinPath'], ImageLibValidator::class]
 		];
 	}
 }

@@ -1,43 +1,110 @@
-# Pdf plugin for Craft CMS 3.x
+<p align="center">
+	<a href="https://enupal.com/en/craft-plugins/enupal-snapshot/docs/" target="_blank">
+	<img width="312" height="312" src="https://enupal.com/assets/docs/snapshot-icon.svg" alt="Enupal Snapshot"></a>
+</p>
 
-Snapshot or PDF generation from a url or a html page.
+# Enupal Snapshot Plugin for Craft CMS 3.x
 
-![Screenshot](resources/img/plugin-logo.png)
+Snapshot from a url or a html page to generate a PDF or Image easily. It uses the excellent webkit-based wkhtmltopdf and wkhtmltoimage available on OSX, linux, windows.
 
-## Requirements
+## Features
 
-This plugin requires Craft CMS 3.0.0-beta.23 or later.
+### Display the Pdf in the browser from Html
+```twig
+{%  set settings = {
+        filename: 'my-first.pdf'
+    }
+%}
 
-## Installation
+{{ craft.enupalsnapshot.displayHtml("<h1>Hola mundo</h1>", settings) }}
+```
 
-To install the plugin, follow these instructions.
+### Display the Pdf in the browser from template
 
-1. Open your terminal and go to your Craft project:
+```twig
+{%  set settings = {
+        filename: 'my-first.pdf',
+        variables: {
+            foo: 'barr'
+        }
+    }
+%}
 
-        cd /path/to/project
+{{ craft.enupalsnapshot.displayTemplate("pdf/examples/summary", settings) }}
+```
 
-2. Then tell Composer to load the plugin:
+### Download url of the Pdf from Html
 
-        composer require enupal/pdf
+```twig
+{%  set settings = {
+        filename: 'my-first.pdf',
+        inline: false,
+    }
+%}
 
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Pdf.
+{{ craft.enupalsnapshot.displayHtml("<h1>Hola mundo</h1>", settings) }}
+```
 
-## Pdf Overview
+### Download url as an Image
 
--Insert text here-
+```twig
+{%  set settings = {
+        filename: 'my-first-image.png',
+        asImage: true,
+    }
+%}
 
-## Configuring Pdf
+{{ craft.enupalsnapshot.displayHtml("<h1>Hola mundo</h1>", settings) }}
+```
 
--Insert text here-
+### Display the Pdf in the browser from Urls
 
-## Using Pdf
+```twig
+{% set urls = {0: 'https://www.google.com', 1:'http://enupal.com/en'} %}
 
--Insert text here-
+{%  set settings = {
+        filename: 'my-first.pdf'
+    }
+%}
 
-## Pdf Roadmap
+{{ craft.enupalsnapshot.displayUrl(urls, settings) }}
+```
 
-Some things to do, and ideas for potential features:
+### Add cliOptions
 
-* Release it
+All available options [here](https://wkhtmltopdf.org/usage/wkhtmltopdf.txt): 
 
-Brought to you by [Enupal](https://enupal.com)
+```twig
+{%  set settings = {
+        filename: 'my-first.pdf',
+        cliOptions: {
+            'cover': '<h1>Hello world from enupal snapshot</h1>',
+            'header-font-size': '36',
+            'header-html': 'pdfexamples/header.html',
+            'footer-html': 'pdfexamples/header.html',
+            'footer-right': null
+        }
+    }
+%}
+
+{{ craft.enupalsnapshot.displayHtml("<h1>Hola mundo</h1>", settings) }}
+```
+
+## Documentation
+
+https://enupal.com/en/craft-plugins/enupal-snapshot/docs/
+
+## Enupal Snapshot Support
+
+Via Email:
+
+Send us a note at: info@enupal.com
+
+------------------------------------------------------------
+
+Brought to you by [enupal](https://enupal.com/en)
+
+<p align="center">
+	<a href="https://enupal.com/en" target="_blank">
+	<img width="169" height="35" src="https://enupal.com/assets/docs/enupal-logo.png" alt="Enupal Snapshot"></a>
+</p>

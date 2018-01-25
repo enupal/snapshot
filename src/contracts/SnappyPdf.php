@@ -134,6 +134,12 @@ class SnappyPdf extends BaseSnappy
 	{
 		try
 		{
+			// Display inline in browser
+			if ($settingsModel->inline)
+			{
+				$this->_displayInline($source, $settingsModel, $sourceIsHtml);
+			}
+			//Return a download link
 			if ($sourceIsHtml)
 			{
 				$this->generateFromHtml($source, $settingsModel->path);
@@ -149,11 +155,6 @@ class SnappyPdf extends BaseSnappy
 				Snapshot::error(Snapshot::t("Unable to find the PDF file: ".$settingsModel->path));
 				return Snapshot::t("Unable to display PDF file on browser");
 			}
-			// Display inline
-			if ($settingsModel->inline)
-			{
-				$this->_displayInline($settingsModel);
-			}
 		} catch (\RuntimeException $e)
 		{
 			Snapshot::error(Snapshot::t("Something went wrong when creating the PDF file: ".$e->getMessage()));
@@ -164,15 +165,24 @@ class SnappyPdf extends BaseSnappy
 	}
 
 	/**
+	 * @param string         $source html or urls
 	 * @param SnappySettings $settingsModel
+	 * @param boolean $isHtml
+	 *
 	 * @return void
 	*/
-	private function _displayInline($settingsModel)
+	private function _displayInline($source, $settingsModel, $isHtml = true)
 	{
-		header('Content-Type: application/pdf');
 		header('Content-Disposition: inline; filename="'.$settingsModel->filename.'"');
+		header('Content-Type: application/pdf');
 
-		echo file_get_contents($settingsModel->path);
+		if ($isHtml) {
+			echo $this->getOutputFromHtml($source);
+		}
+		else {
+			echo $this->getOutput($source);
+		}
+
 		exit();
 	}
 }

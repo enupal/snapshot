@@ -1,6 +1,6 @@
 {
 		"name": "enupal/snapshot",
-		"description": "PDF or Image generation from an HTML page or URL easily.",
+		"description": "PDF or Image generation from a Url or HTML page",
 		"type": "craft-plugin",
 		"version": "1.0.0",
 		"keywords": [
@@ -13,14 +13,14 @@
 				"image"
 		],
 		"support": {
-				"docs": "https://github.com/enupal/snapshot/blob/master/README.md",
-				"issues": "https://github.com/enupal/snapshot/issues"
+			"email": "info@enupal.com",
+			"issues": "https://github.com/enupal/snapshot/issues",
+			"docs": "https://enupal.com/en/craft-plugins/enupal-snapshot/docs"
 		},
-		"license": "MIT",
 		"authors": [
 				{
 						"name": "Enupal",
-						"homepage": "https://enupal.com"
+						"homepage": "https://enupal.com/en"
 				}
 		],
 		"require": {

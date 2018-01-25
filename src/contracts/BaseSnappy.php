@@ -161,7 +161,7 @@ abstract class BaseSnappy extends Component
 					'separator' => '_'
 				]
 			);
-			$siteName  = $systemName ?? 'backup';
+			$siteName  = $systemName ?? 'enupal_snapshot';
 
 			$settings->filename = $siteName.'_'.$this->getRandomStr().$extension;
 		}

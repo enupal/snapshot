@@ -5,11 +5,10 @@
 
 # Enupal Snapshot Plugin for Craft CMS 3.x
 
-Snapshot from a url or a html page to generate a PDF or Image easily. It uses the excellent webkit-based wkhtmltopdf and wkhtmltoimage available on OSX, linux, windows.
-
+PDF or Image generation from a URL or HTML page easily. It uses the excellent webkit-based wkhtmltopdf and wkhtmltoimage available on OSX, Linux & windows.
 ## Features
 
-### Display the Pdf in the browser from Html
+### Display the Pdf in browser from Html
 ```twig
 {%  set settings = {
         filename: 'my-first.pdf'
@@ -19,7 +18,7 @@ Snapshot from a url or a html page to generate a PDF or Image easily. It uses th
 {{ craft.enupalsnapshot.displayHtml("<h1>Hola mundo</h1>", settings) }}
 ```
 
-### Display the Pdf in the browser from template
+### Display the Pdf in browser from template
 
 ```twig
 {%  set settings = {
@@ -57,7 +56,7 @@ Snapshot from a url or a html page to generate a PDF or Image easily. It uses th
 {{ craft.enupalsnapshot.displayHtml("<h1>Hola mundo</h1>", settings) }}
 ```
 
-### Display the Pdf in the browser from Urls
+### Display the Pdf in browser from Urls
 
 ```twig
 {% set urls = {0: 'https://www.google.com', 1:'http://enupal.com/en'} %}

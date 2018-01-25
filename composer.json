@@ -1,6 +1,6 @@
 {
 		"name": "enupal/snapshot",
-		"description": "Snapshot from a url or a html page to generate a PDF or Image easily.",
+		"description": "PDF or Image generation from an HTML page or URL easily.",
 		"type": "craft-plugin",
 		"version": "1.0.0",
 		"keywords": [
@@ -8,7 +8,9 @@
 				"cms",
 				"craftcms",
 				"craft-plugin",
-				"snapshot"
+				"snapshot",
+				"pdf",
+				"image"
 		],
 		"support": {
 				"docs": "https://github.com/enupal/snapshot/blob/master/README.md",

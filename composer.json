@@ -1,6 +1,6 @@
 {
 		"name": "enupal/snapshot",
-		"description": "PDF or Image generation from a URL or HTML page easily.",
+		"description": "PDF or Image generation from an HTML page or URL easily.",
 		"type": "craft-plugin",
 		"version": "1.0.0",
 		"keywords": [

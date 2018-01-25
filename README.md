@@ -15,7 +15,7 @@ PDF or Image generation from a URL or HTML page easily. It uses the excellent we
     }
 %}
 
-{{ craft.enupalsnapshot.displayHtml("<h1>Hola mundo</h1>", settings) }}
+{{ craft.enupalsnapshot.displayHtml("<h1>Hello world!</h1>", settings) }}
 ```
 
 ### Display the Pdf in browser from template
@@ -41,7 +41,7 @@ PDF or Image generation from a URL or HTML page easily. It uses the excellent we
     }
 %}
 
-{{ craft.enupalsnapshot.displayHtml("<h1>Hola mundo</h1>", settings) }}
+{{ craft.enupalsnapshot.displayHtml("<h1>Hello world!</h1>", settings) }}
 ```
 
 ### Download url as an Image
@@ -53,7 +53,7 @@ PDF or Image generation from a URL or HTML page easily. It uses the excellent we
     }
 %}
 
-{{ craft.enupalsnapshot.displayHtml("<h1>Hola mundo</h1>", settings) }}
+{{ craft.enupalsnapshot.displayHtml("<h1>Hello world!</h1>", settings) }}
 ```
 
 ### Display the Pdf in browser from Urls
@@ -77,16 +77,16 @@ All available options [here](https://wkhtmltopdf.org/usage/wkhtmltopdf.txt):
 {%  set settings = {
         filename: 'my-first.pdf',
         cliOptions: {
-            'cover': '<h1>Hello world from enupal snapshot</h1>',
+            'cover': '<h1>Hello world from Enupal Snapshot</h1>',
             'header-font-size': '36',
-            'header-html': 'pdfexamples/header.html',
-            'footer-html': 'pdfexamples/header.html',
-            'footer-right': null
+            'footer-right': null,
+            'orientation': 'Portrait',
+            'page-size': 'A4'
         }
     }
 %}
 
-{{ craft.enupalsnapshot.displayHtml("<h1>Hola mundo</h1>", settings) }}
+{{ craft.enupalsnapshot.displayHtml("<h1>Hello world!</h1>", settings) }}
 ```
 
 ## Documentation

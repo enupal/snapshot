@@ -17,18 +17,17 @@ use Craft;
 
 class PdfLibValidator extends Validator
 {
-	public $skipOnEmpty = false;
+    public $skipOnEmpty = false;
 
-	/**
-	 * Wkhtmltopdf validation
-	 */
-	public function validateAttribute($object, $attribute)
-	{
-		$url = Snapshot::$app->pdf->test() ?? '';
+    /**
+     * Wkhtmltopdf validation
+     */
+    public function validateAttribute($object, $attribute)
+    {
+        $url = Snapshot::$app->pdf->test() ?? '';
 
-		if ($object->pdfBinPath && !UrlHelper::isFullUrl($url ))
-		{
-			$this->addError($object, $attribute, Snapshot::t('Wrong path'));
-		}
-	}
+        if ($object->pdfBinPath && !UrlHelper::isFullUrl($url)) {
+            $this->addError($object, $attribute, Snapshot::t('Wrong path'));
+        }
+    }
 }

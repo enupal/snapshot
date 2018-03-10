@@ -19,11 +19,11 @@ use enupal\snapshot\contracts\SnappyPdf;
  */
 class Pdf extends SnappyPdf
 {
-	/**
-	 * @return string
-	 */
-	public function test()
-	{
-		return $this->displayHtml("<h1>Hello world</h1>", ['inline'=>false]);
-	}
+    /**
+     * @return string
+     */
+    public function test()
+    {
+        return $this->displayHtml("<h1>Hello world</h1>", ['inline' => false]);
+    }
 }

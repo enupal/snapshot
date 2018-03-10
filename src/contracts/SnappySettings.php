@@ -17,11 +17,11 @@ use craft\base\Model;
  */
 class SnappySettings extends Model
 {
-	public $cliOptions = [];
+    public $cliOptions = [];
 
-	public $filename = '';
+    public $filename = '';
 
-	public $path = '';
+    public $path = '';
 
-	public $inline = true;
+    public $inline = true;
 }

@@ -22,48 +22,47 @@ use craft\web\Controller;
 class SnapshotController extends Controller
 {
 
-	// Protected Properties
-	// =========================================================================
+    // Protected Properties
+    // =========================================================================
 
-	/**
-	 * @var    bool|array Allows anonymous access to this controller's actions.
-	 *         The actions must be in 'kebab-case'
-	 * @access protected
-	 */
-	protected $allowAnonymous = ['index', 'do-something'];
+    /**
+     * @var    bool|array Allows anonymous access to this controller's actions.
+     *         The actions must be in 'kebab-case'
+     * @access protected
+     */
+    protected $allowAnonymous = ['index', 'do-something'];
 
-	// Public Methods
-	// =========================================================================
+    // Public Methods
+    // =========================================================================
 
-	/**
-	 * @return mixed
-	 */
-	public function actionIndex()
-	{
-		/*$file = Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.'snapshot'.DIRECTORY_SEPARATOR.'assassa.pdf';
+    /**
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        /*$file = Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.'snapshot'.DIRECTORY_SEPARATOR.'assassa.pdf';
 
-		if (file_exists($file))
-		{
-			unlink($file);
-		}
+        if (file_exists($file))
+        {
+            unlink($file);
+        }
 
-		Snapshot::$app->pdf->generate('http://example.com', $file);
+        Snapshot::$app->pdf->generate('http://example.com', $file);
 
-		return Craft::$app->response->sendFile($file, 'oli.pdf', ['inline'=>true]);
-		*/
+        return Craft::$app->response->sendFile($file, 'oli.pdf', ['inline'=>true]);
+        */
 
-		return Snapshot::$app->pdf->displayHtml("<html><h1>Hello world</h1></html>");
+        return Snapshot::$app->pdf->displayHtml("<html><h1>Hello world</h1></html>");
+        #echo '<a href="'.$url.'" download>Download</a>';
+    }
 
-		#echo '<a href="'.$url.'" download>Download</a>';
-	}
+    /**
+     * @return mixed
+     */
+    public function actionDoSomething()
+    {
+        $result = 'Welcome to the SnapshotController actionDoSomething() method';
 
-	/**
-	 * @return mixed
-	 */
-	public function actionDoSomething()
-	{
-		$result = 'Welcome to the SnapshotController actionDoSomething() method';
-
-		return $result;
-	}
+        return $result;
+    }
 }

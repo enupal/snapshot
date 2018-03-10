@@ -12,15 +12,17 @@ namespace enupal\snapshot\services;
 
 use Craft;
 use craft\base\Component;
+use enupal\snapshot\services\Pdf;
+use enupal\snapshot\services\Image;
 
 class App extends Component
 {
-	public $pdf;
-	public $image;
+    public $pdf;
+    public $image;
 
-	public function init()
-	{
-		$this->pdf = new Pdf();
-		$this->image = new Image();
-	}
+    public function init()
+    {
+        $this->pdf = new Pdf();
+        $this->image = new Image();
+    }
 }

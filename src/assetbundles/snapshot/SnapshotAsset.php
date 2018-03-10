@@ -21,28 +21,28 @@ use craft\web\assets\cp\CpAsset;
  */
 class SnapshotAsset extends AssetBundle
 {
-	// Public Methods
-	// =========================================================================
+    // Public Methods
+    // =========================================================================
 
-	/**
-	 * @inheritdoc
-	 */
-	public function init()
-	{
-		$this->sourcePath = "@enupal/snapshot/assetbundles/snapshot/dist";
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->sourcePath = "@enupal/snapshot/assetbundles/snapshot/dist";
 
-		$this->depends = [
-			CpAsset::class,
-		];
+        $this->depends = [
+            CpAsset::class,
+        ];
 
-		$this->js = [
-			'js/Snapshot.js',
-		];
+        $this->js = [
+            'js/Snapshot.js',
+        ];
 
-		$this->css = [
-			'css/Snapshot.css',
-		];
+        $this->css = [
+            'css/Snapshot.css',
+        ];
 
-		parent::init();
-	}
+        parent::init();
+    }
 }

@@ -64,7 +64,9 @@ class SnappyPdf extends BaseSnappy
      * @param array  $settings display inline | url
      *
      * @return string|Response
-     **/
+     * @throws \Twig_Error_Loader
+     * @throws \yii\base\Exception
+     */
     public function displayTemplate($template, $settings = null)
     {
         $templatesPath = Craft::$app->getView()->getTemplatesPath();
@@ -83,7 +85,10 @@ class SnappyPdf extends BaseSnappy
      *
      * @param string|array $url
      * @param array        $settings display inline | url | etc
-     **/
+     *                               *
+     *
+     * @return Response|string
+     */
     public function displayUrl($url, $settings = null)
     {
         $urls = $this->sanitizeUrl($url);
@@ -95,6 +100,13 @@ class SnappyPdf extends BaseSnappy
         return $response;
     }
 
+    /**
+     * @param array $options
+     *
+     * @return array
+     * @throws \Twig_Error_Loader
+     * @throws \yii\base\Exception
+     */
     public function getDefaultOptions($options = [])
     {
         $templatesPath = Craft::$app->getView()->getTemplatesPath();

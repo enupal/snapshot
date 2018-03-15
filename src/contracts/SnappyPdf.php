@@ -21,6 +21,9 @@ use Knp\Snappy\Pdf;
  */
 class SnappyPdf extends BaseSnappy
 {
+    /**
+     * @return null|string
+     */
     protected function getBinary()
     {
         $plugin = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');
@@ -32,7 +35,7 @@ class SnappyPdf extends BaseSnappy
     }
 
     /**
-     * @return SnappySnapshot
+     * @return GeneratorInterface
      */
     protected function getGenerator(): GeneratorInterface
     {
@@ -143,6 +146,8 @@ class SnappyPdf extends BaseSnappy
      *
      * @param string         $source Html or Urls
      * @param SnappySettings $settingsModel
+     *
+     * @param bool           $sourceIsHtml
      *
      * @return string|Response
      */

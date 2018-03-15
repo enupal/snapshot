@@ -32,83 +32,83 @@ use yii\base\Event;
  */
 class Snapshot extends Plugin
 {
-	// Static Properties
-	// =========================================================================
+    // Static Properties
+    // =========================================================================
 
-	/**
-	 * @var Snapshot
-	 */
-	public static $app;
+    /**
+     * @var Snapshot
+     */
+    public static $app;
 
-	// Public Methods
-	// =========================================================================
+    // Public Methods
+    // =========================================================================
 
-	/**
-	 * @inheritdoc
-	 */
-	public function init()
-	{
-		parent::init();
-		self::$app = $this->get('app');
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        self::$app = $this->get('app');
 
-		Event::on(
-			CraftVariable::class,
-			CraftVariable::EVENT_INIT,
-			function (Event $event) {
-				/** @var CraftVariable $variable */
-				$variable = $event->sender;
-				$variable->set('enupalsnapshot', SnapshotVariable::class);
-			}
-		);
-	}
+        Event::on(
+            CraftVariable::class,
+            CraftVariable::EVENT_INIT,
+            function(Event $event) {
+                /** @var CraftVariable $variable */
+                $variable = $event->sender;
+                $variable->set('enupalsnapshot', SnapshotVariable::class);
+            }
+        );
+    }
 
-	// Protected Methods
-	// =========================================================================
+    // Protected Methods
+    // =========================================================================
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function createSettingsModel()
-	{
-		return new Settings();
-	}
+    /**
+     * @inheritdoc
+     */
+    protected function createSettingsModel()
+    {
+        return new Settings();
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function settingsHtml(): string
-	{
-		return Craft::$app->view->renderTemplate(
-			'enupal-snapshot/settings',
-			[
-				'settings' => $this->getSettings()
-			]
-		);
-	}
+    /**
+     * @inheritdoc
+     */
+    protected function settingsHtml(): string
+    {
+        return Craft::$app->view->renderTemplate(
+            'enupal-snapshot/settings',
+            [
+                'settings' => $this->getSettings()
+            ]
+        );
+    }
 
-	/**
-	 * @param string $message
-	 * @param array  $params
-	 *
-	 * @return string
-	 */
-	public static function t($message, array $params = [])
-	{
-		return Craft::t('enupal-snapshot', $message, $params);
-	}
+    /**
+     * @param string $message
+     * @param array  $params
+     *
+     * @return string
+     */
+    public static function t($message, array $params = [])
+    {
+        return Craft::t('enupal-snapshot', $message, $params);
+    }
 
-	public static function log($message, $type = 'info')
-	{
-		Craft::$type(self::t($message), __METHOD__);
-	}
+    public static function log($message, $type = 'info')
+    {
+        Craft::$type(self::t($message), __METHOD__);
+    }
 
-	public static function info($message)
-	{
-		Craft::info(self::t($message), __METHOD__);
-	}
+    public static function info($message)
+    {
+        Craft::info(self::t($message), __METHOD__);
+    }
 
-	public static function error($message)
-	{
-		Craft::error(self::t($message), __METHOD__);
-	}
+    public static function error($message)
+    {
+        Craft::error(self::t($message), __METHOD__);
+    }
 }

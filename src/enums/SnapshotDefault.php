@@ -15,9 +15,9 @@ namespace enupal\snapshot\enums;
  */
 abstract class SnapshotDefault extends BaseEnum
 {
-	// Constants
-	// =========================================================================
+    // Constants
+    // =========================================================================
 
-	const TEMP_DIR = 'enupalsnapshottemp';
-	const PUBLIC_DIR  = 'enupalsnapshot';
+    const TEMP_DIR = 'enupalsnapshottemp';
+    const PUBLIC_DIR = 'enupalsnapshot';
 }

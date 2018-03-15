@@ -1,6 +1,6 @@
 <p align="center">
 	<a href="https://enupal.com/en/craft-plugins/enupal-snapshot/docs/" target="_blank">
-	<img width="312" height="312" src="https://enupal.com/assets/docs/snapshot-icon.svg" alt="Enupal Snapshot"></a>
+	<img width="212" height="212" src="https://enupal.com/assets/docs/snapshot-icon.svg" alt="Enupal Snapshot"></a>
 </p>
 
 # Enupal Snapshot Plugin for Craft CMS 3.x
@@ -41,7 +41,9 @@ PDF or Image generation from a URL or HTML page easily. It uses the excellent we
     }
 %}
 
-{{ craft.enupalsnapshot.displayHtml("<h1>Hello world!</h1>", settings) }}
+{% set url = craft.enupalsnapshot.displayHtml("<h1>Hello world!</h1>", settings) %}
+
+<a target="_blank" href="{{url}}"> Download Pdf</a>
 ```
 
 ### Download url as an Image
@@ -49,11 +51,14 @@ PDF or Image generation from a URL or HTML page easily. It uses the excellent we
 ```twig
 {%  set settings = {
         filename: 'my-first-image.png',
-        asImage: true,
+        asImage: true
     }
 %}
 
-{{ craft.enupalsnapshot.displayHtml("<h1>Hello world!</h1>", settings) }}
+{% set url = craft.enupalsnapshot.displayHtml("<h1>Hello world!</h1>", settings) %}
+
+<a target="_blank" href="{{url}}"> Download Image</a>
+
 ```
 
 ### Display the Pdf in browser from Urls

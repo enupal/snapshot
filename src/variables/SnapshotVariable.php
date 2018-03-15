@@ -21,54 +21,51 @@ use yii\web\Response;
  */
 class SnapshotVariable
 {
-	// Public Methods
-	// =========================================================================
+    // Public Methods
+    // =========================================================================
 
-	/**
-	 * @param string $html
-	 * @param array $settings
-	 *
-	 * @return string|Response
-	 */
-	public function displayHtml($html, $settings = null)
-	{
-		if (isset($settings['asImage']) && $settings['asImage'])
-		{
-			return Snapshot::$app->image->displayHtml($html, $settings);
-		}
+    /**
+     * @param string $html
+     * @param array  $settings
+     *
+     * @return string|Response
+     */
+    public function displayHtml($html, $settings = null)
+    {
+        if (isset($settings['asImage']) && $settings['asImage']) {
+            return Snapshot::$app->image->displayHtml($html, $settings);
+        }
 
-		return Snapshot::$app->pdf->displayHtml($html, $settings);
-	}
+        return Snapshot::$app->pdf->displayHtml($html, $settings);
+    }
 
-	/**
-	 * @param string $template
-	 * @param array $settings
-	 *
-	 * @return string|Response
-	 */
-	public function displayTemplate($template, $settings = null)
-	{
-		if (isset($settings['asImage']) && $settings['asImage'])
-		{
-			return Snapshot::$app->image->displayTemplate($template, $settings);
-		}
+    /**
+     * @param string $template
+     * @param array  $settings
+     *
+     * @return string|Response
+     */
+    public function displayTemplate($template, $settings = null)
+    {
+        if (isset($settings['asImage']) && $settings['asImage']) {
+            return Snapshot::$app->image->displayTemplate($template, $settings);
+        }
 
-		return Snapshot::$app->pdf->displayTemplate($template, $settings);
-	}
+        return Snapshot::$app->pdf->displayTemplate($template, $settings);
+    }
 
-	/**
-	 * @param string $url
-	 * @param array $settings
-	 *
-	 * @return string|Response
-	 */
-	public function displayUrl($url, $settings = null)
-	{
-		if (isset($settings['asImage']) && $settings['asImage'])
-		{
-			return Snapshot::$app->image->displayUrl($url, $settings);
-		}
+    /**
+     * @param string $url
+     * @param array  $settings
+     *
+     * @return string|Response
+     */
+    public function displayUrl($url, $settings = null)
+    {
+        if (isset($settings['asImage']) && $settings['asImage']) {
+            return Snapshot::$app->image->displayUrl($url, $settings);
+        }
 
-		return Snapshot::$app->pdf->displayUrl($url, $settings);
-	}
+        return Snapshot::$app->pdf->displayUrl($url, $settings);
+    }
 }

@@ -21,31 +21,31 @@ use enupal\snapshot\validators\PdfLibValidator;
  */
 class Settings extends Model
 {
-	// Public Properties
-	// =========================================================================
+    // Public Properties
+    // =========================================================================
 
-	/**
-	 * @var string
-	 */
-	public $pdfBinPath = '';
+    /**
+     * @var string
+     */
+    public $pdfBinPath = '';
 
-	/**
-	 * @var string
-	 */
-	public $imageBinPath = '';
+    /**
+     * @var string
+     */
+    public $imageBinPath = '';
 
-	// Public Methods
-	// =========================================================================
+    // Public Methods
+    // =========================================================================
 
-	/**
-	 * @inheritdoc
-	 */
-	public function rules()
-	{
-		return [
-			[['pdfBinPath', 'imageBinPath'], 'required'],
-			[['pdfBinPath'], PdfLibValidator::class],
-			[['imageBinPath'], ImageLibValidator::class]
-		];
-	}
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['pdfBinPath', 'imageBinPath'], 'required'],
+            [['pdfBinPath'], PdfLibValidator::class],
+            [['imageBinPath'], ImageLibValidator::class]
+        ];
+    }
 }

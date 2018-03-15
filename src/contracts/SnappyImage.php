@@ -20,111 +20,109 @@ use Craft;
  */
 class SnappyImage extends BaseSnappy
 {
-	protected function getBinary()
-	{
-		$plugin   = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');
-		$settings = $plugin->getSettings();
+    protected function getBinary()
+    {
+        $plugin = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');
+        $settings = $plugin->getSettings();
 
-		$this->binary = '"'.$settings->imageBinPath.'"';
+        $this->binary = '"'.$settings->imageBinPath.'"';
 
-		return $this->binary ?? null;
-	}
+        return $this->binary ?? null;
+    }
 
-	/**
-	 * @return SnayppyImage
-	 */
-	protected function getGenerator(): GeneratorInterface
-	{
-		return new Image($this->binary, $this->options);
-	}
+    /**
+     * @return SnayppyImage
+     */
+    protected function getGenerator(): GeneratorInterface
+    {
+        return new Image($this->binary, $this->options);
+    }
 
-	/**
-	 * @param string $html
-	 * @param array $settings display inline | url
-	**/
-	public function displayHtml($html, $settings = null)
-	{
-		$settingsModel = $this->populateSettings($settings, false);
+    /**
+     * @param string $html
+     * @param array  $settings display inline | url
+     **/
+    public function displayHtml($html, $settings = null)
+    {
+        $settingsModel = $this->populateSettings($settings, false);
 
-		$response = $this->_generateImage($html, $settingsModel);
-		// download link
-		return $response;
-	}
+        $response = $this->_generateImage($html, $settingsModel);
+        // download link
+        return $response;
+    }
 
-	/**
-	 * @param string $template
-	 * @param array  $settings display inline | url
-	 * @return string
-	 */
-	public function displayTemplate($template, $settings = null)
-	{
-		$templatesPath = Craft::$app->getView()->getTemplatesPath();
+    /**
+     * @param string $template
+     * @param array  $settings display inline | url
+     *
+     * @return string
+     */
+    public function displayTemplate($template, $settings = null)
+    {
+        $templatesPath = Craft::$app->getView()->getTemplatesPath();
 
-		Craft::$app->getView()->setTemplatesPath($templatesPath);
+        Craft::$app->getView()->setTemplatesPath($templatesPath);
 
-		$variables = $settings['variables'] ?? [];
+        $variables = $settings['variables'] ?? [];
 
-		$html = Craft::$app->getView()->renderTemplate($template, $variables);
+        $html = Craft::$app->getView()->renderTemplate($template, $variables);
 
-		return $this->displayHtml($html, $settings);
-	}
+        return $this->displayHtml($html, $settings);
+    }
 
-	/**
-	 * @param string $url
-	 * @param array  $settings display inline | url
-	 * @return string
-	 */
-	public function displayUrl($url, $settings = null)
-	{
-		$urls = $this->sanitizeUrl($url);
+    /**
+     * @param string $url
+     * @param array  $settings display inline | url
+     *
+     * @return string
+     */
+    public function displayUrl($url, $settings = null)
+    {
+        $urls = $this->sanitizeUrl($url);
 
-		$settingsModel = $this->populateSettings($settings, false);
+        $settingsModel = $this->populateSettings($settings, false);
 
-		$response = $this->_generateImage($urls, $settingsModel, false);
+        $response = $this->_generateImage($urls, $settingsModel, false);
 
-		return $response;
-	}
+        return $response;
+    }
 
-	public function getDefaultOptions($options = [])
-	{
-		$defaultOptions = [
-			'zoom' => '1.33'
-		];
+    public function getDefaultOptions($options = [])
+    {
+        $defaultOptions = [
+            'zoom' => '1.33'
+        ];
 
-		return array_merge($defaultOptions, $options);
-	}
+        return array_merge($defaultOptions, $options);
+    }
 
-	/**
-	 * Generate image from html or urls
-	 * @param string $source Html or Urls
-	 * @param SnappySettings $settingsModel
-	 * @return string|Response
-	 */
-	private function _generateImage($source, SnappySettings $settingsModel, $sourceIsHtml = true)
-	{
-		try
-		{
-			if ($sourceIsHtml)
-			{
-				$this->generateFromHtml($source, $settingsModel->path);
-			}
-			else
-			{
-				// From URL
-				$this->generate($source, $settingsModel->path);
-			}
+    /**
+     * Generate image from html or urls
+     *
+     * @param string         $source Html or Urls
+     * @param SnappySettings $settingsModel
+     *
+     * @return string|Response
+     */
+    private function _generateImage($source, SnappySettings $settingsModel, $sourceIsHtml = true)
+    {
+        try {
+            if ($sourceIsHtml) {
+                $this->generateFromHtml($source, $settingsModel->path);
+            } else {
+                // From URL
+                $this->generate($source, $settingsModel->path);
+            }
 
-			if (!file_exists($settingsModel->path))
-			{
-				Snapshot::error(Snapshot::t("Unable to find the Image file: ".$settingsModel->path));
-				return Snapshot::t("Unable to display Image file on browser");
-			}
-		} catch (\RuntimeException $e)
-		{
-			Snapshot::error(Snapshot::t("Something went wrong when creating the Image file: ".$e->getMessage()));
-			return Snapshot::t("Something went wrong when creating the Image file, please check your logs");
-		}
-		// return download link always for images
-		return $this->getPublicUrl($settingsModel->filename);
-	}
+            if (!file_exists($settingsModel->path)) {
+                Snapshot::error(Snapshot::t("Unable to find the Image file: ".$settingsModel->path));
+                return Snapshot::t("Unable to display Image file on browser");
+            }
+        } catch (\RuntimeException $e) {
+            Snapshot::error(Snapshot::t("Something went wrong when creating the Image file: ".$e->getMessage()));
+            return Snapshot::t("Something went wrong when creating the Image file, please check your logs");
+        }
+        // return download link always for images
+        return $this->getPublicUrl($settingsModel->filename);
+    }
 }

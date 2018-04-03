@@ -15,25 +15,24 @@
 
 {% import "_includes/forms" as forms %}
 
-<p>{{"Please download and install"}} <a href="https://wkhtmltopdf.org/">wkhtmltopdf</a> {{ "0.12.x in order to use Enupal Snapshot."|t('enupal-snapshot')}}
-	<a href="https://wkhtmltopdf.org/downloads.html"> download here</a>
-</p>
+{{ forms.field({
+    label: "Please download and install <a href='https://wkhtmltopdf.org/'>wkhtmltopdf</a> 0.12.x in order to use Enupal Snapshot.  free <a href='https://wkhtmltopdf.org/downloads.html'>download here</a>."|t('enupal-snapshot'),
+    instructions: "Eupal Snapshot <a href='https://enupal.com/en/craft-plugins/enupal-snapshot/docs/getting-started/installation-setup'>documentation</a>"|t('enupal-snapshot'),
+}, null) }}
 {{ forms.textField({
-	label: 'Absolute Binary Path of wkhtmltopdf lib',
-	instructions: '/usr/local/bin/wkhtmltopdf',
-	id: 'pdfBinPath',
-	name: 'pdfBinPath',
-	required: true,
-	errors: settings.getErrors('pdfBinPath'),
-	value: settings['pdfBinPath']})
-}}
+    label: 'Absolute Binary Path of wkhtmltopdf lib',
+    instructions: '/usr/local/bin/wkhtmltopdf',
+    id: 'pdfBinPath',
+    name: 'pdfBinPath',
+    required: true,
+    errors: settings.getErrors('pdfBinPath'),
+    value: settings['pdfBinPath']}) }}
 
 {{ forms.textField({
-	label: 'Absolute Binary Path of wkhtmltoimage lib',
-	instructions: '/usr/local/bin/wkhtmltoimage',
-	id: 'imageBinPath',
-	name: 'imageBinPath',
+    label: 'Absolute Binary Path of wkhtmltoimage lib',
+    instructions: '/usr/local/bin/wkhtmltoimage',
+    id: 'imageBinPath',
+    name: 'imageBinPath',
     errors: settings.getErrors('imageBinPath'),
     required: true,
-	value: settings['imageBinPath']})
-}}
+    value: settings['imageBinPath']}) }}

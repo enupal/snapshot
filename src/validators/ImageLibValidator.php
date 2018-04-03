@@ -21,6 +21,9 @@ class ImageLibValidator extends Validator
 
     /**
      * Wkhtmltopdf validation
+     *
+     * @param $object
+     * @param $attribute
      */
     public function validateAttribute($object, $attribute)
     {

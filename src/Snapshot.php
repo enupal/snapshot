@@ -97,16 +97,26 @@ class Snapshot extends Plugin
         return Craft::t('enupal-snapshot', $message, $params);
     }
 
+    /**
+     * @param        $message
+     * @param string $type
+     */
     public static function log($message, $type = 'info')
     {
         Craft::$type(self::t($message), __METHOD__);
     }
 
+    /**
+     * @param $message
+     */
     public static function info($message)
     {
         Craft::info(self::t($message), __METHOD__);
     }
 
+    /**
+     * @param $message
+     */
     public static function error($message)
     {
         Craft::error(self::t($message), __METHOD__);

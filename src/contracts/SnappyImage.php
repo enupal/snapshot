@@ -31,7 +31,7 @@ class SnappyImage extends BaseSnappy
     }
 
     /**
-     * @return SnayppyImage
+     * @return GeneratorInterface
      */
     protected function getGenerator(): GeneratorInterface
     {
@@ -41,7 +41,12 @@ class SnappyImage extends BaseSnappy
     /**
      * @param string $html
      * @param array  $settings display inline | url
-     **/
+     *                         *
+     *
+     * @return Response|string
+     * @throws \Exception
+     * @throws \yii\web\ServerErrorHttpException
+     */
     public function displayHtml($html, $settings = null)
     {
         $settingsModel = $this->populateSettings($settings, false);
@@ -56,6 +61,8 @@ class SnappyImage extends BaseSnappy
      * @param array  $settings display inline | url
      *
      * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \yii\base\Exception
      */
     public function displayTemplate($template, $settings = null)
     {
@@ -75,6 +82,8 @@ class SnappyImage extends BaseSnappy
      * @param array  $settings display inline | url
      *
      * @return string
+     * @throws \Exception
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function displayUrl($url, $settings = null)
     {
@@ -101,6 +110,8 @@ class SnappyImage extends BaseSnappy
      *
      * @param string         $source Html or Urls
      * @param SnappySettings $settingsModel
+     *
+     * @param bool           $sourceIsHtml
      *
      * @return string|Response
      */

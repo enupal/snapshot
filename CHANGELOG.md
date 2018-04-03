@@ -1,5 +1,9 @@
 # Enupal Snapshot Changelog
 
+## 1.0.3 - 2018.04.03
+### Fixed
+- Fixed bug on settings template
+
 ## 1.0.2 - 2018.03.15
 ### Improved
 - Improved coding-styles

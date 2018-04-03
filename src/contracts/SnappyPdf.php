@@ -50,6 +50,8 @@ class SnappyPdf extends BaseSnappy
      * @param array  $settings display inline | url
      *
      * @return string
+     * @throws \Exception
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function displayHtml($html, $settings = null)
     {
@@ -91,6 +93,8 @@ class SnappyPdf extends BaseSnappy
      *                               *
      *
      * @return Response|string
+     * @throws \Exception
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function displayUrl($url, $settings = null)
     {

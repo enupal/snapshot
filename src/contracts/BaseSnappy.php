@@ -139,6 +139,8 @@ abstract class BaseSnappy extends Component
      * @param bool           $isPdf
      *
      * @return SnappySettings
+     * @throws \Exception
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function getSettings(SnappySettings $settings, $isPdf = true): SnappySettings
     {
@@ -252,7 +254,11 @@ abstract class BaseSnappy extends Component
      *
      * @param array $settings
      *
+     * @param bool  $isPdf
+     *
      * @return SnappySettings
+     * @throws \Exception
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function populateSettings($settings, $isPdf = true): SnappySettings
     {

@@ -1,47 +1,47 @@
 {
-		"name": "enupal/snapshot",
-		"description": "PDF or Image generation from a Url or HTML page",
-		"type": "craft-plugin",
-		"version": "1.0.3",
-		"keywords": [
-				"craft",
-				"cms",
-				"craftcms",
-				"craft-plugin",
-				"snapshot",
-				"pdf",
-				"image"
-		],
-		"support": {
-			"email": "info@enupal.com",
-			"issues": "https://github.com/enupal/snapshot/issues",
-			"docs": "https://enupal.com/en/craft-plugins/enupal-snapshot/docs"
-		},
-		"authors": [
-				{
-						"name": "Enupal",
-						"homepage": "https://enupal.com/en"
-				}
-		],
-		"require": {
-				"craftcms/cms": "^3.0.0-RC1",
-				"knplabs/knp-snappy": "^1.0"
-		},
-		"autoload": {
-				"psr-4": {
-					"enupal\\snapshot\\": "src/"
-				}
-		},
-		"extra": {
-				"name": "Enupal Snapshot",
-				"handle": "enupal-snapshot",
-				"schemaVersion": "1.0.0",
-				"hasCpSettings": true,
-				"hasCpSection": false,
-				"changelogUrl": "https://raw.githubusercontent.com/enupal/snapshot/master/CHANGELOG.md",
-				"components": {
-					"app": "enupal\\snapshot\\services\\App"
-				},
-				"class": "enupal\\snapshot\\Snapshot"
-		}
+  "name": "enupal/snapshot",
+  "description": "PDF or Image generation from a Url or HTML page",
+  "type": "craft-plugin",
+  "version": "1.0.4",
+  "keywords": [
+    "craft",
+    "cms",
+    "craftcms",
+    "craft-plugin",
+    "snapshot",
+    "pdf",
+    "image"
+  ],
+  "support": {
+    "email": "info@enupal.com",
+    "issues": "https://github.com/enupal/snapshot/issues",
+    "docs": "https://enupal.com/en/craft-plugins/enupal-snapshot/docs"
+  },
+  "authors": [
+    {
+      "name": "Enupal",
+      "homepage": "https://enupal.com/en"
+    }
+  ],
+  "require": {
+    "craftcms/cms": "^3.0.0-RC1",
+    "knplabs/knp-snappy": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "enupal\\snapshot\\": "src/"
+    }
+  },
+  "extra": {
+    "name": "Enupal Snapshot",
+    "handle": "enupal-snapshot",
+    "schemaVersion": "1.0.0",
+    "hasCpSettings": true,
+    "hasCpSection": false,
+    "changelogUrl": "https://raw.githubusercontent.com/enupal/snapshot/master/CHANGELOG.md",
+    "components": {
+      "app": "enupal\\snapshot\\services\\App"
+    },
+    "class": "enupal\\snapshot\\Snapshot"
+  }
 }

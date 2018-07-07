@@ -20,6 +20,9 @@ use Craft;
  */
 class SnappyImage extends BaseSnappy
 {
+    /**
+     * @return null|String
+     */
     protected function getBinary()
     {
         $plugin = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');

@@ -17,7 +17,14 @@ use enupal\snapshot\services\Image;
 
 class App extends Component
 {
+    /**
+     * @var Pdf
+     */
     public $pdf;
+
+    /**
+     * @var Image
+     */
     public $image;
 
     public function init()

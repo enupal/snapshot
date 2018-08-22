@@ -67,7 +67,7 @@ PDF or Image generation from a URL or HTML page easily. It uses the excellent we
 ### Display the Pdf in browser from Urls
 
 ```twig
-{% set urls = {0: 'https://www.google.com', 1:'http://enupal.com/en'} %}
+{% set urls = {0: 'https://www.google.com', 1:'http://enupal.com'} %}
 
 {%  set settings = {
         filename: 'my-first.pdf'

@@ -1,5 +1,9 @@
 # Enupal Snapshot Changelog
 
+## 1.0.6 - 2018.08.29
+### Added
+- Added timeout setting to override default 60 seconds
+
 ## 1.0.5 - 2018.08.22
 ### Improved
 - Improved docs link in settings

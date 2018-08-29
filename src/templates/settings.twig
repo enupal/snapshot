@@ -35,3 +35,11 @@
     errors: settings.getErrors('imageBinPath'),
     required: true,
     value: settings['imageBinPath']}) }}
+
+{{ forms.textField({
+    label: 'Timeout',
+    instructions: 'Timeout in seconds. Default is 60',
+    id: 'timeout',
+    name: 'timeout',
+    errors: settings.getErrors('timeout'),
+    value: settings['timeout']}) }}

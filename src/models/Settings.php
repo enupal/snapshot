@@ -34,6 +34,11 @@ class Settings extends Model
      */
     public $imageBinPath = '';
 
+    /**
+     * @var string
+     */
+    public $timeout;
+
     // Public Methods
     // =========================================================================
 
@@ -45,7 +50,8 @@ class Settings extends Model
         return [
             [['pdfBinPath', 'imageBinPath'], 'required'],
             [['pdfBinPath'], PdfLibValidator::class],
-            [['imageBinPath'], ImageLibValidator::class]
+            [['imageBinPath'], ImageLibValidator::class],
+            [['timeout'], 'integer']
         ];
     }
 }

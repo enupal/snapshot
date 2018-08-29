@@ -12,6 +12,7 @@ namespace enupal\snapshot\contracts;
 
 use Craft;
 use craft\helpers\UrlHelper;
+use enupal\snapshot\models\Settings;
 use Knp\Snappy\GeneratorInterface;
 use craft\base\Component;
 use craft\helpers\FileHelper;
@@ -41,6 +42,11 @@ abstract class BaseSnappy extends Component
      * @var string Path to directory used for temporary files
      */
     public $tempdir;
+
+    /**
+     * @var Settings
+     */
+    public $pluginSettings;
 
     /**
      * Returns generator instance.

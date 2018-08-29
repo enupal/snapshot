@@ -27,9 +27,9 @@ class SnappyPdf extends BaseSnappy
     protected function getBinary()
     {
         $plugin = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');
-        $settings = $plugin->getSettings();
+        $this->pluginSettings = $plugin->getSettings();
 
-        $this->binary = '"'.$settings->pdfBinPath.'"';
+        $this->binary = '"'.$this->pluginSettings->pdfBinPath.'"';
 
         return $this->binary ?? null;
     }
@@ -40,6 +40,9 @@ class SnappyPdf extends BaseSnappy
     protected function getGenerator(): GeneratorInterface
     {
         $pdf = new Pdf($this->binary, $this->options);
+        if ($this->pluginSettings->timeout){
+            $pdf->setTimeout($this->pluginSettings->timeout);
+        }
         return $pdf;
     }
 

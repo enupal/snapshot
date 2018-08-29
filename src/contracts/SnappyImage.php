@@ -26,9 +26,9 @@ class SnappyImage extends BaseSnappy
     protected function getBinary()
     {
         $plugin = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');
-        $settings = $plugin->getSettings();
+        $this->pluginSettings = $plugin->getSettings();
 
-        $this->binary = '"'.$settings->imageBinPath.'"';
+        $this->binary = '"'.$this->pluginSettings->imageBinPath.'"';
 
         return $this->binary ?? null;
     }
@@ -38,7 +38,11 @@ class SnappyImage extends BaseSnappy
      */
     protected function getGenerator(): GeneratorInterface
     {
-        return new Image($this->binary, $this->options);
+        $image = new Image($this->binary, $this->options);
+        if ($this->pluginSettings->timeout){
+            $image->setTimeout($this->pluginSettings->timeout);
+        }
+        return $image;
     }
 
     /**

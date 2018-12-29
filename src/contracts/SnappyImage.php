@@ -25,8 +25,7 @@ class SnappyImage extends BaseSnappy
      */
     protected function getBinary()
     {
-        $plugin = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');
-        $this->pluginSettings = $plugin->getSettings();
+        $this->pluginSettings = Snapshot::$app->settings->getSettings();
 
         $this->binary = '"'.$this->pluginSettings->imageBinPath.'"';
 

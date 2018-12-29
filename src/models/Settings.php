@@ -39,8 +39,10 @@ class Settings extends Model
      */
     public $timeout;
 
-    // Public Methods
-    // =========================================================================
+    /**
+     * @var int
+     */
+    public $volumeId;
 
     /**
      * @inheritdoc

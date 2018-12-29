@@ -20,11 +20,11 @@
   "authors": [
     {
       "name": "Enupal",
-      "homepage": "https://enupal.com/en"
+      "homepage": "https://enupal.com"
     }
   ],
   "require": {
-    "craftcms/cms": "^3.0.0-RC1",
+    "craftcms/cms": "^3.0.0",
     "knplabs/knp-snappy": "^1.0"
   },
   "autoload": {
@@ -35,9 +35,6 @@
   "extra": {
     "name": "Enupal Snapshot",
     "handle": "enupal-snapshot",
-    "schemaVersion": "1.0.0",
-    "hasCpSettings": true,
-    "hasCpSection": false,
     "changelogUrl": "https://raw.githubusercontent.com/enupal/snapshot/master/CHANGELOG.md",
     "components": {
       "app": "enupal\\snapshot\\services\\App"

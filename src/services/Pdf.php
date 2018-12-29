@@ -12,11 +12,6 @@ namespace enupal\snapshot\services;
 
 use enupal\snapshot\contracts\SnappyPdf;
 
-/**
- * @author    Enupal
- * @package   Snapshot
- * @since     1.0.0
- */
 class Pdf extends SnappyPdf
 {
     /**

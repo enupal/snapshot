@@ -97,9 +97,20 @@ class Snapshot extends Plugin
         );
     }
 
+    /**
+     * @throws \Throwable
+     */
     protected function afterInstall()
     {
         self::$app->snapshots->installDefaultVolume();
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    protected function afterUninstall()
+    {
+        self::$app->snapshots->removeVolume();
     }
 
     /**

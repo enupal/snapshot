@@ -11,6 +11,7 @@
 namespace enupal\snapshot\services;
 
 use craft\base\Component;
+use craft\elements\Asset;
 use craft\helpers\FileHelper;
 use craft\volumes\Local;
 use Craft;
@@ -31,7 +32,6 @@ class Snapshots extends Component
         $volumeSettings = [
             'path' => $enupalSnapshotPath
         ];
-        $plugin = Snapshot::$app->settings->getPlugin();
 
         $volumeHandle = $this->getHandleAsNew("enupalSnapshot");
         $volume = null;
@@ -39,7 +39,7 @@ class Snapshots extends Component
         $volume = $volumes->createVolume([
             'id' => null,
             'type' => Local::class,
-            'name' => "Enupal Snapshot",
+            'name' => ucwords($volumeHandle),
             'handle' => $volumeHandle,
             'hasUrls' => true,
             'url' => '/enupalsnapshot/',
@@ -49,41 +49,53 @@ class Snapshots extends Component
         $response = $volumes->saveVolume($volume);
 
         if (!$response) {
-            Craft::error('Unable to save the volume', __METHOD__);
+            $errors = $volume->getErrors();
+            Craft::error('Unable to save the volume: '.json_encode($errors), __METHOD__);
             return false;
         }
 
-        // @todo - update to craft 3.1 getPluin returns null here.
-        $settings = [
-            'volumeId' => $volume->id,
-            'pdfBinPath' => '',
-            'imageBinPath' => '',
-            'timeout' => ''
-        ];
-        $settings = json_encode($settings);
-        Craft::$app->getDb()->createCommand()->update('{{%plugins}}', [
-            'settings' => $settings
-        ], [
-                'handle' => 'enupal-snapshot'
-            ]
-        )->execute();
-
+        Snapshot::$app->settings->saveDefaultSettings($volume->id);
 
         return true;
     }
 
     /**
+     * @throws \Throwable
+     */
+    public function removeVolume()
+    {
+        $volumeId = Snapshot::$app->settings->getVolumeId();
+
+        if ($volumeId) {
+            Craft::$app->getVolumes()->deleteVolumeById((int)$volumeId);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getAvailableSources()
+    {
+        $sourceOptions = [];
+
+        foreach (Asset::sources('settings') as $key => $volume) {
+            if (!isset($volume['heading'])) {
+                $sourceOptions[] = [
+                    'label' => $volume['label'],
+                    'value' => $volume['key']
+                ];
+            }
+        }
+
+        return $sourceOptions;
+    }
+
+    /**
      * @return string
      */
-    private function getDefaultSnapshotPath()
+    public static function getVolumeElementType(): string
     {
-        $debugTrace = debug_backtrace();
-        $initialCalledFile = count($debugTrace) ? $debugTrace[count($debugTrace) - 1]['file'] : __FILE__;
-        $publicFolderPath = dirname($initialCalledFile);
-        $publicFolderPath = $publicFolderPath.DIRECTORY_SEPARATOR."enupalsnapshot";
-        $publicFolderPath = FileHelper::normalizePath($publicFolderPath);
-
-        return $publicFolderPath;
+        return Asset::class;
     }
 
     /**
@@ -113,6 +125,20 @@ class Snapshots extends Component
         } while ($aux);
 
         return $newHandle;
+    }
+
+    /**
+     * @return string
+     */
+    private function getDefaultSnapshotPath()
+    {
+        $debugTrace = debug_backtrace();
+        $initialCalledFile = count($debugTrace) ? $debugTrace[count($debugTrace) - 1]['file'] : __FILE__;
+        $publicFolderPath = dirname($initialCalledFile);
+        $publicFolderPath = $publicFolderPath.DIRECTORY_SEPARATOR."enupalsnapshot";
+        $publicFolderPath = FileHelper::normalizePath($publicFolderPath);
+
+        return $publicFolderPath;
     }
 
     /**

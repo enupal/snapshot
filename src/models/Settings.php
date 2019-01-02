@@ -45,6 +45,16 @@ class Settings extends Model
     public $volumeId;
 
     /**
+     * @var string
+     */
+    public $singleUploadLocationSource;
+
+    /**
+     * @var string
+     */
+    public $singleUploadLocationSubpath;
+
+    /**
      * @inheritdoc
      */
     public function rules()

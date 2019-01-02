@@ -14,6 +14,7 @@
 #}
 
 {% import "_includes/forms" as forms %}
+{% set sourceOptions = craft.enupalsnapshot.getAvailableSources() %}
 
 {{ forms.field({
     label: "Please download and install <a href='https://wkhtmltopdf.org/'>wkhtmltopdf</a> 0.12.x in order to use Enupal Snapshot. More info <a href='https://enupal.com/craft-plugins/enupal-snapshot/docs/getting-started/installation-setup'>here</a>."|t('enupal-snapshot'),
@@ -44,5 +45,35 @@
     errors: settings.getErrors('timeout'),
     value: settings['timeout']}) }}
 
+{% macro uploadLocationInput(name, settings, inputSourceOptions) %}
+    {% from "_includes/forms" import select, text %}
+    <div class="flex">
+        <div>
+            {{ select({
+                id: name~'Source',
+                name: name~'Source',
+                options: inputSourceOptions,
+                value: settings[name~'Source'],
+            }) }}
+        </div>
+        <div class="flex-grow">
+            {{ text({
+                id: name~'Subpath',
+                class: 'ltr',
+                name: name~'Subpath',
+                value: settings[name~'Subpath'],
+                placeholder: "path/to/subfolder"|t('enupal-snapshot')
+            }) }}
+        </div>
+    </div>
+{% endmacro %}
 
-<h1>{{ settings.volumeId }}</h1>
+{% from _self import uploadLocationInput %}
+
+{% set uploadLocationNote = "Note that the subfolder path can contain variables like <code>{slug}</code> or <code>{author.username}</code>."|t('enupal-snapshot') %}
+
+{{ forms.field({
+    label: "PDF's downloaded location"|t('enupal-snapshot'),
+    instructions: uploadLocationNote,
+    errors: settings.getErrors('singleUploadLocationSubpath')
+}, uploadLocationInput('singleUploadLocation', settings, sourceOptions)) }}

@@ -11,8 +11,12 @@
 namespace enupal\snapshot\contracts;
 
 use Craft;
+use craft\elements\Asset;
+use craft\errors\InvalidSubpathException;
+use craft\errors\InvalidVolumeException;
 use craft\helpers\UrlHelper;
 use enupal\snapshot\models\Settings;
+use enupal\snapshot\Snapshot;
 use Knp\Snappy\GeneratorInterface;
 use craft\base\Component;
 use craft\helpers\FileHelper;
@@ -113,6 +117,16 @@ abstract class BaseSnappy extends Component
     }
 
     /**
+     * Resolves path to temporary public directory.
+     *
+     * @return string|null
+     */
+    protected function resolveTempPublicDir()
+    {
+        return Craft::$app->path->getTempPath().DIRECTORY_SEPARATOR.SnapshotDefault::TEMP_DIR.DIRECTORY_SEPARATOR.'public';
+    }
+
+    /**
      * Generate a random string, using a cryptographically secure
      * pseudorandom number generator (random_int)
      *
@@ -173,13 +187,11 @@ abstract class BaseSnappy extends Component
             $settings->filename = $siteName.'_'.$this->getRandomStr().$extension;
         }
 
-        // @todo - support volumes
-        $path = $this->getSnapshotPath().DIRECTORY_SEPARATOR.$settings->filename;
+        // we need create a temp file to save the asset later
+        $path = $this->resolveTempPublicDir().DIRECTORY_SEPARATOR.$settings->filename;
 
-        // let's delete any duplicate filename
-        if (file_exists($path)) {
-            unlink($path);
-        }
+        //@todo check override before call this function searching by filename?
+        #$this->deleteFile($path);
 
         $settings->path = $path;
 
@@ -198,12 +210,157 @@ abstract class BaseSnappy extends Component
         return $publicFolderPath;
     }
 
-    public function getPublicUrl($filename)
+    /**
+     * @param $tempPath
+     * @param $filename
+     * @return Asset
+     * @throws InvalidSubpathException
+     * @throws InvalidVolumeException
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \craft\errors\VolumeException
+     * @throws \yii\base\Exception
+     */
+    public function getAsset($tempPath, $filename)
     {
-        // Get the public path url for download
-        $file = SnapshotDefault::PUBLIC_DIR.'/'.$filename;
+        $targetFolderId = $this->determineUploadFolderId([]);
+        //@todo find existing file if override is disabled
 
-        return UrlHelper::url($file);
+        $folder = Craft::$app->getAssets()->getFolderById($targetFolderId);
+        $asset = new Asset();
+        $asset->tempFilePath = $tempPath;
+        $asset->filename = $filename;
+        $asset->newFolderId = $targetFolderId;
+        $asset->volumeId = $folder->volumeId;
+        $asset->setScenario(Asset::SCENARIO_CREATE);
+        $asset->avoidFilenameConflicts = true;
+        Craft::$app->getElements()->saveElement($asset);
+
+        return $asset;
+    }
+
+    /**
+     * Determine an upload folder id by looking at the settings and whether Element this field belongs to is new or not.
+     *
+     * @param array $variables
+     * @return int
+     * @throws InvalidSubpathException if the folder subpath is not valid
+     * @throws InvalidVolumeException if there's a problem with the field's volume configuration
+     * @throws \craft\errors\VolumeException
+     */
+    private function determineUploadFolderId($variables = []): int
+    {
+        $pluginSettings = Snapshot::$app->settings->getSettings();
+
+        $uploadVolume = $pluginSettings->singleUploadLocationSource;
+        $subpath = $pluginSettings->singleUploadLocationSubpath;
+        $settingName = Craft::t('app', 'Upload Location');
+
+        try {
+            if (!$uploadVolume) {
+                throw new InvalidVolumeException();
+            }
+            $folderId = $this->resolveVolumePathToFolderId($uploadVolume, $subpath, $variables);
+        } catch (InvalidVolumeException $e) {
+            throw new InvalidVolumeException(Craft::t('app', '{setting} setting is set to an invalid volume.', [
+                'setting' => $settingName,
+            ]), 0, $e);
+        } catch (InvalidSubpathException $e) {
+            // Existing element, so this is just a bad subpath
+            throw new InvalidSubpathException($e->subpath, Craft::t('app', '{setting} setting has an invalid subpath (“{subpath}”).', [
+                'setting' => $settingName,
+                'subpath' => $e->subpath,
+            ]), 0, $e);
+        }
+
+        return $folderId;
+    }
+
+    /**
+     * Resolve a source path to it's folder ID by the source path and the matched source beginning.
+     *
+     * @param string $uploadSource
+     * @param string $subpath
+     * @param $variables
+     * @return int
+     * @throws InvalidSubpathException
+     * @throws InvalidVolumeException if the volume root folder doesn’t exist
+     * @throws \craft\errors\VolumeException
+     */
+    private function resolveVolumePathToFolderId(string $uploadSource, string $subpath, $variables): int
+    {
+        $assetsService = Craft::$app->getAssets();
+
+        $volumeId = $this->volumeIdBySourceKey($uploadSource);
+
+        // Make sure the volume and root folder actually exists
+        if ($volumeId === null || ($rootFolder = $assetsService->getRootFolderByVolumeId($volumeId)) === null) {
+            throw new InvalidVolumeException();
+        }
+
+        // Are we looking for a subfolder?
+        $subpath = is_string($subpath) ? trim($subpath, '/') : '';
+
+        if ($subpath === '') {
+            $folderId = $rootFolder->id;
+        } else {
+            // Prepare the path by parsing tokens and normalizing slashes.
+            try {
+                $renderedSubpath = Craft::$app->getView()->renderObjectTemplate($subpath, $variables);
+            } catch (\Throwable $e) {
+                throw new InvalidSubpathException($subpath);
+            }
+
+            if (
+                $renderedSubpath === '' ||
+                trim($renderedSubpath, '/') != $renderedSubpath ||
+                strpos($renderedSubpath, '//') !== false
+            ) {
+                throw new InvalidSubpathException($subpath);
+            }
+
+            $segments = explode('/', $renderedSubpath);
+            foreach ($segments as &$segment) {
+                $segment = FileHelper::sanitizeFilename($segment, [
+                    'asciiOnly' => Craft::$app->getConfig()->getGeneral()->convertFilenamesToAscii
+                ]);
+            }
+            unset($segment);
+            $subpath = implode('/', $segments);
+
+            $folder = $assetsService->findFolder([
+                'volumeId' => $volumeId,
+                'path' => $subpath.'/'
+            ]);
+
+            if (!$folder) {
+                $volume = Craft::$app->getVolumes()->getVolumeById($volumeId);
+                $folderId = $assetsService->ensureFolderByFullPathAndVolume($subpath, $volume);
+            } else {
+                $folderId = $folder->id;
+            }
+        }
+
+        return $folderId;
+    }
+
+    /**
+     * Returns a volume ID from an upload source key.
+     *
+     * @param string $sourceKey
+     * @return int|null
+     */
+    public function volumeIdBySourceKey(string $sourceKey)
+    {
+        $parts = explode(':', $sourceKey, 2);
+
+        if (count($parts) !== 2 || !is_numeric($parts[1])) {
+            return null;
+        }
+
+        $folder = Craft::$app->getAssets()->getFolderById((int)$parts[1]);
+
+        return $folder->volumeId ?? null;
     }
 
     /**

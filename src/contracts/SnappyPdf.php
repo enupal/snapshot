@@ -150,12 +150,17 @@ class SnappyPdf extends BaseSnappy
     /**
      * Generate pdf from html
      *
-     * @param string         $source Html or Urls
+     * @param string $source Html or Urls
      * @param SnappySettings $settingsModel
-     *
-     * @param bool           $sourceIsHtml
+     * @param bool $sourceIsHtml
      *
      * @return string|Response
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \craft\errors\InvalidSubpathException
+     * @throws \craft\errors\InvalidVolumeException
+     * @throws \craft\errors\VolumeException
+     * @throws \yii\base\Exception
      */
     private function _generatePdf($source, SnappySettings $settingsModel, $sourceIsHtml = true)
     {
@@ -176,12 +181,17 @@ class SnappyPdf extends BaseSnappy
                 Snapshot::error(Snapshot::t("Unable to find the PDF file: ".$settingsModel->path));
                 return Snapshot::t("Unable to display PDF file on browser");
             }
+
+            $asset = $this->getAsset($settingsModel->path, $settingsModel->filename);
+
         } catch (\RuntimeException $e) {
             Snapshot::error(Snapshot::t("Something went wrong when creating the PDF file: ".$e->getMessage()));
             return Snapshot::t("Something went wrong when creating the PDF file, please check your logs");
         }
+
+
         // return download link
-        return $this->getPublicUrl($settingsModel->filename);
+        return $asset->getUrl();
     }
 
     /**

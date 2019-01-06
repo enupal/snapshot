@@ -55,6 +55,11 @@ class Settings extends Model
     public $singleUploadLocationSubpath;
 
     /**
+     * @var bool
+     */
+    public $overrideFile = true;
+
+    /**
      * @inheritdoc
      */
     public function rules()

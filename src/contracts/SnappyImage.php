@@ -140,6 +140,6 @@ class SnappyImage extends BaseSnappy
             return Snapshot::t("Something went wrong when creating the Image file, please check your logs");
         }
         // return download link always for images
-        return $this->getPublicUrl($settingsModel->filename);
+        return '';
     }
 }

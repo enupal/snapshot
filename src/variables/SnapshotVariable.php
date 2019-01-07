@@ -10,6 +10,7 @@
 
 namespace enupal\snapshot\variables;
 
+use enupal\snapshot\services\Snapshots;
 use enupal\snapshot\Snapshot;
 
 use yii\web\Response;
@@ -21,14 +22,13 @@ use yii\web\Response;
  */
 class SnapshotVariable
 {
-    // Public Methods
-    // =========================================================================
-
     /**
      * @param string $html
-     * @param array  $settings
+     * @param array $settings
      *
      * @return string|Response
+     * @throws \Throwable
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function displayHtml($html, $settings = null)
     {
@@ -41,9 +41,12 @@ class SnapshotVariable
 
     /**
      * @param string $template
-     * @param array  $settings
+     * @param array $settings
      *
      * @return string|Response
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function displayTemplate($template, $settings = null)
     {
@@ -56,9 +59,11 @@ class SnapshotVariable
 
     /**
      * @param string $url
-     * @param array  $settings
+     * @param array $settings
      *
      * @return string|Response
+     * @throws \Throwable
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function displayUrl($url, $settings = null)
     {
@@ -67,5 +72,29 @@ class SnapshotVariable
         }
 
         return Snapshot::$app->pdf->displayUrl($url, $settings);
+    }
+
+    /**
+     * @return string
+     */
+    public function getVolumeElementType()
+    {
+        return Snapshot::$app->snapshots::getVolumeElementType();
+    }
+
+    /**
+     * @return array
+     */
+    public function getAvailableSources(): array
+    {
+        return Snapshot::$app->snapshots->getAvailableSources();
+    }
+
+    /**
+     * @param array $variables
+     */
+    public function addVariables(array $variables)
+    {
+        Snapshots::addVariables($variables);
     }
 }

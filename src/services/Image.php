@@ -12,11 +12,6 @@ namespace enupal\snapshot\services;
 
 use enupal\snapshot\contracts\SnappyImage;
 
-/**
- * @author    Enupal
- * @package   Snapshot
- * @since     1.0.0
- */
 class Image extends SnappyImage
 {
     /**
@@ -24,6 +19,6 @@ class Image extends SnappyImage
      */
     public function test()
     {
-        return $this->displayHtml("<h1>Hello world</h1>");
+        return $this->displayHtml("<h1>Hello world</h1>", ['singleUploadLocationSubpath' => '']);
     }
 }

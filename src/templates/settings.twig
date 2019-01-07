@@ -14,6 +14,7 @@
 #}
 
 {% import "_includes/forms" as forms %}
+{% set sourceOptions = craft.enupalsnapshot.getAvailableSources() %}
 
 {{ forms.field({
     label: "Please download and install <a href='https://wkhtmltopdf.org/'>wkhtmltopdf</a> 0.12.x in order to use Enupal Snapshot. More info <a href='https://enupal.com/craft-plugins/enupal-snapshot/docs/getting-started/installation-setup'>here</a>."|t('enupal-snapshot'),
@@ -43,3 +44,136 @@
     name: 'timeout',
     errors: settings.getErrors('timeout'),
     value: settings['timeout']}) }}
+
+{{ forms.lightswitchField({
+    label: "Override file"|t('enupal-snapshot'),
+    instructions: "Override the PDF or IMAGE file if already exists, if disabled it will prevent file creation if the file exists"|t('enupal-snapshot'),
+    id: 'overrideFile',
+    name: 'overrideFile',
+    on: settings['overrideFile']
+}) }}
+
+{% macro uploadLocationInput(name, settings, inputSourceOptions) %}
+    {% from "_includes/forms" import select, text %}
+    <div class="flex">
+        <div>
+            {{ select({
+                id: name~'Source',
+                name: name~'Source',
+                options: inputSourceOptions,
+                value: settings[name~'Source'],
+            }) }}
+        </div>
+        <div class="flex-grow">
+            {{ text({
+                id: name~'Subpath',
+                class: 'ltr',
+                name: name~'Subpath',
+                value: settings[name~'Subpath'],
+                placeholder: "path/to/subfolder"|t('enupal-snapshot')
+            }) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% from _self import uploadLocationInput %}
+
+{% set uploadLocationNote = "Note that the subfolder path can contain variables like <code>{slug}</code> or <code>{author.username}</code>."|t('enupal-snapshot') %}
+
+{{ forms.field({
+    label: "Upload Location"|t('enupal-snapshot'),
+    instructions: uploadLocationNote,
+    errors: settings.getErrors('singleUploadLocationSubpath')
+}, uploadLocationInput('singleUploadLocation', settings, sourceOptions)) }}
+<hr>
+<div class="field">
+    <div class="heading">
+        <label for="">{{ "Override the upload location settings in your templates" }}</label>
+        <div class="instructions">
+            {{ "More info in the"}} <a href="https://enupal.com/craft-plugins/enupal-snapshot/docs/advanced/override-upload-asset"> {{ "docs" }}</a>
+        </div>
+    </div>
+    <a id="folderIds" class="btn" href="#">Show Folder Ids</a>
+</div>
+<div id="showFolderIds" class="hidden modal">
+    <div id="modal" class="body"
+         style="height: 100%;">
+        <header class="header">
+            <h2>Use any of the next folder ids to override the `singleUploadLocationSource` setting in your templates</h2>
+        </header>
+        <div style="padding: 15px; width: 100%;  overflow: auto; height: calc(100% - 66px); position: absolute; top: 66px; left: 0;"
+             >
+            <table style="width:50%">
+                {% for folder in sourceOptions %}
+                    <tr>
+                        <td>{{ folder.label }}</td>
+                        <td>{{ folder.value }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <hr>
+            <h3>Example:</h3>
+            <code>
+                {{ "
+                {%
+                    set settings = {
+                    filename: 'my-first-pdf.pdf',
+                    inline: false,
+                    overrideFile: true,
+                    singleUploadLocationSource: 'folder:11',
+                    singleUploadLocationSubpath: 'path/{author.username}'
+                }
+                %}
+
+                {% do craft.enupalsnapshot.addVariables({ author: currentUser }) %}
+
+                {% set url = craft.enupalsnapshot.displayHtml('<h1>Hello world</h1>', settings) %}
+
+                <a href='{{url}}'> Download Pdf</a>
+                "|markdown }}
+            </code>
+
+        </div>
+    </div>
+</div>
+
+{% js %}
+    (function($)
+    {
+    var EnupalSnapshot = Garnish.Base.extend({
+
+    options: null,
+    logModal: null,
+
+    /**
+    * The constructor.
+    */
+    init: function()
+    {
+    this.addListener($("#settings-folderIds"), 'activate', 'showFolderIds');
+    },
+
+    showFolderIds: function(option)
+    {
+    if (this.logModal)
+    {
+    this.logModal.show();
+    }
+    else
+    {
+    var $div = $('#settings-showFolderIds');
+    $div.removeClass('hidden');
+    this.logModal = new Garnish.Modal($div);
+    }
+    },
+
+    });
+
+    window.EnupalSnapshot = EnupalSnapshot;
+    })(jQuery);
+
+    $(document).ready(function() {
+    new EnupalSnapshot();
+    });
+{% endjs %}

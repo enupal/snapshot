@@ -1,5 +1,11 @@
 # Enupal Snapshot Changelog
 
+## 1.1.0 - 2019.01.07
+### Added
+- Added support to set the upload location via assets for non-inline files
+- Added support to specify subpath and pass twig code
+- Added the `overrideFile` setting to prevent file creation if the file already exists
+
 ## 1.0.6 - 2018.08.29
 ### Added
 - Added timeout setting to override default 60 seconds

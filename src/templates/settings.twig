@@ -81,7 +81,99 @@
 {% set uploadLocationNote = "Note that the subfolder path can contain variables like <code>{slug}</code> or <code>{author.username}</code>."|t('enupal-snapshot') %}
 
 {{ forms.field({
-    label: "PDF's downloaded location"|t('enupal-snapshot'),
+    label: "Upload Location"|t('enupal-snapshot'),
     instructions: uploadLocationNote,
     errors: settings.getErrors('singleUploadLocationSubpath')
 }, uploadLocationInput('singleUploadLocation', settings, sourceOptions)) }}
+<hr>
+<div class="field">
+    <div class="heading">
+        <label for="">{{ "Override the upload location settings in your templates" }}</label>
+        <div class="instructions">
+            {{ "More info in the"}} <a href="#"> {{ "docs" }}</a>
+        </div>
+    </div>
+    <a id="folderIds" class="btn" href="#">Show Folder Ids</a>
+</div>
+<div id="showFolderIds" class="hidden modal">
+    <div id="modal" class="body"
+         style="height: 100%;">
+        <header class="header">
+            <h2>Use any of the next folder ids to override the `singleUploadLocationSource` setting in your templates</h2>
+        </header>
+        <div style="padding: 15px; width: 100%;  overflow: auto; height: calc(100% - 66px); position: absolute; top: 66px; left: 0;"
+             >
+            <table style="width:50%">
+                {% for folder in sourceOptions %}
+                    <tr>
+                        <td>{{ folder.label }}</td>
+                        <td>{{ folder.value }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <hr>
+            <h3>Example:</h3>
+            <code>
+                {{ "
+                {%
+                    set settings = {
+                    filename: 'my-first-pdf.pdf',
+                    inline: false,
+                    overrideFile: true,
+                    singleUploadLocationSource: 'folder:11',
+                    singleUploadLocationSubpath: 'path/{author.username}'
+                }
+                %}
+
+                {% do craft.enupalsnapshot.addVariables({ author: currentUser }) %}
+
+                {% set url = craft.enupalsnapshot.displayHtml('<h1>Hello world</h1>', settings) %}
+
+                <a href='{{url}}'> Download Pdf</a>
+                "|markdown }}
+            </code>
+
+        </div>
+    </div>
+</div>
+
+{% js %}
+    (function($)
+    {
+    var EnupalSnapshot = Garnish.Base.extend({
+
+    options: null,
+    logModal: null,
+
+    /**
+    * The constructor.
+    */
+    init: function()
+    {
+    this.addListener($("#settings-folderIds"), 'activate', 'showFolderIds');
+    },
+
+    showFolderIds: function(option)
+    {
+    if (this.logModal)
+    {
+    this.logModal.show();
+    }
+    else
+    {
+    var $div = $('#settings-showFolderIds');
+    $div.removeClass('hidden');
+    this.logModal = new Garnish.Modal($div);
+    }
+    },
+
+    });
+
+    window.EnupalSnapshot = EnupalSnapshot;
+    })(jQuery);
+
+    $(document).ready(function() {
+    new EnupalSnapshot();
+    });
+{% endjs %}

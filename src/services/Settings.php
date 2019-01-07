@@ -13,6 +13,7 @@ namespace enupal\snapshot\services;
 use Craft;
 use craft\base\Component;
 use craft\db\Query;
+use enupal\snapshot\Snapshot;
 
 class Settings extends Component
 {
@@ -53,15 +54,19 @@ class Settings extends Component
     {
         $folderId = $this->getFolderId($volumeId);
         // @todo - update to craft 3.1 getPluin returns null here.
-        $settings = [
+        /*$settings = [
             'volumeId' => $volumeId,
             'singleUploadLocationSource' => 'folder:'.$folderId,
             'pdfBinPath' => '',
             'imageBinPath' => '',
             'timeout' => ''
-        ];
+        ];*/
 
-        $settings = json_encode($settings);
+        $settings = Snapshot::getInstance()->getSettings();
+        $settings->singleUploadLocationSource = 'folder:'.$folderId;
+        $settings->volumeId = $volumeId;
+
+        $settings = json_encode($settings->getAttributes());
 
         Craft::$app->getDb()->createCommand()->update('{{%plugins}}', [
             'settings' => $settings

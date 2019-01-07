@@ -54,13 +54,6 @@ class Settings extends Component
     {
         $folderId = $this->getFolderId($volumeId);
         // @todo - update to craft 3.1 getPluin returns null here.
-        /*$settings = [
-            'volumeId' => $volumeId,
-            'singleUploadLocationSource' => 'folder:'.$folderId,
-            'pdfBinPath' => '',
-            'imageBinPath' => '',
-            'timeout' => ''
-        ];*/
 
         $settings = Snapshot::getInstance()->getSettings();
         $settings->singleUploadLocationSource = 'folder:'.$folderId;

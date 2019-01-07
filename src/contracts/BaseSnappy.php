@@ -232,7 +232,13 @@ abstract class BaseSnappy extends Component
         $asset = $this->checkIfFileExists($folder, $settingsModel->filename);
 
         if ($asset){
-            if (!$this->pluginSettings->overrideFile){
+            $overrideFile = $this->pluginSettings->overrideFile;
+
+            if ($settingsModel->overrideFile !== null){
+                $overrideFile = $settingsModel->overrideFile;
+            }
+
+            if (!$overrideFile){
                 return $asset;
             }
 

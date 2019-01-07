@@ -49,10 +49,10 @@ class SnappyPdf extends BaseSnappy
      * Display a Pdf given html
      *
      * @param string $html
-     * @param array  $settings display inline | url
+     * @param array $settings display inline | url
      *
      * @return string
-     * @throws \Exception
+     * @throws \Throwable
      * @throws \yii\web\ServerErrorHttpException
      */
     public function displayHtml($html, $settings = null)
@@ -68,11 +68,12 @@ class SnappyPdf extends BaseSnappy
      * Display a pdf given a template
      *
      * @param string $template
-     * @param array  $settings display inline | url
+     * @param array $settings display inline | url
      *
      * @return string|Response
-     * @throws \Twig_Error_Loader
+     * @throws \Throwable
      * @throws \yii\base\Exception
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function displayTemplate($template, $settings = null)
     {
@@ -91,11 +92,10 @@ class SnappyPdf extends BaseSnappy
      * Display a pdf given a url
      *
      * @param string|array $url
-     * @param array        $settings display inline | url | etc
-     *                               *
+     * @param array $settings display inline | url | etc
      *
      * @return Response|string
-     * @throws \Exception
+     * @throws \Throwable
      * @throws \yii\web\ServerErrorHttpException
      */
     public function displayUrl($url, $settings = null)
@@ -156,11 +156,6 @@ class SnappyPdf extends BaseSnappy
      *
      * @return string|Response
      * @throws \Throwable
-     * @throws \craft\errors\ElementNotFoundException
-     * @throws \craft\errors\InvalidSubpathException
-     * @throws \craft\errors\InvalidVolumeException
-     * @throws \craft\errors\VolumeException
-     * @throws \yii\base\Exception
      */
     private function _generatePdf($source, SnappySettings $settingsModel, $sourceIsHtml = true)
     {

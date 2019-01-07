@@ -10,6 +10,7 @@
 
 namespace enupal\snapshot\contracts;
 
+use craft\web\Response;
 use Knp\Snappy\GeneratorInterface;
 use Knp\Snappy\Image;
 use enupal\snapshot\Snapshot;
@@ -47,15 +48,9 @@ class SnappyImage extends BaseSnappy
     /**
      * @param string $html
      * @param array $settings display inline | url
-     *                         *
      *
      * @return Response|string
      * @throws \Throwable
-     * @throws \craft\errors\ElementNotFoundException
-     * @throws \craft\errors\InvalidSubpathException
-     * @throws \craft\errors\InvalidVolumeException
-     * @throws \craft\errors\VolumeException
-     * @throws \yii\base\Exception
      * @throws \yii\web\ServerErrorHttpException
      */
     public function displayHtml($html, $settings = null)
@@ -73,10 +68,6 @@ class SnappyImage extends BaseSnappy
      *
      * @return string
      * @throws \Throwable
-     * @throws \craft\errors\ElementNotFoundException
-     * @throws \craft\errors\InvalidSubpathException
-     * @throws \craft\errors\InvalidVolumeException
-     * @throws \craft\errors\VolumeException
      * @throws \yii\base\Exception
      * @throws \yii\web\ServerErrorHttpException
      */
@@ -99,11 +90,6 @@ class SnappyImage extends BaseSnappy
      *
      * @return string
      * @throws \Throwable
-     * @throws \craft\errors\ElementNotFoundException
-     * @throws \craft\errors\InvalidSubpathException
-     * @throws \craft\errors\InvalidVolumeException
-     * @throws \craft\errors\VolumeException
-     * @throws \yii\base\Exception
      * @throws \yii\web\ServerErrorHttpException
      */
     public function displayUrl($url, $settings = null)
@@ -136,11 +122,6 @@ class SnappyImage extends BaseSnappy
      *
      * @return string|Response
      * @throws \Throwable
-     * @throws \craft\errors\ElementNotFoundException
-     * @throws \craft\errors\InvalidSubpathException
-     * @throws \craft\errors\InvalidVolumeException
-     * @throws \craft\errors\VolumeException
-     * @throws \yii\base\Exception
      */
     private function _generateImage($source, SnappySettings $settingsModel, $sourceIsHtml = true)
     {

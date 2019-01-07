@@ -45,6 +45,14 @@
     errors: settings.getErrors('timeout'),
     value: settings['timeout']}) }}
 
+{{ forms.lightswitchField({
+    label: "Override file"|t('enupal-snapshot'),
+    instructions: "Override the PDF or IMAGE file if already exists, if disabled it will prevent file creation if the file exists"|t('enupal-snapshot'),
+    id: 'overrideFile',
+    name: 'overrideFile',
+    on: settings['overrideFile']
+}) }}
+
 {% macro uploadLocationInput(name, settings, inputSourceOptions) %}
     {% from "_includes/forms" import select, text %}
     <div class="flex">

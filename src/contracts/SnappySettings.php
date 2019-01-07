@@ -28,4 +28,6 @@ class SnappySettings extends Model
     public $singleUploadLocationSource = null;
 
     public $singleUploadLocationSubpath = null;
+
+    public $overrideFile = null;
 }

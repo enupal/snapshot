@@ -1,15 +1,14 @@
 <?php
 
-namespace enupal\backup\migrations;
+namespace enupal\snapshot\migrations;
 
 use craft\db\Migration;
-use craft\db\Query;
 use enupal\snapshot\Snapshot;
 
 /**
- * m181229_000000_add_asset_volume migration.
+ * m190107_000000_add_asset_volume migration.
  */
-class m181229_000000_add_asset_volume extends Migration
+class m190107_000000_add_asset_volume extends Migration
 {
     /**
      * @inheritdoc
@@ -26,7 +25,7 @@ class m181229_000000_add_asset_volume extends Migration
      */
     public function safeDown()
     {
-        echo "m181229_000000_add_asset_volume cannot be reverted.\n";
+        echo "m190107_000000_add_asset_volume cannot be reverted.\n";
 
         return false;
     }

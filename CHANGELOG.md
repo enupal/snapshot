@@ -1,5 +1,9 @@
 # Enupal Snapshot Changelog
 
+## 1.1.1 - 2019.01.07
+### Fixed
+- Fixed migration error
+
 ## 1.1.0 - 2019.01.07
 ### Added
 - Added support to set the upload location via assets for non-inline files

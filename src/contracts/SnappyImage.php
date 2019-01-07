@@ -157,7 +157,7 @@ class SnappyImage extends BaseSnappy
                 return Snapshot::t("Unable to display Image file on browser");
             }
 
-            $asset = $this->getAsset($settingsModel->path, $settingsModel->filename);
+            $asset = $this->getAsset($settingsModel);
 
         } catch (\Exception $e) {
             Snapshot::error(Snapshot::t("Something went wrong when creating the Image file: ".$e->getMessage()));

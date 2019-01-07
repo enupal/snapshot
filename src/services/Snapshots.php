@@ -21,6 +21,11 @@ use craft\records\Volume as VolumeRecord;
 class Snapshots extends Component
 {
     /**
+     * @var array
+     */
+    protected static $fieldVariables = [];
+
+    /**
      * @return bool
      * @throws \Throwable
      */
@@ -125,6 +130,24 @@ class Snapshots extends Component
         } while ($aux);
 
         return $newHandle;
+    }
+
+    /**
+     * Adds variables to parse in templates
+     *
+     * @param array $variables
+     */
+    public static function addVariables(array $variables)
+    {
+        static::$fieldVariables = array_merge(static::$fieldVariables, $variables);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldVariables()
+    {
+        return static::$fieldVariables;
     }
 
     /**

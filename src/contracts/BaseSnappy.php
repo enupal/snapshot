@@ -215,8 +215,7 @@ abstract class BaseSnappy extends Component
     }
 
     /**
-     * @param $tempPath
-     * @param $filename
+     * @param SnappySettings $settingsModel
      * @return Asset
      * @throws InvalidSubpathException
      * @throws InvalidVolumeException
@@ -225,12 +224,12 @@ abstract class BaseSnappy extends Component
      * @throws \craft\errors\VolumeException
      * @throws \yii\base\Exception
      */
-    public function getAsset($tempPath, $filename)
+    public function getAsset($settingsModel)
     {
-        $targetFolderId = $this->determineUploadFolderId([]);
+        $targetFolderId = $this->determineUploadFolderId($settingsModel);
         $folder = Craft::$app->getAssets()->getFolderById($targetFolderId);
 
-        $asset = $this->checkIfFileExists($folder, $filename);
+        $asset = $this->checkIfFileExists($folder, $settingsModel->filename);
 
         if ($asset){
             if (!$this->pluginSettings->overrideFile){
@@ -241,8 +240,8 @@ abstract class BaseSnappy extends Component
         }
 
         $asset = new Asset();
-        $asset->tempFilePath = $tempPath;
-        $asset->filename = $filename;
+        $asset->tempFilePath = $settingsModel->path;
+        $asset->filename = $settingsModel->filename;
         $asset->newFolderId = $targetFolderId;
         $asset->volumeId = $folder->volumeId;
         $asset->setScenario(Asset::SCENARIO_CREATE);
@@ -270,24 +269,32 @@ abstract class BaseSnappy extends Component
 
     /**
      * Determine an upload folder id by looking at the settings and whether Element this field belongs to is new or not.
-     *
-     * @param array $variables
+     * @param SnappySettings $settingsModel
      * @return int
      * @throws InvalidSubpathException if the folder subpath is not valid
      * @throws InvalidVolumeException if there's a problem with the field's volume configuration
      * @throws \craft\errors\VolumeException
      */
-    private function determineUploadFolderId($variables = []): int
+    private function determineUploadFolderId($settingsModel): int
     {
         $uploadVolume = $this->pluginSettings->singleUploadLocationSource;
         $subpath = $this->pluginSettings->singleUploadLocationSubpath;
+
+        if ($settingsModel->singleUploadLocationSource !== null){
+            $uploadVolume = $settingsModel->singleUploadLocationSource;
+        }
+
+        if ($settingsModel->singleUploadLocationSubpath !== null){
+            $subpath = $settingsModel->singleUploadLocationSubpath;
+        }
+
         $settingName = Craft::t('app', 'Upload Location');
 
         try {
             if (!$uploadVolume) {
                 throw new InvalidVolumeException();
             }
-            $folderId = $this->resolveVolumePathToFolderId($uploadVolume, $subpath, $variables);
+            $folderId = $this->resolveVolumePathToFolderId($uploadVolume, $subpath);
         } catch (InvalidVolumeException $e) {
             throw new InvalidVolumeException(Craft::t('app', '{setting} setting is set to an invalid volume.', [
                 'setting' => $settingName,
@@ -308,13 +315,12 @@ abstract class BaseSnappy extends Component
      *
      * @param string $uploadSource
      * @param string $subpath
-     * @param $variables
      * @return int
      * @throws InvalidSubpathException
      * @throws InvalidVolumeException if the volume root folder doesn’t exist
      * @throws \craft\errors\VolumeException
      */
-    private function resolveVolumePathToFolderId(string $uploadSource, string $subpath, $variables): int
+    private function resolveVolumePathToFolderId(string $uploadSource, string $subpath): int
     {
         $assetsService = Craft::$app->getAssets();
 
@@ -333,7 +339,7 @@ abstract class BaseSnappy extends Component
         } else {
             // Prepare the path by parsing tokens and normalizing slashes.
             try {
-                $renderedSubpath = Craft::$app->getView()->renderObjectTemplate($subpath, $variables);
+                $renderedSubpath = Craft::$app->getView()->renderObjectTemplate($subpath, Snapshot::$app->snapshots->getFieldVariables());
             } catch (\Throwable $e) {
                 throw new InvalidSubpathException($subpath);
             }
@@ -457,5 +463,21 @@ abstract class BaseSnappy extends Component
         $settingsModel = $this->getSettings($settingsModel, $isPdf);
 
         return $settingsModel;
+    }
+
+    /**
+     * @param SnappySettings $settingsModel
+     * @throws \yii\base\ExitException
+     */
+    public function overrideSettings($settingsModel)
+    {
+        if ($settingsModel->singleUploadLocationSubpath !== null){
+            Craft::dd($this->pluginSettings);
+            $this->pluginSettings->singleUploadLocationSubpath = $settingsModel->singleUploadLocationSubpath;
+        }
+
+        if ($settingsModel->singleUploadLocationSource !== null){
+            $this->pluginSettings->singleUploadLocationSource = $settingsModel->singleUploadLocationSource;
+        }
     }
 }

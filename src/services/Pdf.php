@@ -19,6 +19,6 @@ class Pdf extends SnappyPdf
      */
     public function test()
     {
-        return $this->displayHtml("<h1>Hello world</h1>", ['inline' => false]);
+        return $this->displayHtml("<h1>Hello world</h1>", ['inline' => false, 'singleUploadLocationSubpath' => '']);
     }
 }

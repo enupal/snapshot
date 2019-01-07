@@ -10,6 +10,7 @@
 
 namespace enupal\snapshot\variables;
 
+use enupal\snapshot\services\Snapshots;
 use enupal\snapshot\Snapshot;
 
 use yii\web\Response;
@@ -83,5 +84,13 @@ class SnapshotVariable
     public function getAvailableSources(): array
     {
         return Snapshot::$app->snapshots->getAvailableSources();
+    }
+
+    /**
+     * @param array $variables
+     */
+    public function addVariables(array $variables)
+    {
+        Snapshots::addVariables($variables);
     }
 }

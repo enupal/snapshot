@@ -19,6 +19,6 @@ class Image extends SnappyImage
      */
     public function test()
     {
-        return $this->displayHtml("<h1>Hello world</h1>");
+        return $this->displayHtml("<h1>Hello world</h1>", ['singleUploadLocationSubpath' => '']);
     }
 }

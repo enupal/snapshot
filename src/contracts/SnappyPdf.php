@@ -182,7 +182,7 @@ class SnappyPdf extends BaseSnappy
                 return Snapshot::t("Unable to display PDF file on browser");
             }
 
-            $asset = $this->getAsset($settingsModel->path, $settingsModel->filename);
+            $asset = $this->getAsset($settingsModel);
 
         } catch (\Exception $e) {
             Snapshot::error(Snapshot::t("Something went wrong when creating the PDF file: ".$e->getMessage()));

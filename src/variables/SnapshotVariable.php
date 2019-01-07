@@ -27,6 +27,7 @@ class SnapshotVariable
      * @param array $settings
      *
      * @return string|Response
+     * @throws \Throwable
      * @throws \yii\web\ServerErrorHttpException
      */
     public function displayHtml($html, $settings = null)
@@ -43,7 +44,9 @@ class SnapshotVariable
      * @param array $settings
      *
      * @return string|Response
+     * @throws \Throwable
      * @throws \yii\base\Exception
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function displayTemplate($template, $settings = null)
     {
@@ -59,6 +62,7 @@ class SnapshotVariable
      * @param array $settings
      *
      * @return string|Response
+     * @throws \Throwable
      * @throws \yii\web\ServerErrorHttpException
      */
     public function displayUrl($url, $settings = null)

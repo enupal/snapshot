@@ -26,10 +26,9 @@ class SnappyPdf extends BaseSnappy
      */
     protected function getBinary()
     {
-        $plugin = Craft::$app->getPlugins()->getPlugin('enupal-snapshot');
-        $settings = $plugin->getSettings();
+        $this->pluginSettings = Snapshot::$app->settings->getSettings();
 
-        $this->binary = '"'.$settings->pdfBinPath.'"';
+        $this->binary = '"'.$this->pluginSettings->pdfBinPath.'"';
 
         return $this->binary ?? null;
     }
@@ -40,6 +39,9 @@ class SnappyPdf extends BaseSnappy
     protected function getGenerator(): GeneratorInterface
     {
         $pdf = new Pdf($this->binary, $this->options);
+        if ($this->pluginSettings->timeout){
+            $pdf->setTimeout($this->pluginSettings->timeout);
+        }
         return $pdf;
     }
 
@@ -47,10 +49,10 @@ class SnappyPdf extends BaseSnappy
      * Display a Pdf given html
      *
      * @param string $html
-     * @param array  $settings display inline | url
+     * @param array $settings display inline | url
      *
      * @return string
-     * @throws \Exception
+     * @throws \Throwable
      * @throws \yii\web\ServerErrorHttpException
      */
     public function displayHtml($html, $settings = null)
@@ -66,11 +68,12 @@ class SnappyPdf extends BaseSnappy
      * Display a pdf given a template
      *
      * @param string $template
-     * @param array  $settings display inline | url
+     * @param array $settings display inline | url
      *
      * @return string|Response
-     * @throws \Twig_Error_Loader
+     * @throws \Throwable
      * @throws \yii\base\Exception
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function displayTemplate($template, $settings = null)
     {
@@ -89,11 +92,10 @@ class SnappyPdf extends BaseSnappy
      * Display a pdf given a url
      *
      * @param string|array $url
-     * @param array        $settings display inline | url | etc
-     *                               *
+     * @param array $settings display inline | url | etc
      *
      * @return Response|string
-     * @throws \Exception
+     * @throws \Throwable
      * @throws \yii\web\ServerErrorHttpException
      */
     public function displayUrl($url, $settings = null)
@@ -148,12 +150,12 @@ class SnappyPdf extends BaseSnappy
     /**
      * Generate pdf from html
      *
-     * @param string         $source Html or Urls
+     * @param string $source Html or Urls
      * @param SnappySettings $settingsModel
-     *
-     * @param bool           $sourceIsHtml
+     * @param bool $sourceIsHtml
      *
      * @return string|Response
+     * @throws \Throwable
      */
     private function _generatePdf($source, SnappySettings $settingsModel, $sourceIsHtml = true)
     {
@@ -174,12 +176,15 @@ class SnappyPdf extends BaseSnappy
                 Snapshot::error(Snapshot::t("Unable to find the PDF file: ".$settingsModel->path));
                 return Snapshot::t("Unable to display PDF file on browser");
             }
-        } catch (\RuntimeException $e) {
+
+            $asset = $this->getAsset($settingsModel);
+
+        } catch (\Exception $e) {
             Snapshot::error(Snapshot::t("Something went wrong when creating the PDF file: ".$e->getMessage()));
             return Snapshot::t("Something went wrong when creating the PDF file, please check your logs");
         }
-        // return download link
-        return $this->getPublicUrl($settingsModel->filename);
+
+        return $asset->getUrl();
     }
 
     /**

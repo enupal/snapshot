@@ -10,13 +10,12 @@
 
 namespace enupal\snapshot;
 
+use enupal\snapshot\services\App;
 use enupal\snapshot\variables\SnapshotVariable;
 use enupal\snapshot\models\Settings;
 
 use Craft;
 use craft\base\Plugin;
-use craft\services\Plugins;
-use craft\events\PluginEvent;
 use craft\web\twig\variables\CraftVariable;
 
 use yii\base\Event;
@@ -36,12 +35,24 @@ class Snapshot extends Plugin
     // =========================================================================
 
     /**
-     * @var Snapshot
+     * @var App
      */
     public static $app;
 
-    // Public Methods
-    // =========================================================================
+    /**
+     * @inheritdoc
+     */
+    public $schemaVersion = '1.0.6';
+
+    /**
+     * @inheritdoc
+     */
+    public $hasCpSection = false;
+
+    /**
+     * @inheritdoc
+     */
+    public $hasCpSettings = true;
 
     /**
      * @inheritdoc
@@ -84,6 +95,22 @@ class Snapshot extends Plugin
                 'settings' => $this->getSettings()
             ]
         );
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    protected function afterInstall()
+    {
+        self::$app->snapshots->installDefaultVolume();
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    protected function afterUninstall()
+    {
+        self::$app->snapshots->removeVolume();
     }
 
     /**

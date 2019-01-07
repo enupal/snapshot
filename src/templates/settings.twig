@@ -14,10 +14,10 @@
 #}
 
 {% import "_includes/forms" as forms %}
+{% set sourceOptions = craft.enupalsnapshot.getAvailableSources() %}
 
 {{ forms.field({
-    label: "Please download and install <a href='https://wkhtmltopdf.org/'>wkhtmltopdf</a> 0.12.x in order to use Enupal Snapshot.  free <a href='https://wkhtmltopdf.org/downloads.html'>download here</a>."|t('enupal-snapshot'),
-    instructions: "Eupal Snapshot <a href='https://enupal.com/en/craft-plugins/enupal-snapshot/docs/getting-started/installation-setup'>documentation</a>"|t('enupal-snapshot'),
+    label: "Please download and install <a href='https://wkhtmltopdf.org/'>wkhtmltopdf</a> 0.12.x in order to use Enupal Snapshot. More info <a href='https://enupal.com/craft-plugins/enupal-snapshot/docs/getting-started/installation-setup'>here</a>."|t('enupal-snapshot'),
 }, null) }}
 {{ forms.textField({
     label: 'Absolute Binary Path of wkhtmltopdf lib',
@@ -36,3 +36,52 @@
     errors: settings.getErrors('imageBinPath'),
     required: true,
     value: settings['imageBinPath']}) }}
+
+{{ forms.textField({
+    label: 'Timeout',
+    instructions: 'Timeout in seconds. Default is 60',
+    id: 'timeout',
+    name: 'timeout',
+    errors: settings.getErrors('timeout'),
+    value: settings['timeout']}) }}
+
+{{ forms.lightswitchField({
+    label: "Override file"|t('enupal-snapshot'),
+    instructions: "Override the PDF or IMAGE file if already exists, if disabled it will prevent file creation if the file exists"|t('enupal-snapshot'),
+    id: 'overrideFile',
+    name: 'overrideFile',
+    on: settings['overrideFile']
+}) }}
+
+{% macro uploadLocationInput(name, settings, inputSourceOptions) %}
+    {% from "_includes/forms" import select, text %}
+    <div class="flex">
+        <div>
+            {{ select({
+                id: name~'Source',
+                name: name~'Source',
+                options: inputSourceOptions,
+                value: settings[name~'Source'],
+            }) }}
+        </div>
+        <div class="flex-grow">
+            {{ text({
+                id: name~'Subpath',
+                class: 'ltr',
+                name: name~'Subpath',
+                value: settings[name~'Subpath'],
+                placeholder: "path/to/subfolder"|t('enupal-snapshot')
+            }) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% from _self import uploadLocationInput %}
+
+{% set uploadLocationNote = "Note that the subfolder path can contain variables like <code>{slug}</code> or <code>{author.username}</code>."|t('enupal-snapshot') %}
+
+{{ forms.field({
+    label: "PDF's downloaded location"|t('enupal-snapshot'),
+    instructions: uploadLocationNote,
+    errors: settings.getErrors('singleUploadLocationSubpath')
+}, uploadLocationInput('singleUploadLocation', settings, sourceOptions)) }}

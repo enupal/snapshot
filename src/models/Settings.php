@@ -34,8 +34,30 @@ class Settings extends Model
      */
     public $imageBinPath = '';
 
-    // Public Methods
-    // =========================================================================
+    /**
+     * @var string
+     */
+    public $timeout;
+
+    /**
+     * @var int
+     */
+    public $volumeId;
+
+    /**
+     * @var string
+     */
+    public $singleUploadLocationSource;
+
+    /**
+     * @var string
+     */
+    public $singleUploadLocationSubpath;
+
+    /**
+     * @var bool
+     */
+    public $overrideFile = true;
 
     /**
      * @inheritdoc
@@ -45,7 +67,8 @@ class Settings extends Model
         return [
             [['pdfBinPath', 'imageBinPath'], 'required'],
             [['pdfBinPath'], PdfLibValidator::class],
-            [['imageBinPath'], ImageLibValidator::class]
+            [['imageBinPath'], ImageLibValidator::class],
+            [['timeout'], 'integer']
         ];
     }
 }

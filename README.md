@@ -2,7 +2,7 @@
 <img src="https://scrutinizer-ci.com/g/enupal/snapshot/badges/quality-score.png?b=master"> <img src="https://scrutinizer-ci.com/g/enupal/snapshot/badges/coverage.png?b=master"> <img src="https://scrutinizer-ci.com/g/enupal/snapshot/badges/build.png?b=master"> <img src="https://scrutinizer-ci.com/g/enupal/snapshot/badges/code-intelligence.svg?b=master">
 </p>
 <p align="center">
-	<a href="https://enupal.com/en/craft-plugins/enupal-snapshot/docs/" target="_blank">
+	<a href="https://enupal.com/craft-plugins/enupal-snapshot/docs/" target="_blank">
 	<img width="212" height="212" src="https://enupal.com/assets/docs/snapshot-icon.svg" alt="Enupal Snapshot"></a>
 </p>
 
@@ -67,7 +67,7 @@ PDF or Image generation from a URL or HTML page easily. It uses the excellent we
 ### Display the Pdf in browser from Urls
 
 ```twig
-{% set urls = {0: 'https://www.google.com', 1:'http://enupal.com/en'} %}
+{% set urls = {0: 'https://www.google.com', 1:'http://enupal.com'} %}
 
 {%  set settings = {
         filename: 'my-first.pdf'
@@ -99,17 +99,17 @@ All available options [here](https://wkhtmltopdf.org/usage/wkhtmltopdf.txt):
 
 ## Documentation
 
-https://enupal.com/en/craft-plugins/enupal-snapshot/docs/
+https://enupal.com/craft-plugins/enupal-snapshot/docs/
 
 ## Enupal Snapshot Support
 
-Via Email:
+* Send us a note at: support@enupal.com
 
-Send us a note at: info@enupal.com
+* Create an [issue](https://github.com/enupal/snapshot/issues) on Github
 
 ------------------------------------------------------------
 
-Brought to you by [enupal](https://enupal.com/en)
+Brought to you by [enupal](https://enupal.com)
 
 <p align="center">
 	<a href="https://enupal.com/en" target="_blank">

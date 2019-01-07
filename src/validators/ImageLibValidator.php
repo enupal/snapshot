@@ -30,7 +30,7 @@ class ImageLibValidator extends Validator
         $url = Snapshot::$app->image->test() ?? '';
 
         if ($object->imageBinPath && !UrlHelper::isFullUrl($url)) {
-            $this->addError($object, $attribute, Snapshot::t('Wrong path'));
+            $this->addError($object, $attribute, Snapshot::t('Something went wrong in the test. Please check the path and your logs.'));
         }
     }
 }

@@ -12,11 +12,6 @@ namespace enupal\snapshot\services;
 
 use enupal\snapshot\contracts\SnappyPdf;
 
-/**
- * @author    Enupal
- * @package   Snapshot
- * @since     1.0.0
- */
 class Pdf extends SnappyPdf
 {
     /**
@@ -24,6 +19,6 @@ class Pdf extends SnappyPdf
      */
     public function test()
     {
-        return $this->displayHtml("<h1>Hello world</h1>", ['inline' => false]);
+        return $this->displayHtml("<h1>Hello world</h1>", ['inline' => false, 'singleUploadLocationSubpath' => '']);
     }
 }

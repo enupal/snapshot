@@ -1,5 +1,9 @@
 # Enupal Snapshot Changelog
 
+## 1.1.2 - 2019.01.07
+### Fixed
+- Fixed issue where lib paths were deleted after upgrade
+
 ## 1.1.1 - 2019.01.07
 ### Fixed
 - Fixed migration error

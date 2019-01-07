@@ -15,6 +15,7 @@ use craft\elements\Asset;
 use craft\errors\InvalidSubpathException;
 use craft\errors\InvalidVolumeException;
 use craft\helpers\UrlHelper;
+use craft\models\VolumeFolder;
 use enupal\snapshot\models\Settings;
 use enupal\snapshot\Snapshot;
 use Knp\Snappy\GeneratorInterface;
@@ -187,17 +188,20 @@ abstract class BaseSnappy extends Component
             $settings->filename = $siteName.'_'.$this->getRandomStr().$extension;
         }
 
-        // we need create a temp file to save the asset later
         $path = $this->resolveTempPublicDir().DIRECTORY_SEPARATOR.$settings->filename;
 
-        //@todo check override before call this function searching by filename?
-        #$this->deleteFile($path);
+        if (file_exists($path)){
+            unlink($path);
+        }
 
         $settings->path = $path;
 
         return $settings;
     }
 
+    /**
+     * @return string
+     */
     public function getSnapshotPath()
     {
         // Get the public path of Craft CMS
@@ -224,9 +228,18 @@ abstract class BaseSnappy extends Component
     public function getAsset($tempPath, $filename)
     {
         $targetFolderId = $this->determineUploadFolderId([]);
-        //@todo find existing file if override is disabled
-
         $folder = Craft::$app->getAssets()->getFolderById($targetFolderId);
+
+        $asset = $this->checkIfFileExists($folder, $filename);
+
+        if ($asset){
+            if (!$this->pluginSettings->overrideFile){
+                return $asset;
+            }
+
+            Craft::$app->getElements()->deleteElement($asset);
+        }
+
         $asset = new Asset();
         $asset->tempFilePath = $tempPath;
         $asset->filename = $filename;
@@ -240,6 +253,22 @@ abstract class BaseSnappy extends Component
     }
 
     /**
+     * @param VolumeFolder $folder
+     * @param $fileName
+     * @return array|\craft\base\ElementInterface|Asset|null
+     */
+    private function checkIfFileExists($folder, $fileName)
+    {
+        $query = Asset::find();
+
+        $query->volumeId = $folder->volumeId;
+        $query->folderId = $folder->id;
+        $query->filename = $fileName;
+
+        return $query->one();
+    }
+
+    /**
      * Determine an upload folder id by looking at the settings and whether Element this field belongs to is new or not.
      *
      * @param array $variables
@@ -250,10 +279,8 @@ abstract class BaseSnappy extends Component
      */
     private function determineUploadFolderId($variables = []): int
     {
-        $pluginSettings = Snapshot::$app->settings->getSettings();
-
-        $uploadVolume = $pluginSettings->singleUploadLocationSource;
-        $subpath = $pluginSettings->singleUploadLocationSubpath;
+        $uploadVolume = $this->pluginSettings->singleUploadLocationSource;
+        $subpath = $this->pluginSettings->singleUploadLocationSubpath;
         $settingName = Craft::t('app', 'Upload Location');
 
         try {

@@ -46,11 +46,16 @@ class SnappyImage extends BaseSnappy
 
     /**
      * @param string $html
-     * @param array  $settings display inline | url
+     * @param array $settings display inline | url
      *                         *
      *
      * @return Response|string
-     * @throws \Exception
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \craft\errors\InvalidSubpathException
+     * @throws \craft\errors\InvalidVolumeException
+     * @throws \craft\errors\VolumeException
+     * @throws \yii\base\Exception
      * @throws \yii\web\ServerErrorHttpException
      */
     public function displayHtml($html, $settings = null)
@@ -64,11 +69,16 @@ class SnappyImage extends BaseSnappy
 
     /**
      * @param string $template
-     * @param array  $settings display inline | url
+     * @param array $settings display inline | url
      *
      * @return string
-     * @throws \Twig_Error_Loader
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \craft\errors\InvalidSubpathException
+     * @throws \craft\errors\InvalidVolumeException
+     * @throws \craft\errors\VolumeException
      * @throws \yii\base\Exception
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function displayTemplate($template, $settings = null)
     {
@@ -85,10 +95,15 @@ class SnappyImage extends BaseSnappy
 
     /**
      * @param string $url
-     * @param array  $settings display inline | url
+     * @param array $settings display inline | url
      *
      * @return string
-     * @throws \Exception
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \craft\errors\InvalidSubpathException
+     * @throws \craft\errors\InvalidVolumeException
+     * @throws \craft\errors\VolumeException
+     * @throws \yii\base\Exception
      * @throws \yii\web\ServerErrorHttpException
      */
     public function displayUrl($url, $settings = null)
@@ -114,12 +129,18 @@ class SnappyImage extends BaseSnappy
     /**
      * Generate image from html or urls
      *
-     * @param string         $source Html or Urls
+     * @param string $source Html or Urls
      * @param SnappySettings $settingsModel
      *
-     * @param bool           $sourceIsHtml
+     * @param bool $sourceIsHtml
      *
      * @return string|Response
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \craft\errors\InvalidSubpathException
+     * @throws \craft\errors\InvalidVolumeException
+     * @throws \craft\errors\VolumeException
+     * @throws \yii\base\Exception
      */
     private function _generateImage($source, SnappySettings $settingsModel, $sourceIsHtml = true)
     {
@@ -135,11 +156,14 @@ class SnappyImage extends BaseSnappy
                 Snapshot::error(Snapshot::t("Unable to find the Image file: ".$settingsModel->path));
                 return Snapshot::t("Unable to display Image file on browser");
             }
-        } catch (\RuntimeException $e) {
+
+            $asset = $this->getAsset($settingsModel->path, $settingsModel->filename);
+
+        } catch (\Exception $e) {
             Snapshot::error(Snapshot::t("Something went wrong when creating the Image file: ".$e->getMessage()));
             return Snapshot::t("Something went wrong when creating the Image file, please check your logs");
         }
-        // return download link always for images
-        return '';
+
+        return $asset->getUrl();
     }
 }

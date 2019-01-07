@@ -184,13 +184,11 @@ class SnappyPdf extends BaseSnappy
 
             $asset = $this->getAsset($settingsModel->path, $settingsModel->filename);
 
-        } catch (\RuntimeException $e) {
+        } catch (\Exception $e) {
             Snapshot::error(Snapshot::t("Something went wrong when creating the PDF file: ".$e->getMessage()));
             return Snapshot::t("Something went wrong when creating the PDF file, please check your logs");
         }
 
-
-        // return download link
         return $asset->getUrl();
     }
 

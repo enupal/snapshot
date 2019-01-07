@@ -11,6 +11,10 @@
 PDF or Image generation from a URL or HTML page easily. It uses the excellent webkit-based wkhtmltopdf and wkhtmltoimage available on OSX, Linux & windows.
 ## Features
 
+### Store your PDF or Image files in Assets
+
+Enupal Snapshot allows set a global asset and sub-path (twig code allowed) to store your files. Override the asset and sub-path before generating your files in your templates, more info [here](https://enupal.com/craft-plugins/enupal-snapshot/docs/advanced/override-upload-asset).
+
 ### Display the Pdf in browser from Html
 ```twig
 {%  set settings = {

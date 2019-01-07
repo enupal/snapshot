@@ -42,7 +42,7 @@ class Snapshot extends Plugin
     /**
      * @inheritdoc
      */
-    public $schemaVersion = '1.0.6';
+    public $schemaVersion = '1.1.0';
 
     /**
      * @inheritdoc

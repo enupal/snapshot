@@ -53,20 +53,22 @@ class Settings extends Component
     public function saveDefaultSettings(int $volumeId)
     {
         $folderId = $this->getFolderId($volumeId);
-        // @todo - update to craft 3.1 getPluin returns null here.
-
-        $settings = Snapshot::getInstance()->getSettings();
+        $plugin = Snapshot::getInstance();
+        $settings = $plugin->getSettings();
         $settings->singleUploadLocationSource = 'folder:'.$folderId;
         $settings->volumeId = $volumeId;
 
-        $settings = json_encode($settings->getAttributes());
+        Craft::$app->getPlugins()->savePluginSettings($plugin,$settings->getAttributes());
+    }
 
-        Craft::$app->getDb()->createCommand()->update('{{%plugins}}', [
-            'settings' => $settings
-        ], [
-                'handle' => 'enupal-snapshot'
-            ]
-        )->execute();
+    /**
+     * @return bool|string
+     */
+    public function getDefaultCommerceTemplate()
+    {
+        $defaultTemplate = Craft::getAlias('@enupal/snapshot/templates/_frontend/commerce.twig');
+
+        return $defaultTemplate;
     }
 
     /**

@@ -44,6 +44,29 @@
     name: 'timeout',
     errors: settings.getErrors('timeout'),
     value: settings['timeout']}) }}
+<hr>
+
+{% if craft.enupalsnapshot.isStripePaymentsInstalled %}
+    {{ forms.textField({
+        label: 'Stripe Payments Order PDF Template',
+        instructions: 'The path to the template used for generating order PDFs.',
+        id: 'stripePaymentsTemplate',
+        name: 'stripePaymentsTemplate',
+        required: true,
+        errors: settings.getErrors('stripePaymentsTemplate'),
+        value: settings['stripePaymentsTemplate']}) }}
+{% endif %}
+{% if craft.enupalsnapshot.isCommerceInstalled %}
+    {{ forms.textField({
+        label: 'Commerce Order PDF Template',
+        instructions: 'The path to the template used for generating order PDFs.',
+        id: 'craftCommerceTemplate',
+        name: 'craftCommerceTemplate',
+        required: true,
+        errors: settings.getErrors('craftCommerceTemplate'),
+        value: settings['craftCommerceTemplate']}) }}
+{% endif %}
+<hr>
 
 {{ forms.lightswitchField({
     label: "Override file"|t('enupal-snapshot'),

@@ -16,6 +16,8 @@ class Pdf extends SnappyPdf
 {
     /**
      * @return string
+     * @throws \Throwable
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function test()
     {

@@ -60,6 +60,16 @@ class Settings extends Model
     public $overrideFile = true;
 
     /**
+     * @var string
+     */
+    public $craftCommerceTemplate = null;
+
+    /**
+     * @var string
+     */
+    public $stripePaymentsTemplate = null;
+
+    /**
      * @inheritdoc
      */
     public function rules()

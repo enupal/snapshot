@@ -59,7 +59,6 @@ class SnapshotVariable
         return Snapshot::$app->pdf->displayTemplate($template, $settings);
     }
 
-
     /**
      * Display a Stripe Payments Order PDF
      *

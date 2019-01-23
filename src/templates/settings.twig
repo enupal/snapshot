@@ -55,6 +55,15 @@
         required: true,
         errors: settings.getErrors('stripePaymentsTemplate'),
         value: settings['stripePaymentsTemplate']}) }}
+
+    {{ forms.textField({
+        label: 'Stripe Payments Order Filename Format',
+        instructions: 'What the order filenames should look like (sans extension). You can include tags that output order properties, such as {order.number}.',
+        id: 'stripePaymentsFileName',
+        name: 'stripePaymentsFileName',
+        required: true,
+        errors: settings.getErrors('stripePaymentsFileName'),
+        value: settings['stripePaymentsFileName']}) }}
 {% endif %}
 {% if craft.enupalsnapshot.isCommerceInstalled %}
     {{ forms.textField({

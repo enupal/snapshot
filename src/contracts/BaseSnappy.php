@@ -261,6 +261,28 @@ abstract class BaseSnappy extends Component
     }
 
     /**
+     * @param $settings
+     * @param bool $isPdf
+     * @return string|null
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     */
+    public function getStripePaymentsFilename($settings, $isPdf = true)
+    {
+        $filename = $settings['filename'] ?? null;
+
+        if (is_null($filename)){
+            $pluginSettings = Snapshot::$app->settings->getSettings();
+            Snapshot::$app->snapshots::addVariables($settings['variables']);
+
+            $filename = Craft::$app->getView()->renderObjectTemplate($pluginSettings->stripePaymentsFileName, Snapshot::$app->snapshots->getFieldVariables());
+            $filename .= $isPdf ? '.pdf' : '.png';
+        }
+
+        return $filename;
+    }
+
+    /**
      * @param VolumeFolder $folder
      * @param $fileName
      * @return array|\craft\base\ElementInterface|Asset|null

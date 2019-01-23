@@ -67,7 +67,17 @@ class Settings extends Model
     /**
      * @var string
      */
+    public $craftCommerceFileName = null;
+
+    /**
+     * @var string
+     */
     public $stripePaymentsTemplate = null;
+
+    /**
+     * @var string
+     */
+    public $stripePaymentsFileName = 'Order-{order.number}';
 
     /**
      * @inheritdoc

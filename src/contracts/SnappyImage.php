@@ -98,6 +98,7 @@ class SnappyImage extends BaseSnappy
     {
         $settings['variables']['order'] = $order;
         $template = $this->getStripePaymentsOrderTemplate($settings);
+        $settings['filename'] = $this->getStripePaymentsFilename($settings, false);
 
         $this->displayTemplate($template, $settings);
     }

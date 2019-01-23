@@ -103,6 +103,7 @@ class SnappyPdf extends BaseSnappy
     {
         $settings['variables']['order'] = $order;
         $template = $this->getStripePaymentsOrderTemplate($settings);
+        $settings['filename'] = $this->getStripePaymentsFilename($settings);
 
         return $this->displayTemplate($template, $settings);
     }

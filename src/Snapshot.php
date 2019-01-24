@@ -42,7 +42,7 @@ class Snapshot extends Plugin
     /**
      * @inheritdoc
      */
-    public $schemaVersion = '1.1.1';
+    public $schemaVersion = '1.2.0';
 
     /**
      * @inheritdoc
@@ -103,14 +103,6 @@ class Snapshot extends Plugin
     protected function afterInstall()
     {
         self::$app->snapshots->installDefaultVolume();
-    }
-
-    /**
-     * @throws \Throwable
-     */
-    protected function afterUninstall()
-    {
-        self::$app->snapshots->removeVolume();
     }
 
     /**

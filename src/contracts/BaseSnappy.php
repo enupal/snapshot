@@ -418,11 +418,11 @@ abstract class BaseSnappy extends Component
     {
         $parts = explode(':', $sourceKey, 2);
 
-        if (count($parts) !== 2 || !is_numeric($parts[1])) {
+        if (count($parts) !== 2) {
             return null;
         }
 
-        $folder = Craft::$app->getAssets()->getFolderById((int)$parts[1]);
+        $folder = Craft::$app->getAssets()->getFolderByUid($parts[1]);
 
         return $folder->volumeId ?? null;
     }

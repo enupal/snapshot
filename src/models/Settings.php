@@ -40,11 +40,6 @@ class Settings extends Model
     public $timeout;
 
     /**
-     * @var int
-     */
-    public $volumeId;
-
-    /**
      * @var string
      */
     public $singleUploadLocationSource;

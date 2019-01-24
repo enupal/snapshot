@@ -54,26 +54,13 @@ class Snapshots extends Component
         $response = $volumes->saveVolume($volume);
 
         if (!$response) {
-            $errors = $volume->getErrors();
-            Craft::error('Unable to save the volume: '.json_encode($errors), __METHOD__);
+            Craft::error('Unable to save the volume', __METHOD__);
             return false;
         }
 
         Snapshot::$app->settings->saveDefaultSettings($volume->id);
 
         return true;
-    }
-
-    /**
-     * @throws \Throwable
-     */
-    public function removeVolume()
-    {
-        $volumeId = Snapshot::$app->settings->getVolumeId();
-
-        if ($volumeId) {
-            Craft::$app->getVolumes()->deleteVolumeById((int)$volumeId);
-        }
     }
 
     /**

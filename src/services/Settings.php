@@ -36,27 +36,14 @@ class Settings extends Component
     }
 
     /**
-     * @return int|null
-     */
-    public function getVolumeId()
-    {
-        $settings = $this->getSettings();
-        $volumeId = $settings->volumeId ?? null;
-
-        return $volumeId;
-    }
-
-    /**
      * @param int $volumeId
-     * @throws \yii\db\Exception
      */
     public function saveDefaultSettings(int $volumeId)
     {
-        $folderId = $this->getFolderId($volumeId);
+        $folderUid = $this->getFolderUId($volumeId);
         $plugin = Snapshot::getInstance();
         $settings = $plugin->getSettings();
-        $settings->singleUploadLocationSource = 'folder:'.$folderId;
-        $settings->volumeId = $volumeId;
+        $settings->singleUploadLocationSource = 'folder:'.$folderUid;
 
         Craft::$app->getPlugins()->savePluginSettings($plugin,$settings->getAttributes());
     }
@@ -75,7 +62,7 @@ class Settings extends Component
      * @param int $volumeId
      * @return int|null
      */
-    private function getFolderId(int $volumeId)
+    private function getFolderUId(int $volumeId)
     {
         $folder = (new Query())
             ->select('*')
@@ -83,6 +70,6 @@ class Settings extends Component
             ->where(['volumeId' => $volumeId])
             ->one();
 
-        return $folder['id'] ?? null;
+        return $folder['uid'] ?? null;
     }
 }

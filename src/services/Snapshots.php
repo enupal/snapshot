@@ -26,44 +26,6 @@ class Snapshots extends Component
     protected static $fieldVariables = [];
 
     /**
-     * @return bool
-     * @throws \Throwable
-     */
-    public function installDefaultVolume()
-    {
-        /** @var Volume $volume */
-        $volumes = Craft::$app->getVolumes();
-        $enupalSnapshotPath = $this->getDefaultSnapshotPath();
-        $volumeSettings = [
-            'path' => $enupalSnapshotPath
-        ];
-
-        $volumeHandle = $this->getHandleAsNew("enupalSnapshot");
-        $volume = null;
-
-        $volume = $volumes->createVolume([
-            'id' => null,
-            'type' => Local::class,
-            'name' => ucwords($volumeHandle),
-            'handle' => $volumeHandle,
-            'hasUrls' => true,
-            'url' => '/enupalsnapshot/',
-            'settings' => json_encode($volumeSettings)
-        ]);
-
-        $response = $volumes->saveVolume($volume);
-
-        if (!$response) {
-            Craft::error('Unable to save the volume', __METHOD__);
-            return false;
-        }
-
-        Snapshot::$app->settings->saveDefaultSettings($volume->id);
-
-        return true;
-    }
-
-    /**
      * @return array
      */
     public function getAvailableSources()

@@ -20,10 +20,10 @@ class PdfLibValidator extends Validator
     public $skipOnEmpty = false;
 
     /**
-     * Wkhtmltopdf validation
-     *
-     * @param $object
-     * @param $attribute
+     * @param \yii\base\Model $object
+     * @param string $attribute
+     * @throws \Throwable
+     * @throws \yii\web\ServerErrorHttpException
      */
     public function validateAttribute($object, $attribute)
     {

@@ -36,19 +36,6 @@ class Settings extends Component
     }
 
     /**
-     * @param int $volumeId
-     */
-    public function saveDefaultSettings(int $volumeId)
-    {
-        $folderUid = $this->getFolderUId($volumeId);
-        $plugin = Snapshot::getInstance();
-        $settings = $plugin->getSettings();
-        $settings->singleUploadLocationSource = 'folder:'.$folderUid;
-
-        Craft::$app->getPlugins()->savePluginSettings($plugin,$settings->getAttributes());
-    }
-
-    /**
      * @return bool|string
      */
     public function getDefaultCommerceTemplate()

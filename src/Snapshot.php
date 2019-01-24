@@ -81,33 +81,40 @@ class Snapshot extends Plugin
         if ($stripePayments){
             Craft::$app->view->hook('cp.enupal-stripe.order.actionbutton', function(array &$context) {
                 $order = $context['order'];
-                $settings = $this->getStripePaymentsSettings();
+                $pluginSettings = self::getSettings();
                 $view = Craft::$app->getView();
-                $view->setTemplatesPath(Craft::$app->path->getSiteTemplatesPath());
-                $pdfUrl = Snapshot::$app->pdf->displayOrder($order, $settings);
-                $view->setTemplatesPath(Craft::$app->path->getCpTemplatesPath());
+                if ($pluginSettings->stripePaymentsTemplate){
+                    $settings = $this->getStripePaymentsSettings();
+                    $view->setTemplatesPath(Craft::$app->path->getSiteTemplatesPath());
+                    $pdfUrl = Snapshot::$app->pdf->displayOrder($order, $settings);
+                    $view->setTemplatesPath(Craft::$app->path->getCpTemplatesPath());
 
-                return $view->renderTemplate('enupal-snapshot/_pdfbuttons/stripepayments', ['pdfUrl' => $pdfUrl]);
+                    return $view->renderTemplate('enupal-snapshot/_pdfbuttons/stripepayments', ['pdfUrl' => $pdfUrl]);
+                }
+
+                return $view->renderTemplate('enupal-snapshot/_pdfbuttons/templateNotFound');
             });
 
             Event::on(Emails::class, Emails::EVENT_BEFORE_SEND_NOTIFICATION_EMAIL, function(NotificationEvent $e) {
                 $message = $e->message;
                 $settings = $this->getStripePaymentsSettings();
+                $pluginSettings = self::getSettings();
+                if ($pluginSettings->stripePaymentsTemplate){
+                    if (isset($e->order) && $e->type == Stripe::$app->emails::CUSTOMER_TYPE){
+                        $view = Craft::$app->getView();
+                        $view->setTemplatesPath(Craft::$app->path->getSiteTemplatesPath());
+                        $pdfUrl = Snapshot::$app->pdf->displayOrder($e->order, $settings);
+                        $view->setTemplatesPath(Craft::$app->path->getCpTemplatesPath());
+                        if (UrlHelper::isFullUrl($pdfUrl)){
+                            $pdfUrl = UrlHelper::siteUrl($pdfUrl);
+                        }
+                        $content = file_get_contents($pdfUrl);
+                        $path = parse_url($pdfUrl, PHP_URL_PATH);
+                        $fileName = basename($path);
 
-                if (isset($e->order) && $e->type == Stripe::$app->emails::CUSTOMER_TYPE){
-                    $view = Craft::$app->getView();
-                    $view->setTemplatesPath(Craft::$app->path->getSiteTemplatesPath());
-                    $pdfUrl = Snapshot::$app->pdf->displayOrder($e->order, $settings);
-                    $view->setTemplatesPath(Craft::$app->path->getCpTemplatesPath());
-                    if (UrlHelper::isFullUrl($pdfUrl)){
-                        $pdfUrl = UrlHelper::siteUrl($pdfUrl);
-                    }
-                    $content = file_get_contents($pdfUrl);
-                    $path = parse_url($pdfUrl, PHP_URL_PATH);
-                    $fileName = basename($path);
-
-                    if ($content){
-                        $message->attachContent($content, ['fileName' => $fileName, 'contentType' => 'application/pdf']);
+                        if ($content){
+                            $message->attachContent($content, ['fileName' => $fileName, 'contentType' => 'application/pdf']);
+                        }
                     }
                 }
             });
@@ -136,14 +143,6 @@ class Snapshot extends Plugin
                 'settings' => $this->getSettings()
             ]
         );
-    }
-
-    /**
-     * @throws \Throwable
-     */
-    protected function afterInstall()
-    {
-        self::$app->snapshots->installDefaultVolume();
     }
 
     /**

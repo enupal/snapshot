@@ -10,6 +10,7 @@
 
 namespace enupal\snapshot;
 
+use craft\helpers\UrlHelper;
 use enupal\snapshot\services\App;
 use enupal\snapshot\variables\SnapshotVariable;
 use enupal\snapshot\models\Settings;
@@ -17,7 +18,10 @@ use enupal\snapshot\models\Settings;
 use Craft;
 use craft\base\Plugin;
 use craft\web\twig\variables\CraftVariable;
+use enupal\stripe\events\NotificationEvent;
+use enupal\stripe\services\Emails;
 
+use enupal\stripe\Stripe;
 use yii\base\Event;
 
 /**
@@ -71,6 +75,43 @@ class Snapshot extends Plugin
                 $variable->set('enupalsnapshot', SnapshotVariable::class);
             }
         );
+
+        $stripePayments = Craft::$app->getPlugins()->getPlugin('enupal-stripe');
+
+        if ($stripePayments){
+            Craft::$app->view->hook('cp.enupal-stripe.order.actionbutton', function(array &$context) {
+                $order = $context['order'];
+                $settings = $this->getStripePaymentsSettings();
+                $view = Craft::$app->getView();
+                $view->setTemplatesPath(Craft::$app->path->getSiteTemplatesPath());
+                $pdfUrl = Snapshot::$app->pdf->displayOrder($order, $settings);
+                $view->setTemplatesPath(Craft::$app->path->getCpTemplatesPath());
+
+                return $view->renderTemplate('enupal-snapshot/_pdfbuttons/stripepayments', ['pdfUrl' => $pdfUrl]);
+            });
+
+            Event::on(Emails::class, Emails::EVENT_BEFORE_SEND_NOTIFICATION_EMAIL, function(NotificationEvent $e) {
+                $message = $e->message;
+                $settings = $this->getStripePaymentsSettings();
+
+                if (isset($e->order) && $e->type == Stripe::$app->emails::CUSTOMER_TYPE){
+                    $view = Craft::$app->getView();
+                    $view->setTemplatesPath(Craft::$app->path->getSiteTemplatesPath());
+                    $pdfUrl = Snapshot::$app->pdf->displayOrder($e->order, $settings);
+                    $view->setTemplatesPath(Craft::$app->path->getCpTemplatesPath());
+                    if (UrlHelper::isFullUrl($pdfUrl)){
+                        $pdfUrl = UrlHelper::siteUrl($pdfUrl);
+                    }
+                    $content = file_get_contents($pdfUrl);
+                    $path = parse_url($pdfUrl, PHP_URL_PATH);
+                    $fileName = basename($path);
+
+                    if ($content){
+                        $message->attachContent($content, ['fileName' => $fileName, 'contentType' => 'application/pdf']);
+                    }
+                }
+            });
+        }
     }
 
     // Protected Methods
@@ -107,7 +148,7 @@ class Snapshot extends Plugin
 
     /**
      * @param string $message
-     * @param array  $params
+     * @param array $params
      *
      * @return string
      */
@@ -139,5 +180,25 @@ class Snapshot extends Plugin
     public static function error($message)
     {
         Craft::error(self::t($message), __METHOD__);
+    }
+
+    /**
+     * @return array
+     */
+    private function getStripePaymentsSettings()
+    {
+        $settings = [
+            'inline' => false,
+            'overrideFile' => false,
+            'cliOptions' => [
+                'viewport-size' => '1280x1024',
+                'margin-top' => 0,
+                'margin-bottom' => 0,
+                'margin-left' => 0,
+                'margin-right' => 0
+            ]
+        ];
+
+        return $settings;
     }
 }

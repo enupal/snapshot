@@ -65,16 +65,7 @@
         errors: settings.getErrors('stripePaymentsFileName'),
         value: settings['stripePaymentsFileName']}) }}
 {% endif %}
-{% if craft.enupalsnapshot.isCommerceInstalled %}
-    {{ forms.textField({
-        label: 'Commerce Order PDF Template',
-        instructions: 'The path to the template used for generating order PDFs.',
-        id: 'craftCommerceTemplate',
-        name: 'craftCommerceTemplate',
-        required: true,
-        errors: settings.getErrors('craftCommerceTemplate'),
-        value: settings['craftCommerceTemplate']}) }}
-{% endif %}
+
 <hr>
 
 {{ forms.lightswitchField({
@@ -153,7 +144,7 @@
                     filename: 'my-first-pdf.pdf',
                     inline: false,
                     overrideFile: true,
-                    singleUploadLocationSource: 'folder:11',
+                    singleUploadLocationSource: 'folder:0a2b04bb-19ac-45ba-b079-40d6d902b8e6',
                     singleUploadLocationSubpath: 'path/{author.username}'
                 }
                 %}

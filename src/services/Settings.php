@@ -36,44 +36,20 @@ class Settings extends Component
     }
 
     /**
-     * @return int|null
+     * @return bool|string
      */
-    public function getVolumeId()
+    public function getDefaultCommerceTemplate()
     {
-        $settings = $this->getSettings();
-        $volumeId = $settings->volumeId ?? null;
+        $defaultTemplate = Craft::getAlias('@enupal/snapshot/templates/_frontend/commerce.twig');
 
-        return $volumeId;
-    }
-
-    /**
-     * @param int $volumeId
-     * @throws \yii\db\Exception
-     */
-    public function saveDefaultSettings(int $volumeId)
-    {
-        $folderId = $this->getFolderId($volumeId);
-        // @todo - update to craft 3.1 getPluin returns null here.
-
-        $settings = Snapshot::getInstance()->getSettings();
-        $settings->singleUploadLocationSource = 'folder:'.$folderId;
-        $settings->volumeId = $volumeId;
-
-        $settings = json_encode($settings->getAttributes());
-
-        Craft::$app->getDb()->createCommand()->update('{{%plugins}}', [
-            'settings' => $settings
-        ], [
-                'handle' => 'enupal-snapshot'
-            ]
-        )->execute();
+        return $defaultTemplate;
     }
 
     /**
      * @param int $volumeId
      * @return int|null
      */
-    private function getFolderId(int $volumeId)
+    private function getFolderUId(int $volumeId)
     {
         $folder = (new Query())
             ->select('*')
@@ -81,6 +57,6 @@ class Settings extends Component
             ->where(['volumeId' => $volumeId])
             ->one();
 
-        return $folder['id'] ?? null;
+        return $folder['uid'] ?? null;
     }
 }

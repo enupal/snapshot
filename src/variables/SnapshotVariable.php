@@ -13,7 +13,9 @@ namespace enupal\snapshot\variables;
 use enupal\snapshot\services\Snapshots;
 use enupal\snapshot\Snapshot;
 
+use enupal\stripe\elements\Order;
 use yii\web\Response;
+use Craft;
 
 /**
  * @author    Enupal
@@ -58,6 +60,25 @@ class SnapshotVariable
     }
 
     /**
+     * Display a Stripe Payments Order PDF
+     *
+     * @param Order $order
+     * @param null $settings
+     * @return \craft\web\Response|string
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     * @throws \yii\web\ServerErrorHttpException
+     */
+    public function displayOrder(Order $order, $settings = null)
+    {
+        if (isset($settings['asImage']) && $settings['asImage']) {
+            return Snapshot::$app->image->displayOrder($order, $settings);
+        }
+
+        return Snapshot::$app->pdf->displayOrder($order, $settings);
+    }
+
+    /**
      * @param string $url
      * @param array $settings
      *
@@ -96,5 +117,36 @@ class SnapshotVariable
     public function addVariables(array $variables)
     {
         Snapshots::addVariables($variables);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStripePaymentsInstalled()
+    {
+        return $this->getPlugin('enupal-stripe');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCommerceInstalled()
+    {
+        return $this->getPlugin('commerce');
+    }
+
+    /**
+     * @param $handle
+     * @return bool
+     */
+    private function getPlugin($handle)
+    {
+        $plugin = Craft::$app->getPlugins()->getPlugin($handle);
+
+        if (is_null($plugin)){
+            return false;
+        }
+
+        return true;
     }
 }

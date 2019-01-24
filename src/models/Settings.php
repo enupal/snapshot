@@ -40,11 +40,6 @@ class Settings extends Model
     public $timeout;
 
     /**
-     * @var int
-     */
-    public $volumeId;
-
-    /**
      * @var string
      */
     public $singleUploadLocationSource;
@@ -58,6 +53,26 @@ class Settings extends Model
      * @var bool
      */
     public $overrideFile = true;
+
+    /**
+     * @var string
+     */
+    public $craftCommerceTemplate = null;
+
+    /**
+     * @var string
+     */
+    public $craftCommerceFileName = null;
+
+    /**
+     * @var string
+     */
+    public $stripePaymentsTemplate = null;
+
+    /**
+     * @var string
+     */
+    public $stripePaymentsFileName = 'Order-{order.number}';
 
     /**
      * @inheritdoc

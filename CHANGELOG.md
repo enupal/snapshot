@@ -1,5 +1,10 @@
 # Enupal Snapshot Changelog
 
+## 1.2.0 - 2019.01.24
+### Added
+- Added fully support for Craft 3.1
+- Added integration with Stripe Payments to display PDF orders in templates, download PDF order in the edit order page (Control panel) and attach the PDF order to the customer email
+
 ## 1.1.2 - 2019.01.07
 ### Fixed
 - Fixed issue where lib paths were deleted after upgrade

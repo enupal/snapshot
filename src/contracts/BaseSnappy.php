@@ -18,6 +18,7 @@ use craft\helpers\UrlHelper;
 use craft\models\VolumeFolder;
 use enupal\snapshot\models\Settings;
 use enupal\snapshot\Snapshot;
+use enupal\stripe\Stripe;
 use Knp\Snappy\GeneratorInterface;
 use craft\base\Component;
 use craft\helpers\FileHelper;
@@ -200,21 +201,6 @@ abstract class BaseSnappy extends Component
     }
 
     /**
-     * @return string
-     */
-    public function getSnapshotPath()
-    {
-        // Get the public path of Craft CMS
-        $debugTrace = debug_backtrace();
-        $initialCalledFile = count($debugTrace) ? $debugTrace[count($debugTrace) - 1]['file'] : __FILE__;
-        $publicFolderPath = dirname($initialCalledFile);
-        $publicFolderPath = $publicFolderPath.DIRECTORY_SEPARATOR.SnapshotDefault::PUBLIC_DIR;
-        $publicFolderPath = FileHelper::normalizePath($publicFolderPath);
-
-        return $publicFolderPath;
-    }
-
-    /**
      * @param SnappySettings $settingsModel
      * @return Asset
      * @throws InvalidSubpathException
@@ -255,6 +241,45 @@ abstract class BaseSnappy extends Component
         Craft::$app->getElements()->saveElement($asset);
 
         return $asset;
+    }
+
+    /**
+     * @param $settings
+     * @return string|null
+     */
+    public function getStripePaymentsOrderTemplate($settings)
+    {
+        $pluginSettings = Snapshot::$app->settings->getSettings();
+        $template = $pluginSettings->stripePaymentsTemplate;
+        $overrideTemplate = $settings['orderTemplate'] ?? null;
+
+        if ($overrideTemplate !== null){
+            $template = $overrideTemplate;
+        }
+
+        return $template;
+    }
+
+    /**
+     * @param $settings
+     * @param bool $isPdf
+     * @return string|null
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     */
+    public function getStripePaymentsFilename($settings, $isPdf = true)
+    {
+        $filename = $settings['filename'] ?? null;
+
+        if (is_null($filename)){
+            $pluginSettings = Snapshot::$app->settings->getSettings();
+            Snapshot::$app->snapshots::addVariables($settings['variables']);
+
+            $filename = Craft::$app->getView()->renderObjectTemplate($pluginSettings->stripePaymentsFileName, Snapshot::$app->snapshots->getFieldVariables());
+            $filename .= $isPdf ? '.pdf' : '.png';
+        }
+
+        return $filename;
     }
 
     /**
@@ -393,11 +418,11 @@ abstract class BaseSnappy extends Component
     {
         $parts = explode(':', $sourceKey, 2);
 
-        if (count($parts) !== 2 || !is_numeric($parts[1])) {
+        if (count($parts) !== 2) {
             return null;
         }
 
-        $folder = Craft::$app->getAssets()->getFolderById((int)$parts[1]);
+        $folder = Craft::$app->getAssets()->getFolderByUid($parts[1]);
 
         return $folder->volumeId ?? null;
     }
@@ -469,21 +494,5 @@ abstract class BaseSnappy extends Component
         $settingsModel = $this->getSettings($settingsModel, $isPdf);
 
         return $settingsModel;
-    }
-
-    /**
-     * @param SnappySettings $settingsModel
-     * @throws \yii\base\ExitException
-     */
-    public function overrideSettings($settingsModel)
-    {
-        if ($settingsModel->singleUploadLocationSubpath !== null){
-            Craft::dd($this->pluginSettings);
-            $this->pluginSettings->singleUploadLocationSubpath = $settingsModel->singleUploadLocationSubpath;
-        }
-
-        if ($settingsModel->singleUploadLocationSource !== null){
-            $this->pluginSettings->singleUploadLocationSource = $settingsModel->singleUploadLocationSource;
-        }
     }
 }

@@ -44,6 +44,29 @@
     name: 'timeout',
     errors: settings.getErrors('timeout'),
     value: settings['timeout']}) }}
+<hr>
+
+{% if craft.enupalsnapshot.isStripePaymentsInstalled %}
+    {{ forms.textField({
+        label: 'Stripe Payments Order PDF Template',
+        instructions: 'The path to the template used for generating order PDFs.',
+        id: 'stripePaymentsTemplate',
+        name: 'stripePaymentsTemplate',
+        required: true,
+        errors: settings.getErrors('stripePaymentsTemplate'),
+        value: settings['stripePaymentsTemplate']}) }}
+
+    {{ forms.textField({
+        label: 'Stripe Payments Order Filename Format',
+        instructions: 'What the order filenames should look like (sans extension). You can include tags that output order properties, such as {order.number}.',
+        id: 'stripePaymentsFileName',
+        name: 'stripePaymentsFileName',
+        required: true,
+        errors: settings.getErrors('stripePaymentsFileName'),
+        value: settings['stripePaymentsFileName']}) }}
+{% endif %}
+
+<hr>
 
 {{ forms.lightswitchField({
     label: "Override file"|t('enupal-snapshot'),
@@ -121,7 +144,7 @@
                     filename: 'my-first-pdf.pdf',
                     inline: false,
                     overrideFile: true,
-                    singleUploadLocationSource: 'folder:11',
+                    singleUploadLocationSource: 'folder:0a2b04bb-19ac-45ba-b079-40d6d902b8e6',
                     singleUploadLocationSubpath: 'path/{author.username}'
                 }
                 %}

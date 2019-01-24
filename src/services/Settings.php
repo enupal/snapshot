@@ -13,6 +13,7 @@ namespace enupal\snapshot\services;
 use Craft;
 use craft\base\Component;
 use craft\db\Query;
+use enupal\snapshot\Snapshot;
 
 class Settings extends Component
 {
@@ -35,47 +36,33 @@ class Settings extends Component
     }
 
     /**
-     * @return int|null
-     */
-    public function getVolumeId()
-    {
-        $settings = $this->getSettings();
-        $volumeId = $settings->volumeId ?? null;
-
-        return $volumeId;
-    }
-
-    /**
      * @param int $volumeId
-     * @throws \yii\db\Exception
      */
     public function saveDefaultSettings(int $volumeId)
     {
-        $folderId = $this->getFolderId($volumeId);
-        // @todo - update to craft 3.1 getPluin returns null here.
-        $settings = [
-            'volumeId' => $volumeId,
-            'singleUploadLocationSource' => 'folder:'.$folderId,
-            'pdfBinPath' => '',
-            'imageBinPath' => '',
-            'timeout' => ''
-        ];
+        $folderUid = $this->getFolderUId($volumeId);
+        $plugin = Snapshot::getInstance();
+        $settings = $plugin->getSettings();
+        $settings->singleUploadLocationSource = 'folder:'.$folderUid;
 
-        $settings = json_encode($settings);
+        Craft::$app->getPlugins()->savePluginSettings($plugin,$settings->getAttributes());
+    }
 
-        Craft::$app->getDb()->createCommand()->update('{{%plugins}}', [
-            'settings' => $settings
-        ], [
-                'handle' => 'enupal-snapshot'
-            ]
-        )->execute();
+    /**
+     * @return bool|string
+     */
+    public function getDefaultCommerceTemplate()
+    {
+        $defaultTemplate = Craft::getAlias('@enupal/snapshot/templates/_frontend/commerce.twig');
+
+        return $defaultTemplate;
     }
 
     /**
      * @param int $volumeId
      * @return int|null
      */
-    private function getFolderId(int $volumeId)
+    private function getFolderUId(int $volumeId)
     {
         $folder = (new Query())
             ->select('*')
@@ -83,6 +70,6 @@ class Settings extends Component
             ->where(['volumeId' => $volumeId])
             ->one();
 
-        return $folder['id'] ?? null;
+        return $folder['uid'] ?? null;
     }
 }

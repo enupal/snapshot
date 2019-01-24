@@ -11,6 +11,7 @@
 namespace enupal\snapshot\contracts;
 
 use craft\web\Response;
+use enupal\stripe\elements\Order;
 use Knp\Snappy\GeneratorInterface;
 use Knp\Snappy\Image;
 use enupal\snapshot\Snapshot;
@@ -82,6 +83,24 @@ class SnappyImage extends BaseSnappy
         $html = Craft::$app->getView()->renderTemplate($template, $variables);
 
         return $this->displayHtml($html, $settings);
+    }
+
+    /**
+     * @param Order $order
+     * @param array $settings display inline | url
+     *
+     * @return string|Response
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     * @throws \yii\web\ServerErrorHttpException
+     */
+    public function displayOrder(Order $order, $settings = null)
+    {
+        $settings['variables']['order'] = $order;
+        $template = $this->getStripePaymentsOrderTemplate($settings);
+        $settings['filename'] = $this->getStripePaymentsFilename($settings, false);
+
+        $this->displayTemplate($template, $settings);
     }
 
     /**

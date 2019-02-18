@@ -1,5 +1,9 @@
 # Enupal Snapshot Changelog
 
+## 1.2.2 - 2019.02.18
+### Fixed
+- Fixed `Calling unknown method: enupal\snapshot\services\Snapshots::installDefaultVolume()` when updating plugin from Craft 3.0.x
+
 ## 1.2.1 - 2019.01.25
 ### Updated
 - Updated the Order PDF template

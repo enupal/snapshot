@@ -1,5 +1,9 @@
 # Enupal Snapshot Changelog
 
+## 1.2.1 - 2019.01.25
+### Updated
+- Updated the Order PDF template
+
 ## 1.2.0 - 2019.01.24
 ### Added
 - Added fully support for Craft 3.1

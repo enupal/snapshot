@@ -5,16 +5,38 @@
     <title>Order {{ order.number }}</title>
 
     <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .backgrounds:after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            width: 100%;
+            height: 75vh;
+            top: 0;
+            -webkit-transform: skewY(-12deg);
+            -ms-transform: skewY(-12deg);
+            transform: skewY(-12deg);
+            background: #eee;
+            background: #eee;
+            top: 12vh;
+        }
         .invoice-box {
-            max-width: 800px;
+            width: 95%;
             margin: auto;
-            padding: 30px;
+            padding: 10px;
             border: 1px solid #eee;
             box-shadow: 0 0 10px rgba(0, 0, 0, .15);
             font-size: 16px;
             line-height: 24px;
             font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
             color: #555;
+        }
+
+        .subtitle {
+            font-weight: bold;
         }
 
         .invoice-box table {
@@ -99,19 +121,23 @@
     </style>
 </head>
 
+{% set form = order.getPaymentForm() %}
+{% set shippingAddress = order.getShippingAddress() %}
+{% set billingAddress = order.getShippingAddress() %}
+
 <body>
-<div class="invoice-box">
+<div class="invoice-box backgrounds">
     <table cellpadding="0" cellspacing="0">
         <tr class="top">
             <td colspan="2">
                 <table>
                     <tr>
                         <td class="title">
-                            <img src="https://www.sparksuite.com/images/logo.png" style="width:100%; max-width:300px;">
+                            {{ siteName }}
                         </td>
 
                         <td>
-                            Invoice #: {{ order.number }}<br>
+                            Order #: {{ order.number }}<br>
                             Created: {{ order.dateCreated|date }}<br>
                         </td>
                     </tr>
@@ -123,21 +149,38 @@
             <td colspan="2">
                 <table>
                     <tr>
-                        <td>
-                            Sparksuite, Inc.<br>
-                            12345 Sunny Road<br>
-                            Sunnyville, CA 12345
-                        </td>
-
-                        <td>
-                            Acme Corp.<br>
-                            John Doe<br>
-                            john@example.com
+                        <td class="item">
+                            <span class="subtitle">Customer:</span> {{ order.email }}<br>
+                            <span class="subtitle">Total:</span> {{ order.totalPrice|currency(order.currency) }}
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
+        {% if shippingAddress or billingAddress %}
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>
+                                {% if shippingAddress %}
+                                    <span class="heading"> Shipping Address</span>
+
+                                    {{ shippingAddress|raw }}
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if billingAddress %}
+                                    <span class="heading"> Billing Address</span>
+                                    {{ billingAddress|raw }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        {% endif %}
 
         <tr class="heading">
             <td>
@@ -145,17 +188,17 @@
             </td>
 
             <td>
-                Check #
+                Type
             </td>
         </tr>
 
         <tr class="details">
             <td>
-                Check
+                {{ order.getPaymentMethod()|t }}
             </td>
 
             <td>
-                1000
+                {{ order.getPaymentType()|t }}
             </td>
         </tr>
 
@@ -165,45 +208,35 @@
             </td>
 
             <td>
-                Price
-            </td>
-        </tr>
-
-        <tr class="item">
-            <td>
-                Website design
-            </td>
-
-            <td>
-                $300.00
-            </td>
-        </tr>
-
-        <tr class="item">
-            <td>
-                Hosting (3 months)
-            </td>
-
-            <td>
-                $75.00
+                Quantity
             </td>
         </tr>
 
         <tr class="item last">
             <td>
-                Domain name (1 year)
+                {{ form.name }}
             </td>
 
             <td>
-                $10.00
+                {{ order.quantity }}
             </td>
         </tr>
+
+        {% if order.tax > 0 and order.isSubscription() %}
+            <tr class="total">
+                <td></td>
+
+                <td>
+                    Tax: {{ order.tax|currency(order.currency) }}
+                </td>
+            </tr>
+        {% endif %}
 
         <tr class="total">
             <td></td>
 
             <td>
-                Total: $385.00
+                Total: {{ order.totalPrice|currency(order.currency) }}
             </td>
         </tr>
     </table>

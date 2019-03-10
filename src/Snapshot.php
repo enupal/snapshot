@@ -11,6 +11,7 @@
 namespace enupal\snapshot;
 
 use craft\helpers\UrlHelper;
+use craft\services\Plugins;
 use enupal\snapshot\services\App;
 use enupal\snapshot\variables\SnapshotVariable;
 use enupal\snapshot\models\Settings;
@@ -76,9 +77,7 @@ class Snapshot extends Plugin
             }
         );
 
-        $stripePayments = Craft::$app->getPlugins()->getPlugin('enupal-stripe');
-
-        if ($stripePayments){
+        if ($this->isStripePaymentsInstalled()){
             Craft::$app->view->hook('cp.enupal-stripe.order.actionbutton', function(array &$context) {
                 $order = $context['order'];
                 $pluginSettings = self::getSettings();
@@ -179,6 +178,16 @@ class Snapshot extends Plugin
     public static function error($message)
     {
         Craft::error(self::t($message), __METHOD__);
+    }
+
+    private function isStripePaymentsInstalled()
+    {
+        $stripePluginHandle = 'enupal-stripe';
+        $projectConfig = Craft::$app->getProjectConfig();
+        $stripePaymentsSettings = $projectConfig->get(Plugins::CONFIG_PLUGINS_KEY.'.'.$stripePluginHandle);
+        $isInstalled = $stripePaymentsSettings['enabled'] ?? false;
+
+        return $isInstalled;
     }
 
     /**

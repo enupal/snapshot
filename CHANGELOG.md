@@ -1,5 +1,9 @@
 # Enupal Snapshot Changelog
 
+## 1.2.3 - 2019.03.10
+### Added
+- Added support for Stripe Payments v1.8.0
+
 ## 1.2.2 - 2019.02.18
 ### Fixed
 - Fixed `Calling unknown method: enupal\snapshot\services\Snapshots::installDefaultVolume()` when updating plugin from Craft 3.0.x

@@ -19,23 +19,30 @@
 {{ forms.field({
     label: "Please download and install <a href='https://wkhtmltopdf.org/'>wkhtmltopdf</a> 0.12.x in order to use Enupal Snapshot. More info <a href='https://enupal.com/craft-plugins/enupal-snapshot/docs/getting-started/installation-setup'>here</a>."|t('enupal-snapshot'),
 }, null) }}
-{{ forms.textField({
+
+{{ forms.autosuggestField({
     label: 'Absolute Binary Path of wkhtmltopdf lib',
     instructions: '/usr/local/bin/wkhtmltopdf',
     id: 'pdfBinPath',
+    class: 'ltr',
     name: 'pdfBinPath',
     required: true,
-    errors: settings.getErrors('pdfBinPath'),
-    value: settings['pdfBinPath']}) }}
+    suggestEnvVars: true,
+    value: settings['pdfBinPath'],
+    errors: settings.getErrors('pdfBinPath')
+}) }}
 
-{{ forms.textField({
+{{ forms.autosuggestField({
     label: 'Absolute Binary Path of wkhtmltoimage lib',
     instructions: '/usr/local/bin/wkhtmltoimage',
     id: 'imageBinPath',
+    class: 'ltr',
     name: 'imageBinPath',
-    errors: settings.getErrors('imageBinPath'),
     required: true,
-    value: settings['imageBinPath']}) }}
+    suggestEnvVars: true,
+    value: settings['imageBinPath'],
+    errors: settings.getErrors('imageBinPath')
+}) }}
 
 {{ forms.textField({
     label: 'Timeout',

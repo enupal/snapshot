@@ -29,8 +29,9 @@ class SnappyPdf extends BaseSnappy
     protected function getBinary()
     {
         $this->pluginSettings = Snapshot::$app->settings->getSettings();
+        $pdfBinPath = trim(Craft::parseEnv($this->pluginSettings->pdfBinPath));
 
-        $this->binary = '"'.$this->pluginSettings->pdfBinPath.'"';
+        $this->binary = '"'.$pdfBinPath.'"';
 
         return $this->binary ?? null;
     }

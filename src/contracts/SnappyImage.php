@@ -28,8 +28,9 @@ class SnappyImage extends BaseSnappy
     protected function getBinary()
     {
         $this->pluginSettings = Snapshot::$app->settings->getSettings();
+        $imageBinPath = trim(Craft::parseEnv($this->pluginSettings->imageBinPath));
 
-        $this->binary = '"'.$this->pluginSettings->imageBinPath.'"';
+        $this->binary = '"'.$imageBinPath.'"';
 
         return $this->binary ?? null;
     }

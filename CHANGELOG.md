@@ -1,5 +1,9 @@
 # Enupal Snapshot Changelog
 
+## 1.2.4 - 2019.06.25
+### Added
+- Added support for [environmental values](https://docs.craftcms.com/v3/config/environments.html).
+
 ## 1.2.3 - 2019.03.10
 ### Added
 - Added support for Stripe Payments v1.8.0

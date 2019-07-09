@@ -205,6 +205,10 @@ class SnappyPdf extends BaseSnappy
             return Snapshot::t("Something went wrong when creating the PDF file, please check your logs");
         }
 
+        if ($settingsModel->asModel){
+            return $asset;
+        }
+
         return $asset->getUrl();
     }
 

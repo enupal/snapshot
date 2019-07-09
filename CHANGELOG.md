@@ -1,5 +1,9 @@
 # Enupal Snapshot Changelog
 
+## 1.2.5 - 2019.07.08
+### Added
+- Added support for return the asset model instead of the Url. [More info](https://enupal.com/craft-plugins/enupal-snapshot/docs/advanced/return-asset-model)
+
 ## 1.2.4 - 2019.06.25
 ### Added
 - Added support for [environmental values](https://docs.craftcms.com/v3/config/environments.html).

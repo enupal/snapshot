@@ -205,6 +205,10 @@ class SnappyPdf extends BaseSnappy
             return Snapshot::t("Something went wrong when creating the PDF file, please check your logs");
         }
 
+        if ($settingsModel->asModel){
+            return $asset;
+        }
+
         return $asset->getUrl();
     }
 
@@ -217,6 +221,7 @@ class SnappyPdf extends BaseSnappy
      */
     private function _displayInline($source, $settingsModel, $isHtml = true)
     {
+        ob_end_clean();
         header('Content-Disposition: inline; filename="'.$settingsModel->filename.'"');
         header('Content-Type: application/pdf');
 

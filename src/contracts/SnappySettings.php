@@ -25,6 +25,8 @@ class SnappySettings extends Model
 
     public $inline = true;
 
+    public $asModel = false;
+
     public $singleUploadLocationSource = null;
 
     public $singleUploadLocationSubpath = null;

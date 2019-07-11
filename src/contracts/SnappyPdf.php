@@ -221,6 +221,7 @@ class SnappyPdf extends BaseSnappy
      */
     private function _displayInline($source, $settingsModel, $isHtml = true)
     {
+        ob_end_clean();
         header('Content-Disposition: inline; filename="'.$settingsModel->filename.'"');
         header('Content-Type: application/pdf');
 

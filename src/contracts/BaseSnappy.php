@@ -15,10 +15,8 @@ use craft\elements\Asset;
 use craft\errors\InvalidSubpathException;
 use craft\errors\InvalidVolumeException;
 use craft\helpers\UrlHelper;
-use craft\models\VolumeFolder;
 use enupal\snapshot\models\Settings;
 use enupal\snapshot\Snapshot;
-use enupal\stripe\Stripe;
 use Knp\Snappy\GeneratorInterface;
 use craft\base\Component;
 use craft\helpers\FileHelper;
@@ -212,23 +210,16 @@ abstract class BaseSnappy extends Component
      */
     public function getAsset($settingsModel)
     {
+        $asset = $this->getAssetIfFileExists($settingsModel);
         $targetFolderId = $this->determineUploadFolderId($settingsModel);
         $folder = Craft::$app->getAssets()->getFolderById($targetFolderId);
 
-        $asset = $this->checkIfFileExists($folder, $settingsModel->filename);
-
         if ($asset){
-            $overrideFile = $this->pluginSettings->overrideFile;
+            $overrideFile = $this->getOverrideFile($settingsModel);
 
-            if ($settingsModel->overrideFile !== null){
-                $overrideFile = $settingsModel->overrideFile;
+            if ($overrideFile){
+                Craft::$app->getElements()->deleteElement($asset);
             }
-
-            if (!$overrideFile){
-                return $asset;
-            }
-
-            Craft::$app->getElements()->deleteElement($asset);
         }
 
         $asset = new Asset();
@@ -241,6 +232,22 @@ abstract class BaseSnappy extends Component
         Craft::$app->getElements()->saveElement($asset);
 
         return $asset;
+    }
+
+    /**
+     * @param SnappySettings $settingsModel
+     * @return bool
+     */
+    public function getOverrideFile($settingsModel)
+    {
+        $pluginSettings = Snapshot::$app->settings->getSettings();
+        $overrideFile = $pluginSettings->overrideFile;
+
+        if ($settingsModel->overrideFile !== null){
+            $overrideFile = $settingsModel->overrideFile;
+        }
+
+        return $overrideFile;
     }
 
     /**
@@ -283,17 +290,22 @@ abstract class BaseSnappy extends Component
     }
 
     /**
-     * @param VolumeFolder $folder
-     * @param $fileName
+     * @param SnappySettings $settingsModel
      * @return array|\craft\base\ElementInterface|Asset|null
+     * @throws InvalidSubpathException
+     * @throws InvalidVolumeException
+     * @throws \craft\errors\VolumeException
      */
-    private function checkIfFileExists($folder, $fileName)
+    public function getAssetIfFileExists($settingsModel)
     {
+        $targetFolderId = $this->determineUploadFolderId($settingsModel);
+        $folder = Craft::$app->getAssets()->getFolderById($targetFolderId);
+
         $query = Asset::find();
 
         $query->volumeId = $folder->volumeId;
         $query->folderId = $folder->id;
-        $query->filename = $fileName;
+        $query->filename = $settingsModel->filename;
 
         return $query->one();
     }
@@ -308,8 +320,9 @@ abstract class BaseSnappy extends Component
      */
     private function determineUploadFolderId($settingsModel): int
     {
-        $uploadVolume = $this->pluginSettings->singleUploadLocationSource;
-        $subpath = $this->pluginSettings->singleUploadLocationSubpath;
+        $pluginSettings = Snapshot::$app->settings->getSettings();
+        $uploadVolume = $pluginSettings->singleUploadLocationSource;
+        $subpath = $pluginSettings->singleUploadLocationSubpath;
 
         if ($settingsModel->singleUploadLocationSource !== null){
             $uploadVolume = $settingsModel->singleUploadLocationSource;

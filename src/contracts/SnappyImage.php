@@ -146,19 +146,34 @@ class SnappyImage extends BaseSnappy
     private function _generateImage($source, SnappySettings $settingsModel, $sourceIsHtml = true)
     {
         try {
-            if ($sourceIsHtml) {
-                $this->generateFromHtml($source, $settingsModel->path);
-            } else {
-                // From URL
-                $this->generate($source, $settingsModel->path);
+            $asset = $this->getAssetIfFileExists($settingsModel);
+            $generate = true;
+
+            if ($asset){
+                $overrideFile = $this->getOverrideFile($settingsModel);
+
+                if (!$overrideFile){
+                    $generate = false;
+                }
             }
 
-            if (!file_exists($settingsModel->path)) {
-                Snapshot::error(Snapshot::t("Unable to find the Image file: ".$settingsModel->path));
-                return Snapshot::t("Unable to display Image file on browser");
+            if ($generate){
+                if ($sourceIsHtml) {
+                    $this->generateFromHtml($source, $settingsModel->path);
+                } else {
+                    // From URL
+                    $this->generate($source, $settingsModel->path);
+                }
+
+                if (!file_exists($settingsModel->path)) {
+                    Snapshot::error(Snapshot::t("Unable to find the Image file: ".$settingsModel->path));
+                    return Snapshot::t("Unable to display Image file on browser");
+                }
             }
 
-            $asset = $this->getAsset($settingsModel);
+            if ($generate) {
+                $asset = $this->getAsset($settingsModel);
+            }
 
         } catch (\Exception $e) {
             Snapshot::error(Snapshot::t("Something went wrong when creating the Image file: ".$e->getMessage()));

@@ -185,20 +185,36 @@ class SnappyPdf extends BaseSnappy
             if ($settingsModel->inline) {
                 $this->_displayInline($source, $settingsModel, $sourceIsHtml);
             }
-            //Return a download link
-            if ($sourceIsHtml) {
-                $this->generateFromHtml($source, $settingsModel->path);
-            } else {
-                // From URL
-                $this->generate($source, $settingsModel->path);
+
+            $asset = $this->getAssetIfFileExists($settingsModel);
+            $generate = true;
+
+            if ($asset){
+                $overrideFile = $this->getOverrideFile($settingsModel);
+
+                if (!$overrideFile){
+                    $generate = false;
+                }
             }
 
-            if (!file_exists($settingsModel->path)) {
-                Snapshot::error(Snapshot::t("Unable to find the PDF file: ".$settingsModel->path));
-                return Snapshot::t("Unable to display PDF file on browser");
+            // Generate the pdf file
+            if ($generate){
+                if ($sourceIsHtml) {
+                    $this->generateFromHtml($source, $settingsModel->path);
+                } else {
+                    // From URL
+                    $this->generate($source, $settingsModel->path);
+                }
+
+                if (!file_exists($settingsModel->path)) {
+                    Snapshot::error(Snapshot::t("Unable to find the PDF file: ".$settingsModel->path));
+                    return Snapshot::t("Unable to display PDF file on browser");
+                }
             }
 
-            $asset = $this->getAsset($settingsModel);
+            if ($generate) {
+                $asset = $this->getAsset($settingsModel);
+            }
 
         } catch (\Exception $e) {
             Snapshot::error(Snapshot::t("Something went wrong when creating the PDF file: ".$e->getMessage()));

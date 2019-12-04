@@ -1,5 +1,11 @@
 # Enupal Snapshot Changelog
 
+## 1.2.7 - 2019.12.04
+### Fixed
+- Fixed issue for when `overrideFile` is set to false, was regenerating the file ([#35])
+
+[#35]: https://github.com/enupal/snapshot/issues/35
+
 ## 1.2.6 - 2019.07.11
 ### Fixed
 - Fixed "Filed to load PDF document" on some scenarios ([#29])

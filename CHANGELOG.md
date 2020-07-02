@@ -1,5 +1,14 @@
 # Enupal Snapshot Changelog
 
+## 1.2.8 - 2020.07.02
+### Added
+- Added `autosuggestField` to the Stripe Payments Order PDF Template setting
+
+### Fixed
+- Fixed issue on when setting Stripe Payments order template ([#37])
+
+[#37]: https://github.com/enupal/snapshot/issues/37
+
 ## 1.2.7 - 2019.12.04
 ### Fixed
 - Fixed issue for when `overrideFile` is set to false, was regenerating the file ([#35])

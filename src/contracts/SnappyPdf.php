@@ -95,7 +95,7 @@ class SnappyPdf extends BaseSnappy
      * @param Order $order
      * @param array $settings display inline | url
      *
-     * @return string|Response
+     * @return string|Response\null
      * @throws \Throwable
      * @throws \yii\base\Exception
      * @throws \yii\web\ServerErrorHttpException
@@ -104,8 +104,12 @@ class SnappyPdf extends BaseSnappy
     {
         $settings['variables']['order'] = $order;
         $template = $this->getStripePaymentsOrderTemplate($settings);
+        if (is_null($template)) {
+            return null;
+        }
         $settings['filename'] = $this->getStripePaymentsFilename($settings);
 
+        Craft::$app->getView()->setTemplatesPath(Craft::$app->path->getSiteTemplatesPath());
         return $this->displayTemplate($template, $settings);
     }
 

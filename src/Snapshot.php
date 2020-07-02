@@ -87,8 +87,9 @@ class Snapshot extends Plugin
                     $view->setTemplatesPath(Craft::$app->path->getSiteTemplatesPath());
                     $pdfUrl = Snapshot::$app->pdf->displayOrder($order, $settings);
                     $view->setTemplatesPath(Craft::$app->path->getCpTemplatesPath());
-
-                    return $view->renderTemplate('enupal-snapshot/_pdfbuttons/stripepayments', ['pdfUrl' => $pdfUrl]);
+                    if ($pdfUrl !== null) {
+                        return $view->renderTemplate('enupal-snapshot/_pdfbuttons/stripepayments', ['pdfUrl' => $pdfUrl]);
+                    }
                 }
 
                 return $view->renderTemplate('enupal-snapshot/_pdfbuttons/templateNotFound');
@@ -104,6 +105,12 @@ class Snapshot extends Plugin
                         $view->setTemplatesPath(Craft::$app->path->getSiteTemplatesPath());
                         $pdfUrl = Snapshot::$app->pdf->displayOrder($e->order, $settings);
                         $view->setTemplatesPath(Craft::$app->path->getCpTemplatesPath());
+
+                        if ($pdfUrl === null) {
+                            Craft::error('Unable to find the Stripe Payments Order template');
+                            return null;
+                        }
+
                         if (UrlHelper::isFullUrl($pdfUrl)){
                             $pdfUrl = UrlHelper::siteUrl($pdfUrl);
                         }

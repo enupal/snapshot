@@ -258,10 +258,28 @@ abstract class BaseSnappy extends Component
     {
         $pluginSettings = Snapshot::$app->settings->getSettings();
         $template = $pluginSettings->stripePaymentsTemplate;
+        $view = Craft::$app->getView();
+        $originalPath = $view->getTemplatesPath();
+        $extensions = ['.html', '.twig'];
+
+        $template = Craft::parseEnv($template);
         $overrideTemplate = $settings['orderTemplate'] ?? null;
 
         if ($overrideTemplate !== null){
             $template = $overrideTemplate;
+        }
+
+        // let's check if the file exists
+        $pathTemplate = $originalPath.DIRECTORY_SEPARATOR.$template;
+        $fileExists = false;
+        foreach ($extensions as $extension) {
+            if (file_exists($pathTemplate.$extension)){
+                $fileExists = true;
+            }
+        }
+
+        if (!$fileExists) {
+            return null;
         }
 
         return $template;

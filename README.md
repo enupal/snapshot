@@ -2,7 +2,7 @@
 <img src="https://scrutinizer-ci.com/g/enupal/snapshot/badges/quality-score.png?b=master"> <img src="https://scrutinizer-ci.com/g/enupal/snapshot/badges/coverage.png?b=master"> <img src="https://scrutinizer-ci.com/g/enupal/snapshot/badges/build.png?b=master"> <img src="https://scrutinizer-ci.com/g/enupal/snapshot/badges/code-intelligence.svg?b=master">
 </p>
 <p align="center">
-	<a href="https://enupal.com/craft-plugins/enupal-snapshot/docs/" target="_blank">
+	<a href="https://docs.enupal.com/enupal-snapshot/" target="_blank">
 	<img width="212" height="212" src="https://enupal.com/assets/docs/snapshot-icon.svg" alt="Enupal Snapshot"></a>
 </p>
 
@@ -103,7 +103,7 @@ All available options [here](https://wkhtmltopdf.org/usage/wkhtmltopdf.txt):
 
 ## Documentation
 
-https://enupal.com/craft-plugins/enupal-snapshot/docs/
+https://docs.enupal.com/enupal-snapshot/
 
 ## Enupal Snapshot Support
 

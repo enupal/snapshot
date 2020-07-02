@@ -54,14 +54,16 @@
 <hr>
 
 {% if craft.enupalsnapshot.isStripePaymentsInstalled %}
-    {{ forms.textField({
+    {{ forms.autosuggestField({
         label: 'Stripe Payments Order PDF Template',
         instructions: 'The path to the template used for generating order PDFs.',
         id: 'stripePaymentsTemplate',
         name: 'stripePaymentsTemplate',
-        required: true,
-        errors: settings.getErrors('stripePaymentsTemplate'),
-        value: settings['stripePaymentsTemplate']}) }}
+        suggestions: craft.cp.getTemplateSuggestions()|merge(craft.cp.getEnvSuggestions()),
+        suggestEnvVars: true,
+        value: settings['stripePaymentsTemplate'],
+        errors: settings.getErrors('stripePaymentsTemplate')
+    }) }}
 
     {{ forms.textField({
         label: 'Stripe Payments Order Filename Format',

@@ -34,7 +34,7 @@ class App extends Component
      */
     public $settings;
 
-    public function init()
+    public function init(): void
     {
         $this->pdf = new Pdf();
         $this->image = new Image();

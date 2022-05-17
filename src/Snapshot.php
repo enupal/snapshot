@@ -47,17 +47,17 @@ class Snapshot extends Plugin
     /**
      * @inheritdoc
      */
-    public $schemaVersion = '1.2.0';
+    public string $schemaVersion = '1.2.0';
 
     /**
      * @inheritdoc
      */
-    public $hasCpSection = false;
+    public bool $hasCpSection = false;
 
     /**
      * @inheritdoc
      */
-    public $hasCpSettings = true;
+    public bool $hasCpSettings = true;
 
     /**
      * @inheritdoc
@@ -133,7 +133,7 @@ class Snapshot extends Plugin
     /**
      * @inheritdoc
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?\craft\base\Model
     {
         return new Settings();
     }
@@ -141,7 +141,7 @@ class Snapshot extends Plugin
     /**
      * @inheritdoc
      */
-    protected function settingsHtml(): string
+    protected function settingsHtml(): ?string
     {
         return Craft::$app->view->renderTemplate(
             'enupal-snapshot/settings',
@@ -191,7 +191,7 @@ class Snapshot extends Plugin
     {
         $stripePluginHandle = 'enupal-stripe';
         $projectConfig = Craft::$app->getProjectConfig();
-        $stripePaymentsSettings = $projectConfig->get(Plugins::CONFIG_PLUGINS_KEY.'.'.$stripePluginHandle);
+        $stripePaymentsSettings = $projectConfig->get(\craft\services\ProjectConfig::PATH_PLUGINS.'.'.$stripePluginHandle);
         $isInstalled = $stripePaymentsSettings['enabled'] ?? false;
 
         return $isInstalled;

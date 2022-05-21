@@ -12,8 +12,8 @@ namespace enupal\snapshot\contracts;
 
 use Craft;
 use craft\elements\Asset;
+use craft\errors\AssetException;
 use craft\errors\InvalidSubpathException;
-use craft\errors\InvalidVolumeException;
 use craft\helpers\UrlHelper;
 use enupal\snapshot\models\Settings;
 use enupal\snapshot\Snapshot;
@@ -174,9 +174,9 @@ abstract class BaseSnappy extends Component
         }
 
         if (!$isValidFileName) {
-            $info = Craft::$app->getInfo();
+            $primarySite = Craft::$app->getSites()->getPrimarySite();
             $systemName = FileHelper::sanitizeFilename(
-                $info->name,
+                $primarySite->getName(),
                 [
                     'asciiOnly' => true,
                     'separator' => '_'
@@ -202,7 +202,7 @@ abstract class BaseSnappy extends Component
      * @param SnappySettings $settingsModel
      * @return Asset
      * @throws InvalidSubpathException
-     * @throws InvalidVolumeException
+     * @throws AssetException
      * @throws \Throwable
      * @throws \craft\errors\ElementNotFoundException
      * @throws \craft\errors\VolumeException
@@ -311,7 +311,7 @@ abstract class BaseSnappy extends Component
      * @param SnappySettings $settingsModel
      * @return array|\craft\base\ElementInterface|Asset|null
      * @throws InvalidSubpathException
-     * @throws InvalidVolumeException
+     * @throws AssetException
      * @throws \craft\errors\VolumeException
      */
     public function getAssetIfFileExists($settingsModel)
@@ -333,7 +333,7 @@ abstract class BaseSnappy extends Component
      * @param SnappySettings $settingsModel
      * @return int
      * @throws InvalidSubpathException if the folder subpath is not valid
-     * @throws InvalidVolumeException if there's a problem with the field's volume configuration
+     * @throws AssetException if there's a problem with the field's volume configuration
      * @throws \craft\errors\VolumeException
      */
     private function determineUploadFolderId($settingsModel): int
@@ -354,11 +354,11 @@ abstract class BaseSnappy extends Component
 
         try {
             if (!$uploadVolume) {
-                throw new InvalidVolumeException();
+                throw new AssetException();
             }
             $folderId = $this->resolveVolumePathToFolderId($uploadVolume, $subpath);
-        } catch (InvalidVolumeException $e) {
-            throw new InvalidVolumeException(Craft::t('app', '{setting} setting is set to an invalid volume.', [
+        } catch (AssetException $e) {
+            throw new AssetException(Craft::t('app', '{setting} setting is set to an invalid volume.', [
                 'setting' => $settingName,
             ]), 0, $e);
         } catch (InvalidSubpathException $e) {
@@ -379,7 +379,7 @@ abstract class BaseSnappy extends Component
      * @param string $subpath
      * @return int
      * @throws InvalidSubpathException
-     * @throws InvalidVolumeException if the volume root folder doesn’t exist
+     * @throws AssetException if the volume root folder doesn’t exist
      * @throws \craft\errors\VolumeException
      */
     private function resolveVolumePathToFolderId(string $uploadSource, string $subpath): int
@@ -390,7 +390,7 @@ abstract class BaseSnappy extends Component
 
         // Make sure the volume and root folder actually exists
         if ($volumeId === null || ($rootFolder = $assetsService->getRootFolderByVolumeId($volumeId)) === null) {
-            throw new InvalidVolumeException();
+            throw new AssetException();
         }
 
         // Are we looking for a subfolder?
@@ -430,7 +430,8 @@ abstract class BaseSnappy extends Component
 
             if (!$folder) {
                 $volume = Craft::$app->getVolumes()->getVolumeById($volumeId);
-                $folderId = $assetsService->ensureFolderByFullPathAndVolume($subpath, $volume);
+                $folder = $assetsService->ensureFolderByFullPathAndVolume($subpath, $volume);
+                $folderId = $folder->id;
             } else {
                 $folderId = $folder->id;
             }
@@ -453,9 +454,9 @@ abstract class BaseSnappy extends Component
             return null;
         }
 
-        $folder = Craft::$app->getAssets()->getFolderByUid($parts[1]);
+        $volume = Craft::$app->getVolumes()->getVolumeByUid($parts[1]);
 
-        return $folder->volumeId ?? null;
+        return $volume->id ?? null;
     }
 
     /**

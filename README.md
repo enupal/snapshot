@@ -6,7 +6,7 @@
 	<img width="212" height="212" src="https://enupal.com/assets/docs/snapshot-icon.svg" alt="Enupal Snapshot"></a>
 </p>
 
-# Enupal Snapshot Plugin for Craft CMS 3.x
+# Enupal Snapshot Plugin for Craft CMS
 
 PDF or Image generation from a URL or HTML page easily. It uses the excellent webkit-based wkhtmltopdf and wkhtmltoimage available on OSX, Linux & windows.
 ## Features

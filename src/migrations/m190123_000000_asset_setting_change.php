@@ -39,7 +39,7 @@ class m190123_000000_asset_setting_change extends Migration
         }
 
         $projectConfig = Craft::$app->getProjectConfig();
-        $projectConfig->set(Plugins::CONFIG_PLUGINS_KEY . '.' . $plugin->handle . '.settings', $settings->toArray());
+        $projectConfig->set(\craft\services\ProjectConfig::PATH_PLUGINS . '.' . $plugin->handle . '.settings', $settings->toArray());
 
         return true;
     }

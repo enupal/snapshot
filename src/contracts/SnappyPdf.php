@@ -138,7 +138,7 @@ class SnappyPdf extends BaseSnappy
      * @param array $options
      *
      * @return array
-     * @throws \Twig_Error_Loader
+     * @throws \Twig\Error\LoaderError
      * @throws \yii\base\Exception
      */
     public function getDefaultOptions($options = [])

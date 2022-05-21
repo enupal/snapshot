@@ -1,5 +1,10 @@
 # Enupal Snapshot Changelog
 
+## 2.0.0 - 2022.05.21
+
+### Added
+- Added Craft CMS 4 support
+
 ## 1.2.8 - 2020.07.02
 ### Added
 - Added `autosuggestField` to the Stripe Payments Order PDF Template setting

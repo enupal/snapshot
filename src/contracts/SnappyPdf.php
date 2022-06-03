@@ -60,6 +60,8 @@ class SnappyPdf extends BaseSnappy
      */
     public function displayHtml($html, $settings = null)
     {
+        Snapshot::$app->snapshots::addVariables($settings['variables'] ?? []);
+
         $settingsModel = $this->populateSettings($settings);
 
         $response = $this->_generatePdf($html, $settingsModel);
@@ -154,17 +156,13 @@ class SnappyPdf extends BaseSnappy
         ];
 
         if (isset($options['header-html'])) {
-            $variables = $settings['variables'] ?? [];
-
-            $html = Craft::$app->getView()->renderTemplate($options['header-html'], $variables);
+            $html = Craft::$app->getView()->renderTemplate($options['header-html'], Snapshot::$app->snapshots->getFieldVariables());
 
             $options['header-html'] = $html;
         }
 
         if (isset($options['footer-html'])) {
-            $variables = $settings['variables'] ?? [];
-
-            $html = Craft::$app->getView()->renderTemplate($options['footer-html'], $variables);
+            $html = Craft::$app->getView()->renderTemplate($options['footer-html'], Snapshot::$app->snapshots->getFieldVariables());
 
             $options['footer-html'] = $html;
         }

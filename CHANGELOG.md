@@ -1,5 +1,11 @@
 # Enupal Snapshot Changelog
 
+## 1.2.9 - 2022.06.03
+### Fixed
+- Fixed issue when retrieving variables on footer and headers ([#52])
+
+[#52]: https://github.com/enupal/snapshot/issues/52
+
 ## 1.2.8 - 2020.07.02
 ### Added
 - Added `autosuggestField` to the Stripe Payments Order PDF Template setting

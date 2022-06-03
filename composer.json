@@ -2,7 +2,7 @@
   "name": "enupal/snapshot",
   "description": "PDF or Image generation from a Url or HTML page",
   "type": "craft-plugin",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "keywords": [
     "craft",
     "cms",
@@ -15,7 +15,7 @@
   "support": {
     "email": "info@enupal.com",
     "issues": "https://github.com/enupal/snapshot/issues",
-    "docs": "https://enupal.com/craft-plugins/enupal-snapshot/docs"
+    "docs": "https://docs.enupal.com/enupal-snapshot/"
   },
   "authors": [
     {

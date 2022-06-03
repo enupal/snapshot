@@ -1,5 +1,11 @@
 # Enupal Snapshot Changelog
 
+## 2.0.1 - 2022.06.03
+### Fixed
+- Fixed issue when retrieving variables on footer and headers ([#52])
+
+[#52]: https://github.com/enupal/snapshot/issues/52
+
 ## 2.0.0 - 2022.05.21
 
 ### Added

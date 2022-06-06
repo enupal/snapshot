@@ -1,2 +1,0 @@
-- name: Potential Duplicates
-  uses: wow-actions/potential-duplicates@v1.0.9

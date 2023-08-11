@@ -54,6 +54,14 @@
 <hr>
 
 {% if craft.enupalsnapshot.isStripePaymentsInstalled %}
+    {{ forms.lightswitchField({
+        label: "Enable PDF attachment on Stripe Payments Order email"|t('enupal-snapshot'),
+        instructions: "Attach PDF to Stripe Payments Order email"|t('enupal-snapshot'),
+        id: 'enableStripePaymentsPdf',
+        name: 'enableStripePaymentsPdf',
+        on: settings['enableStripePaymentsPdf']
+    }) }}
+
     {{ forms.autosuggestField({
         label: 'Stripe Payments Order PDF Template',
         instructions: 'The path to the template used for generating order PDFs.',

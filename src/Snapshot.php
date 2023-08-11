@@ -99,7 +99,7 @@ class Snapshot extends Plugin
                 $message = $e->message;
                 $settings = $this->getStripePaymentsSettings();
                 $pluginSettings = self::getSettings();
-                if ($pluginSettings->stripePaymentsTemplate){
+                if ($pluginSettings->stripePaymentsTemplate && $pluginSettings->enableStripePaymentsPdf){
                     if (isset($e->order) && $e->type == Stripe::$app->emails::CUSTOMER_TYPE){
                         $view = Craft::$app->getView();
                         $view->setTemplatesPath(Craft::$app->path->getSiteTemplatesPath());

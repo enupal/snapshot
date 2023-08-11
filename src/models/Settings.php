@@ -65,6 +65,11 @@ class Settings extends Model
     public $craftCommerceFileName = null;
 
     /**
+     * @var bool
+     */
+    public $enableStripePaymentsPdf = true;
+
+    /**
      * @var string
      */
     public $stripePaymentsTemplate = null;

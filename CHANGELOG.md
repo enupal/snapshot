@@ -1,5 +1,11 @@
 # Enupal Snapshot Changelog
 
+## 2.0.2 - 2023.08.11
+### Added
+- Added setting to disable Stripe Payments Order PDF attachment ([#59])
+
+[#59]: https://github.com/enupal/snapshot/issues/59
+
 ## 2.0.1 - 2022.06.03
 ### Fixed
 - Fixed issue when retrieving variables on footer and headers ([#52])

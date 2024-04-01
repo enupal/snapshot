@@ -27,9 +27,9 @@ class ImageLibValidator extends Validator
      */
     public function validateAttribute($object, $attribute)
     {
-        $url = Snapshot::$app->image->test() ?? '';
+        $url = Snapshot::$app->image->test();
 
-        if ($object->imageBinPath && !UrlHelper::isFullUrl($url)) {
+        if ($object->imageBinPath && !UrlHelper::isFullUrl($url ?? '')) {
             $this->addError($object, $attribute, Snapshot::t('Something went wrong in the test. Please check the path and your logs.'));
         }
     }

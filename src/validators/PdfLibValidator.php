@@ -27,9 +27,9 @@ class PdfLibValidator extends Validator
      */
     public function validateAttribute($object, $attribute)
     {
-        $url = Snapshot::$app->pdf->test() ?? '';
+        $url = Snapshot::$app->pdf->test();
 
-        if ($object->pdfBinPath && !UrlHelper::isFullUrl($url)) {
+        if ($object->pdfBinPath && !UrlHelper::isFullUrl($url ?? '')) {
             $this->addError($object, $attribute, Snapshot::t('Something went wrong in the test. Please check the path and your logs.'));
         }
     }

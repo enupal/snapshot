@@ -1,5 +1,9 @@
 # Enupal Snapshot Changelog
 
+## 3.0.0 - 2024.04.01
+### Added
+- Added Craft CMS 5 support
+
 ## 2.0.2 - 2023.08.11
 ### Added
 - Added setting to disable Stripe Payments Order PDF attachment ([#59])

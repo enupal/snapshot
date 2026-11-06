@@ -31,7 +31,7 @@ class SnappyPdf extends BaseSnappy
         $this->pluginSettings = Snapshot::$app->settings->getSettings();
         $pdfBinPath = trim(Craft::parseEnv($this->pluginSettings->pdfBinPath));
 
-        $this->binary = '"'.$pdfBinPath.'"';
+        $this->binary = $pdfBinPath;
 
         return $this->binary ?? null;
     }

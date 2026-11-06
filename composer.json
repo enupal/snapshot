@@ -2,7 +2,7 @@
   "name": "enupal/snapshot",
   "description": "PDF or Image generation from a Url or HTML page",
   "type": "craft-plugin",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "keywords": [
     "craft",
     "cms",
@@ -25,7 +25,7 @@
   ],
   "require": {
     "craftcms/cms": "^5.0.0",
-    "knplabs/knp-snappy": "^1.0"
+    "knplabs/knp-snappy": "^1.7.3"
   },
   "autoload": {
     "psr-4": {

@@ -1,5 +1,14 @@
 # Enupal Snapshot Changelog
 
+## 3.0.1 - 2026.11.06
+### Changed
+- Enupal Snapshot now requires `knplabs/knp-snappy` 1.7.3 or later. The wkhtmltopdf and wkhtmltoimage settings must be absolute paths to the binaries, without quotes or arguments
+
+### Fixed
+- Fixed PDF and image generation failing with `knplabs/knp-snappy` 1.7.1 or later ([#66])
+
+[#66]: https://github.com/enupal/snapshot/issues/66
+
 ## 3.0.0 - 2024.04.01
 ### Added
 - Added Craft CMS 5 support

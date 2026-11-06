@@ -30,7 +30,7 @@ class SnappyImage extends BaseSnappy
         $this->pluginSettings = Snapshot::$app->settings->getSettings();
         $imageBinPath = trim(Craft::parseEnv($this->pluginSettings->imageBinPath));
 
-        $this->binary = '"'.$imageBinPath.'"';
+        $this->binary = $imageBinPath;
 
         return $this->binary ?? null;
     }
